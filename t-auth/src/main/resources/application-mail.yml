@@ -1,0 +1,16 @@
+app:
+  mail:
+    sender: test@gmail.com
+
+#spring:
+#  mail:
+#    host: smtp.gmail.com
+#    port: 587
+#    username:
+#    password:
+#    properties:
+#      mail:
+#        smtp:
+#          auth: true
+#          starttls:
+#            enable: true

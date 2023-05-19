@@ -1,0 +1,6 @@
+springdoc:
+  swagger-ui:
+    path: /docs/swagger-ui.html
+  api-docs:
+    path: /docs
+    enabled: true
