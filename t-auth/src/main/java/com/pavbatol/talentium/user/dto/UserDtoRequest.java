@@ -1,6 +1,6 @@
 package com.pavbatol.talentium.user.dto;
 
-import com.pavbatol.talentium.role.dto.RoleDto;
+import com.pavbatol.talentium.role.dto.RoleDtoShort;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -30,7 +30,7 @@ public class UserDtoRequest {
     Boolean enabled;
 
     @Schema(description = "Security access roles")
-    Set<RoleDto> roles;
+    Set<RoleDtoShort> roles;
 
     @NotNull
     @Pattern(regexp = "^(?!\\s)(?!.*\\s{2,}.*)(?!.*\\s$).{2,}$",

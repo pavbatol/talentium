@@ -22,7 +22,7 @@ public class PublicUserController {
     public static final String CODE = "code";
     private final UserService userService;
 
-    @GetMapping(REGISTRY)
+    @PostMapping(REGISTRY)
     @Operation(summary = "register", description = "registering a new user")
     public ResponseEntity<String> register(HttpServletRequest servletRequest, @Valid @RequestBody UserDtoRegistry dtoRegister) {
         log.debug("POST register() with {}", dtoRegister);
