@@ -2,7 +2,7 @@ package com.pavbatol.talentium.app.util;
 
 import com.pavbatol.talentium.app.enums.Position;
 
-public interface BaseUser {
+public interface BasePerson {
 
     public Long getId();
 

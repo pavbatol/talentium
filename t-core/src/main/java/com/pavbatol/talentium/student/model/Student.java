@@ -1,8 +1,8 @@
-package com.pavbatol.talentium.candidate.model;
+package com.pavbatol.talentium.student.model;
 
 import com.pavbatol.talentium.app.enums.Level;
 import com.pavbatol.talentium.app.enums.Position;
-import com.pavbatol.talentium.app.util.BaseUser;
+import com.pavbatol.talentium.app.util.BasePerson;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.Accessors;
@@ -15,11 +15,11 @@ import lombok.experimental.FieldDefaults;
 @Accessors(chain = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-@Table(name = "candidates")
-public class Candidate implements BaseUser {
+@Table(name = "students")
+public class Student implements BasePerson {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "candidate_id", nullable = false)
+    @Column(name = "student_id", nullable = false)
     Long id;
 
     @Column(name = "email", nullable = false, unique = true)

@@ -3,9 +3,9 @@ package com.pavbatol.talentium.app.enums;
 import lombok.NonNull;
 
 public enum Level {
-    beginner,
-    intermediate,
-    advanced;
+    BEGINNER,
+    INTERMEDIATE,
+    ADVANCED;
 
     public static Level of(@NonNull String name) throws IllegalArgumentException {
         try {
