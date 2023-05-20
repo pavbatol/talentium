@@ -13,7 +13,6 @@ spring:
       ddl-auto: none
     properties:
       hibernate:
-#        dialect: org.hibernate.dialect.PostgreSQL10Dialect
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
   sql:
@@ -38,7 +37,7 @@ app:
   db:
     host: localhost
     port: 5432
-    name: sw-auth
+    name: t-auth
     user: postgres
     password: 12345
 
