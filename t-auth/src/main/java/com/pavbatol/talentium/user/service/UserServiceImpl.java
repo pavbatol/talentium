@@ -131,17 +131,19 @@ public class UserServiceImpl implements UserService {
                         "registration on '%s'\nTo confirm the registration, follow the link:\n%s",
                 servletRequest.getServerName(), confirmationLink);
 
-        emailService.sendSimpleMessage(
-                user.getEmail(),
-                "Confirm your email address",
-                text);
+        // TODO: 20.05.2023 Uncomment code below
+
+//        emailService.sendSimpleMessage(
+//                user.getEmail(),
+//                "Confirm your email address",
+//                text);
         /*
          * The following code is intended for direct saving of the user, without confirmation by mail.
          * This is for testing the application if you don't specify an email for sending.
          */
-//        user.setEnabled(true)
-//                .setRegisteredOn(LocalDateTime.now());
-//        tokenRepository.deleteById(savedToken.getId());
+        user.setEnabled(true)
+                .setRegisteredOn(LocalDateTime.now());
+        tokenRepository.deleteById(savedToken.getId());
     }
 
     @Transactional

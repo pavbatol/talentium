@@ -9,7 +9,14 @@ public enum RoleName implements GrantedAuthority {
 
     ADMIN,
     USER,
-    GUEST;
+    GUEST,
+
+    //---
+    CANDIDATE,
+    INTERN,
+    CURATOR,
+    MENTOR,
+    HR;
 
     private static final String ROLE = "ROLE_";
 

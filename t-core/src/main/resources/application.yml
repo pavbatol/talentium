@@ -1,0 +1,12 @@
+spring:
+  profiles:
+    group:
+        develop:
+          - dev
+          - swagger
+          - mail
+        production:
+          - prod
+          - swagger
+          - mail
+        default: production
