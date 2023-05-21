@@ -1,6 +1,6 @@
-package com.pavbatol.talentium.student.feedback.model;
+package com.pavbatol.talentium.hh;
 
-import com.pavbatol.talentium.mentor.model.Mentor;
+import com.pavbatol.talentium.hh.model.Hh;
 import com.pavbatol.talentium.student.model.Student;
 import jakarta.persistence.*;
 import lombok.*;
@@ -14,20 +14,20 @@ import lombok.experimental.FieldDefaults;
 @Accessors(chain = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-@Table(name = "student_feedbacks")
-public class StudentFeedback {
+@Table(name = "hh_feedbacks")
+public class HhFeedback {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "feedback_id", nullable = false)
     Long id;
 
     @ManyToOne
+    @JoinColumn(name = "hh_id", nullable = false)
+    Hh hh;
+
+    @OneToOne
     @JoinColumn(name = "student_id", nullable = false)
     Student student;
-
-    @ManyToOne
-    @JoinColumn(name = "mentor_id", nullable = false)
-    Mentor mentor;
 
     @Column(name = "text", nullable = false)
     String text;

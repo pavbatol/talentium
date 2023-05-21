@@ -1,6 +1,7 @@
 package com.pavbatol.talentium.mentor.feedback.model;
 
 import com.pavbatol.talentium.mentor.model.Mentor;
+import com.pavbatol.talentium.student.model.Student;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.Accessors;
@@ -21,8 +22,12 @@ public class MentorFeedback {
     Long id;
 
     @ManyToOne
-    @JoinColumn(name = "reviewer_id", nullable = false)
-    Mentor reviewer;
+    @JoinColumn(name = "mentor_id", nullable = false)
+    Mentor mentor;
+
+    @OneToOne
+    @JoinColumn(name = "student_id", nullable = false)
+    Student student;
 
     @Column(name = "text", nullable = false)
     String text;

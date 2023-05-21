@@ -1,4 +1,4 @@
-package com.pavbatol.talentium.company.controller;
+package com.pavbatol.talentium.hh.controller;
 
 import com.pavbatol.talentium.auth.jwt.JwtProvider;
 import io.swagger.v3.oas.annotations.Operation;
@@ -20,13 +20,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/company")
 @Tag(name = "Private: Company", description = "API for working with company's")
-public class CompanyController {
+public class HhController {
 
     private final JwtProvider jwtProvider;
 
     @PostMapping()
     @SecurityRequirement(name = "JWT")
-    @Operation(summary = "add", description = "adding a user")
+    @Operation(summary = "add", description = "adding a hand hunter")
     public ResponseEntity<?> test(HttpServletRequest servletRequest) {
         log.debug("POST add() ");
         Long body =jwtProvider.geUserId(servletRequest);

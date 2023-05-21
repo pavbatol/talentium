@@ -2,12 +2,15 @@ package com.pavbatol.talentium.student.model;
 
 import com.pavbatol.talentium.app.enums.Level;
 import com.pavbatol.talentium.app.enums.Position;
+import com.pavbatol.talentium.student.feedback.model.StudentFeedback;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Setter
 @Getter
@@ -42,4 +45,8 @@ public class Student {
 
     @Column(name = "intern_On")
     LocalDateTime internOn;
+
+    @ToString.Exclude
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "student")
+    List<StudentFeedback> feedbacks = new ArrayList<>();
 }

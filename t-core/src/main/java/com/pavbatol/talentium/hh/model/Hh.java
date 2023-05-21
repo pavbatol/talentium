@@ -1,6 +1,6 @@
-package com.pavbatol.talentium.mentor.model;
+package com.pavbatol.talentium.hh.model;
 
-import com.pavbatol.talentium.mentor.feedback.model.MentorFeedback;
+import com.pavbatol.talentium.hh.HhFeedback;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.Accessors;
@@ -16,11 +16,11 @@ import java.util.List;
 @Accessors(chain = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-@Table(name = "mentors")
-public class Mentor {
+@Table(name = "hhs")
+public class Hh {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "mentor_id", nullable = false)
+    @Column(name = "hh_id", nullable = false)
     Long id;
 
     @Column(name = "email", nullable = false, unique = true)
@@ -32,7 +32,19 @@ public class Mentor {
     @Column(name = "second_name")
     String secondName;
 
+    @Column(name = "authority")
+    String authority;
+
+    @Column(name = "management")
+    String management;
+
+    @Column(name = "address")
+    String address;
+
+    @Column(name = "contacts")
+    String contacts;
+
     @ToString.Exclude
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "mentor")
-    List<MentorFeedback> feedbacks = new ArrayList<>();
+    @OneToMany(fetch = FetchType.LAZY,  mappedBy = "hh")
+    List<HhFeedback> feedbacks = new ArrayList<>();
 }
