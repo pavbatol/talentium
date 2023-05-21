@@ -3,10 +3,7 @@ package com.pavbatol.talentium.user.mapper;
 import com.pavbatol.talentium.app.util.BaseMapper;
 import com.pavbatol.talentium.role.mapper.RoleMapper;
 import com.pavbatol.talentium.role.model.Role;
-import com.pavbatol.talentium.user.dto.UserDtoRegistry;
-import com.pavbatol.talentium.user.dto.UserDtoRequest;
-import com.pavbatol.talentium.user.dto.UserDtoResponse;
-import com.pavbatol.talentium.user.dto.UserDtoUpdate;
+import com.pavbatol.talentium.user.dto.*;
 import com.pavbatol.talentium.user.model.User;
 import org.mapstruct.*;
 
@@ -34,6 +31,14 @@ public interface UserMapper extends BaseMapper<User, UserDtoRequest> {
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     User updateEntity(UserDtoUpdate dto, @MappingTarget User targetEntity);
+
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    User updateEntity(UserDtoUpdateShort dto, @MappingTarget User targetEntity);
+
+    @Mapping(target = "roles", ignore = true)
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    User updateEntityWithoutRole(UserDtoUpdateShort dto, @MappingTarget User targetEntity);
+
 
     UserDtoResponse toResponseDto(User user);
 

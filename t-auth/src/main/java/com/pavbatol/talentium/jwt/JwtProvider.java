@@ -1,5 +1,6 @@
 package com.pavbatol.talentium.jwt;
 
+import com.pavbatol.talentium.app.exception.NotFoundException;
 import com.pavbatol.talentium.role.model.Role;
 import com.pavbatol.talentium.role.model.RoleName;
 import com.pavbatol.talentium.user.model.User;
@@ -143,6 +144,18 @@ public class JwtProvider {
 
     public Claims getRefreshClaims(@NonNull String token) {
         return getClaims(token, jwtRefreshKey);
+    }
+
+    public Optional<Long> getUserId(@NonNull String accessToken) {
+        Claims claims = getClaims(accessToken, jwtAccessKey);
+        return Optional.ofNullable(claims.get(USER_ID, Long.class));
+    }
+
+    public Long geUserId(HttpServletRequest servletRequest) {
+        String token = resolveToken(servletRequest)
+                .orElseThrow(() -> new NotFoundException("Token not obtained from HttpServletRequest"));
+        return  getUserId(token)
+                .orElseThrow(() -> new NotFoundException("user ID not obtained from token"));
     }
 
     private Claims getClaims(@NonNull String token, @NonNull SecretKey secret) {

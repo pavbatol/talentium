@@ -1,6 +1,7 @@
 package com.pavbatol.talentium.app.exception.handler;
 
 import com.pavbatol.talentium.app.exception.AuthorizationFailedException;
+import com.pavbatol.talentium.app.exception.BadRequestException;
 import com.pavbatol.talentium.app.exception.ConflictException;
 import com.pavbatol.talentium.app.exception.NotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -81,6 +82,11 @@ public class RestErrorHandler {
     @ExceptionHandler({NotFoundException.class})
     protected ResponseEntity<Object> handleNotFoundEx(NotFoundException ex, WebRequest request) {
         return makeResponseEntity(ex.getReason(), ex, NOT_FOUND, request);
+    }
+
+    @ExceptionHandler({BadRequestException.class})
+    protected ResponseEntity<Object> handleBadRequestEx(BadRequestException ex, WebRequest request) {
+        return makeResponseEntity(ex.getReason(), ex, BAD_REQUEST, request);
     }
 
     @ExceptionHandler({ConflictException.class})
