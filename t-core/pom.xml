@@ -112,6 +112,16 @@
             <version>${lombok.version}</version>
             <scope>provided</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+        </dependency>
+        <dependency><!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-webflux <version>3.0.1</version>-->
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
+
+        </dependency>
     </dependencies>
 
     <build>
