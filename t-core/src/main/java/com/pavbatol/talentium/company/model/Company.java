@@ -1,4 +1,4 @@
-package com.pavbatol.talentium.hr.model;
+package com.pavbatol.talentium.company.model;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -12,11 +12,11 @@ import lombok.experimental.FieldDefaults;
 @Accessors(chain = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-@Table(name = "hrs")
-public class Hr {
+@Table(name = "companys")
+public class Company {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "hr_id", nullable = false)
+    @Column(name = "company_id", nullable = false)
     Long id;
 
     @Column(name = "email", nullable = false, unique = true)

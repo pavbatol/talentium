@@ -32,6 +32,7 @@ public class JwtProvider {
     public static final String AUTHORIZATION = "Authorization";
     public static final String BEARER_ = "Bearer ";
     public static final String APP_JWT_ACCESS_KEY = "APP_JWT_ACCESS_KEY";
+    public static final String USER_ID = "userId";
     private final SecretKey jwtAccessKey;
     private final SecretKey jwtRefreshKey;
     private final long jwtAccessLife;
@@ -76,6 +77,7 @@ public class JwtProvider {
                 .setIssuedAt(new Date())
                 .setExpiration(expiryDate)
                 .claim(ROLES, roles)
+                .claim(USER_ID, user.getId())
                 .claim(FIRST_NAME, user.getFirstName())
                 .signWith(jwtAccessKey, SignatureAlgorithm.HS512)
                 .compact();

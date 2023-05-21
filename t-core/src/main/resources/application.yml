@@ -5,8 +5,10 @@ spring:
           - dev
           - swagger
           - mail
+          - jwt
         production:
           - prod
           - swagger
           - mail
+          - jwt
         default: production

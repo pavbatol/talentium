@@ -1,4 +1,4 @@
-package com.pavbatol.talentium.hr.model;
+package com.pavbatol.talentium.mentor.model;
 
 import lombok.NonNull;
 
