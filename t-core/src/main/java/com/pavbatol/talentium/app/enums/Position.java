@@ -8,7 +8,7 @@ public enum Position {
     INTERN,
     CURATOR,
     MENTOR,
-    HR;
+    HH;
 
     public static Position of(@NonNull String name) throws IllegalArgumentException {
         try {

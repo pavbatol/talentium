@@ -16,7 +16,7 @@ public enum RoleName implements GrantedAuthority {
     INTERN,
     CURATOR,
     MENTOR,
-    HR;
+    HH;
 
     private static final String ROLE = "ROLE_";
 

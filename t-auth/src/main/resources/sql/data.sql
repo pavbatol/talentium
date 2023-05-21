@@ -31,6 +31,25 @@ select 'ADMIN' where not exists (select 1 from roles where role_name='ADMIN');
 insert into roles (role_name)
 select 'USER' where not exists (select 1 from roles where role_name='USER');
 
+insert into roles (role_name)
+select 'CANDIDATE' where not exists (select 1 from roles where role_name='CANDIDATE');
+
+insert into roles (role_name)
+select 'INTERN' where not exists (select 1 from roles where role_name='INTERN');
+
+insert into roles (role_name)
+select 'CURATOR' where not exists (select 1 from roles where role_name='CURATOR');
+
+insert into roles (role_name)
+select 'CURATOR' where not exists (select 1 from roles where role_name='CURATOR');
+
+insert into roles (role_name)
+select 'MENTOR' where not exists (select 1 from roles where role_name='MENTOR');
+
+
+insert into roles (role_name)
+select 'HH' where not exists (select 1 from roles where role_name='HH');
+
 insert into users_roles (user_id, role_id)
 select u_id, r_id
 from

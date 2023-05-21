@@ -1,6 +1,7 @@
 package com.pavbatol.talentium.user.service;
 
 import com.pavbatol.talentium.app.exception.NotFoundException;
+import com.pavbatol.talentium.app.util.Checker;
 import com.pavbatol.talentium.email.service.EmailService;
 import com.pavbatol.talentium.role.model.Role;
 import com.pavbatol.talentium.role.model.RoleName;
@@ -107,7 +108,7 @@ public class UserServiceImpl implements UserService {
         User user = userMapper.toEntity(
                 dtoRegister,
                 passwordEncoder.encode(dtoRegister.getPassword()),
-                getRoleByName(RoleName.USER));
+                Checker.getNonNullObject(roleRepository, dtoRegister.getRole().getId()));
         log.debug("-Registry: new {}'s entity: {} ", ENTITY_SIMPLE_NAME, user);
         User savedUser = userRepository.save(user);
         log.debug("-Registry: new {} saved: {} ", ENTITY_SIMPLE_NAME, savedUser);
@@ -131,7 +132,7 @@ public class UserServiceImpl implements UserService {
                         "registration on '%s'\nTo confirm the registration, follow the link:\n%s",
                 servletRequest.getServerName(), confirmationLink);
 
-        // TODO: 20.05.2023 Uncomment code below
+        // TODO: 20.05.2023 Commented out for a hackathon presentation
 
 //        emailService.sendSimpleMessage(
 //                user.getEmail(),

@@ -1,5 +1,6 @@
 package com.pavbatol.talentium.user.dto;
 
+import com.pavbatol.talentium.role.model.Role;
 import jakarta.validation.constraints.*;
 import lombok.Value;
 
@@ -25,4 +26,7 @@ public class UserDtoRegistry {
                     " - not be more than one space in a row;" +
                     " - at least 2 characters")
     String firstName;
+
+    @NotNull
+    Role role;
 }
