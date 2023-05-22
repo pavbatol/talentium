@@ -1,21 +1,24 @@
 package com.pavbatol.talentium.hh.controller;
 
-import com.pavbatol.talentium.auth.jwt.JwtProvider;
 import com.pavbatol.talentium.hh.dto.HhDtoRequest;
-import io.jsonwebtoken.Claims;
+import com.pavbatol.talentium.hh.dto.HhDtoResponse;
+import com.pavbatol.talentium.hh.dto.HhDtoUpdate;
+import com.pavbatol.talentium.hh.model.HhFilter;
+import com.pavbatol.talentium.hh.model.HhSort;
+import com.pavbatol.talentium.hh.service.HhService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @CrossOrigin
@@ -25,7 +28,8 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "Private: Company", description = "API for working with company's")
 public class HhController {
 
-    private final JwtProvider jwtProvider;
+    private final HhService hhService;
+//    private final JwtProvider jwtProvider;
 
 
     //    @PreAuthorize("hasRole('ADMIN')")
@@ -45,14 +49,71 @@ public class HhController {
     @PreAuthorize("hasAnyRole('HH')")
     @PostMapping()
     @SecurityRequirement(name = "JWT")
-    @Operation(summary = "add", description = "adding a hand hunter")
-    public ResponseEntity<?> add(HttpServletRequest servletRequest, HhDtoRequest dto) {
+    @Operation(summary = "add", description = "adding a hunter")
+    public ResponseEntity<HhDtoResponse> add(HttpServletRequest servletRequest,
+                                             @Valid @RequestBody HhDtoRequest dto) {
         log.debug("POST add() with dto: {} ", dto);
-        Long body = jwtProvider.geUserId(servletRequest);
-        Claims claims = jwtProvider.getAccessClaims(jwtProvider.resolveToken(servletRequest).orElse("---"));
-//        body = body + "\n\n" + claims;
-        return ResponseEntity.status(HttpStatus.CREATED).body(body + "\n\n" + claims);
+        HhDtoResponse body = hhService.add(servletRequest, dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(body);
     }
 
+    @PreAuthorize("hasAnyRole('HH')")
+    @PatchMapping("/{hhId}")
+    @SecurityRequirement(name = "JWT")
+    @Operation(summary = "update", description = "hunter update")
+    public ResponseEntity<HhDtoResponse> update(HttpServletRequest servletRequest,
+                                                @PathVariable("hhId") Long hhId,
+                                                @Valid @RequestBody HhDtoUpdate dto) {
+        log.debug("PATCH update() with userId {}, dto {}", hhId, dto);
+        HhDtoResponse body = hhService.update(servletRequest, hhId, dto);
+        return ResponseEntity.ok(body);
+    }
 
+    @PreAuthorize("hasAnyRole('HH')")
+    @DeleteMapping("/{hhId}")
+    @SecurityRequirement(name = "JWT")
+    @Operation(summary = "remove", description = "deleting a hunter")
+    public ResponseEntity<Void> remove(HttpServletRequest servletRequest,
+                                       @PathVariable("hhId") Long hhId) {
+        log.debug("DELETE remove() with userId {}", hhId);
+        hhService.remove(servletRequest, hhId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/{hhId}")
+    @SecurityRequirement(name = "JWT")
+    @Operation(summary = "findById", description = "getting a hunter by Id")
+    public ResponseEntity<HhDtoResponse> findById(@PathVariable("hhId") Long hhId) {
+        log.debug("GET findById() with userId {}", hhId);
+        HhDtoResponse body = hhService.findById(hhId);
+        return ResponseEntity.ok(body);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping
+    @SecurityRequirement(name = "JWT")
+    @Operation(summary = "findAll", description = "find all hunter by filter getting page by page")
+    public ResponseEntity<List<HhDtoResponse>> findAll(
+            HttpServletRequest servletRequest,
+            @RequestParam(value = "authority", required = false) String authority,
+            @RequestParam(value = "management", required = false) String management,
+            @RequestParam(value = "address", required = false) String address,
+            @RequestParam(value = "contacts", required = false) String contacts,
+            @RequestParam(value = "sort", required = false) String sort,
+            @RequestParam(value = "from", defaultValue = "0") Integer from,
+            @RequestParam(value = "size", defaultValue = "10") Integer size) {
+        log.debug("GET findAll() with " +
+                "authority: {}, management: {}, address: {}, contacts: {}",
+                authority, management, address, contacts);
+        HhFilter hhFilter = new HhFilter()
+                .setAuthority(authority)
+                .setManagement(management)
+                .setManagement(address)
+                .setContacts(contacts);
+
+        HhSort hhSort = sort != null ? HhSort.of(sort) : HhSort.AUTHORITY;
+        List<HhDtoResponse> body = hhService.findAll(servletRequest, hhFilter, hhSort, from, size);
+        return ResponseEntity.ok(body);
+    }
 }

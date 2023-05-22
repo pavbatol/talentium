@@ -1,6 +1,6 @@
 package com.pavbatol.talentium.hh.model;
 
-import com.pavbatol.talentium.hh.HhFeedback;
+import com.pavbatol.talentium.hh.feedback.model.HhFeedback;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.Accessors;
@@ -47,7 +47,17 @@ public class Hh {
     @Column(name = "contacts")
     String contacts;
 
+    @Column(name = "rate")
+    Integer rate = 0;
+
     @ToString.Exclude
     @OneToMany(fetch = FetchType.LAZY,  mappedBy = "hh")
     List<HhFeedback> feedbacks = new ArrayList<>();
+
+    public void addFeedback(HhFeedback feedback) {
+        feedbacks.add(feedback);
+        rate = feedbacks.stream()
+                .map(HhFeedback::getRate)
+                .reduce(0, Integer::sum) / feedbacks.size();
+    }
 }

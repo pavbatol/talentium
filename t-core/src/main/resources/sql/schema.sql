@@ -10,9 +10,8 @@ create table if not exists hhs
     management  varchar(255),
     address     varchar(255),
     contacts    varchar(255),
+    rate        INTEGER DEFAULT 0,
     constraint pk_hhs primary key (hh_id),
     constraint uc_hhs_email unique (email),
     constraint uc_hhs_user_id unique (user_id)
 );
-
-

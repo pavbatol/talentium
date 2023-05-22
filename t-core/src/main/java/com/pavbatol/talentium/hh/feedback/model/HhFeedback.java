@@ -1,4 +1,4 @@
-package com.pavbatol.talentium.hh;
+package com.pavbatol.talentium.hh.feedback.model;
 
 import com.pavbatol.talentium.hh.model.Hh;
 import com.pavbatol.talentium.student.model.Student;
