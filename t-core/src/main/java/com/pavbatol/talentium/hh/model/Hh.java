@@ -23,6 +23,9 @@ public class Hh {
     @Column(name = "hh_id", nullable = false)
     Long id;
 
+    @Column(name = "user_id", unique = true)
+    Long userId;
+
     @Column(name = "email", nullable = false, unique = true)
     String email;
 
