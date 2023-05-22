@@ -6,6 +6,7 @@ import lombok.*;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,26 +33,32 @@ public class Hh {
     @Column(name = "first_name", nullable = false)
     String firstName;
 
-    @Column(name = "second_name")
+    @Column(name = "second_name", nullable = false)
     String secondName;
 
-    @Column(name = "authority")
+    @Column(name = "authority", nullable = false)
     String authority;
 
-    @Column(name = "management")
+    @Column(name = "management", nullable = false)
     String management;
 
-    @Column(name = "address")
+    @Column(name = "address", nullable = false)
     String address;
 
-    @Column(name = "contacts")
+    @Column(name = "contacts", nullable = false)
     String contacts;
+
+    @Column(name = "registered_on", nullable = false)
+    LocalDateTime registeredOn;
 
     @Column(name = "rate")
     Integer rate = 0;
 
+    @Column(name = "deleted")
+    Boolean deleted = false;
+
     @ToString.Exclude
-    @OneToMany(fetch = FetchType.LAZY,  mappedBy = "hh")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "hh")
     List<HhFeedback> feedbacks = new ArrayList<>();
 
     public void addFeedback(HhFeedback feedback) {

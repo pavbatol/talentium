@@ -7,6 +7,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -32,6 +33,11 @@ public final class JwtUtils {
         return roles.stream()
                 .map(RoleName::of)
                 .collect(Collectors.toSet());
+    }
+
+    public static boolean hasRole(HttpServletRequest servletRequest, String roleName, JwtProvider jwtProvider) {
+        Claims claims = jwtProvider.getAccessClaims(jwtProvider.resolveTokenAsNotNull(servletRequest));
+        return getRoleNames(claims).contains(RoleName.of(roleName));
     }
 
     public static String generateSecretStr() {

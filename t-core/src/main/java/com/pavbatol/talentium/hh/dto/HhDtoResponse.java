@@ -22,4 +22,6 @@ public class HhDtoResponse {
     String address;
 
     String contacts;
+
+    Integer rate;
 }

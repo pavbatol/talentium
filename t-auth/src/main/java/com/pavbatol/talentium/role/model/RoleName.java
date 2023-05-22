@@ -9,8 +9,6 @@ public enum RoleName implements GrantedAuthority {
 
     ADMIN,
     USER,
-    GUEST,
-
     //---
     CANDIDATE,
     INTERN,

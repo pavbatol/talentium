@@ -2,6 +2,7 @@ package com.pavbatol.talentium.app.exception.handler;
 
 import com.pavbatol.talentium.app.exception.AuthorizationFailedException;
 import com.pavbatol.talentium.app.exception.ConflictException;
+import com.pavbatol.talentium.app.exception.NotEnoughRightsException;
 import com.pavbatol.talentium.app.exception.NotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -91,6 +92,11 @@ public class RestErrorHandler {
     @ExceptionHandler({AuthorizationFailedException.class})
     protected ResponseEntity<Object> handleConflictEx(AuthorizationFailedException ex, WebRequest request) {
         return makeResponseEntity(ex.getReason(), ex, UNAUTHORIZED, request);
+    }
+
+    @ExceptionHandler({NotEnoughRightsException.class})
+    protected ResponseEntity<Object> handleNotEnoughRightsEx(NotEnoughRightsException ex, WebRequest request) {
+        return makeResponseEntity(ex.getReason(), ex, FORBIDDEN, request);
     }
 
     @ExceptionHandler({IllegalArgumentException.class})

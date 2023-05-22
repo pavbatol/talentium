@@ -3,6 +3,7 @@ package com.pavbatol.talentium.auth.jwt;
 import com.pavbatol.talentium.app.exception.NotFoundException;
 import io.jsonwebtoken.*;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.constraints.NotNull;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,8 @@ public class JwtProvider {
     public static final String BEARER_ = "Bearer ";
     public static final String APP_JWT_ACCESS_KEY = "APP_JWT_ACCESS_KEY";
     public static final String USER_ID = "userId";
+    public static final String TOKEN_NOT_OBTAINED_FROM_HTTP_SERVLET_REQUEST = "Token not obtained from HttpServletRequest";
+    public static final String USER_ID_NOT_OBTAINED_FROM_TOKEN = "user ID not obtained from token";
     private final SecretKey jwtAccessKey;
 
     @Autowired
@@ -42,6 +45,11 @@ public class JwtProvider {
         return Optional.empty();
     }
 
+    public String resolveTokenAsNotNull(@NonNull HttpServletRequest request) {
+        return resolveToken(request)
+                .orElseThrow(() -> new NotFoundException(TOKEN_NOT_OBTAINED_FROM_HTTP_SERVLET_REQUEST));
+    }
+
     public boolean validateAccessToken(@NonNull String accessToken) {
         return validateToken(accessToken, jwtAccessKey);
     }
@@ -51,11 +59,12 @@ public class JwtProvider {
         return Optional.ofNullable(claims.get(USER_ID, Long.class));
     }
 
+    @NotNull
     public Long geUserId(HttpServletRequest servletRequest) {
         String token = resolveToken(servletRequest)
-                .orElseThrow(() -> new NotFoundException("Token not obtained from HttpServletRequest"));
-        return  getUserId(token)
-                .orElseThrow(() -> new NotFoundException("user ID not obtained from token"));
+                .orElseThrow(() -> new NotFoundException(TOKEN_NOT_OBTAINED_FROM_HTTP_SERVLET_REQUEST));
+        return getUserId(token)
+                .orElseThrow(() -> new NotFoundException(USER_ID_NOT_OBTAINED_FROM_TOKEN));
     }
 
     public boolean validateToken(@NonNull String token, @NonNull SecretKey secret) {

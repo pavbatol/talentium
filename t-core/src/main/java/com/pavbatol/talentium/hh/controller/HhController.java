@@ -1,5 +1,6 @@
 package com.pavbatol.talentium.hh.controller;
 
+import com.pavbatol.talentium.auth.jwt.JwtProvider;
 import com.pavbatol.talentium.hh.dto.HhDtoRequest;
 import com.pavbatol.talentium.hh.dto.HhDtoResponse;
 import com.pavbatol.talentium.hh.dto.HhDtoUpdate;
@@ -28,12 +29,14 @@ import java.util.List;
 @Tag(name = "Private: Company", description = "API for working with company's")
 public class HhController {
 
+    public static final String HAS_ROLE_HH = "hasRole('HH')";
+    public static final String IS_AUTHENTICATED = "isAuthenticated()";
     private final HhService hhService;
-//    private final JwtProvider jwtProvider;
+    private final JwtProvider jwtProvider;
 
 
-    //    @PreAuthorize("hasRole('ADMIN')")
-    //@PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+//    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
 //    @PreAuthorize("hasAnyRole('ADMIN', 'HH')")
 //    @PostMapping("/test")
 //    @SecurityRequirement(name = "JWT")
@@ -46,7 +49,7 @@ public class HhController {
 //        return ResponseEntity.status(HttpStatus.CREATED).body(body + "\n\n" + claims);
 //    }
 
-    @PreAuthorize("hasAnyRole('HH')")
+    @PreAuthorize(HAS_ROLE_HH)
     @PostMapping()
     @SecurityRequirement(name = "JWT")
     @Operation(summary = "add", description = "adding a hunter")
@@ -57,7 +60,7 @@ public class HhController {
         return ResponseEntity.status(HttpStatus.CREATED).body(body);
     }
 
-    @PreAuthorize("hasAnyRole('HH')")
+    @PreAuthorize(HAS_ROLE_HH)
     @PatchMapping("/{hhId}")
     @SecurityRequirement(name = "JWT")
     @Operation(summary = "update", description = "hunter update")
@@ -69,7 +72,7 @@ public class HhController {
         return ResponseEntity.ok(body);
     }
 
-    @PreAuthorize("hasAnyRole('HH')")
+    @PreAuthorize(HAS_ROLE_HH)
     @DeleteMapping("/{hhId}")
     @SecurityRequirement(name = "JWT")
     @Operation(summary = "remove", description = "deleting a hunter")
@@ -80,7 +83,7 @@ public class HhController {
         return ResponseEntity.noContent().build();
     }
 
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize(IS_AUTHENTICATED)
     @GetMapping("/{hhId}")
     @SecurityRequirement(name = "JWT")
     @Operation(summary = "findById", description = "getting a hunter by Id")
@@ -90,7 +93,7 @@ public class HhController {
         return ResponseEntity.ok(body);
     }
 
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize(IS_AUTHENTICATED)
     @GetMapping
     @SecurityRequirement(name = "JWT")
     @Operation(summary = "findAll", description = "find all hunter by filter getting page by page")
@@ -104,7 +107,7 @@ public class HhController {
             @RequestParam(value = "from", defaultValue = "0") Integer from,
             @RequestParam(value = "size", defaultValue = "10") Integer size) {
         log.debug("GET findAll() with " +
-                "authority: {}, management: {}, address: {}, contacts: {}",
+                        "authority: {}, management: {}, address: {}, contacts: {}",
                 authority, management, address, contacts);
         HhFilter hhFilter = new HhFilter()
                 .setAuthority(authority)
