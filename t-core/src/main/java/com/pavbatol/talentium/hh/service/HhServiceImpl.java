@@ -22,6 +22,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
+import static com.pavbatol.talentium.app.util.Checker.getNonNullObject;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -45,9 +47,7 @@ public class HhServiceImpl implements HhService {
     public HhDtoResponse update(HttpServletRequest servletRequest, Long hhId, HhDtoUpdate dto) {
         Long userId = getUserId(servletRequest);
         Hh entity = Checker.getNonNullObject(hhRepository, hhId);
-        if (!Objects.equals(entity.getUserId(), userId) && !hasRole(servletRequest, RoleName.ADMIN)) {
-            throw new NotEnoughRightsException("Other person's data can only be changed by the Administrator");
-        }
+        checkIdsEqualOrAdminRole(servletRequest, userId, entity);
         Hh updated = hhMapper.updateEntity(dto, entity);
         updated = hhRepository.save(updated);
         log.debug("Updated {}: {}", ENTITY_SIMPLE_NAME, updated);
@@ -58,9 +58,7 @@ public class HhServiceImpl implements HhService {
     public void remove(HttpServletRequest servletRequest, Long hhId) {
         Long userId = getUserId(servletRequest);
         Hh entity = Checker.getNonNullObject(hhRepository, hhId);
-        if (!Objects.equals(entity.getUserId(), userId) && !hasRole(servletRequest, RoleName.ADMIN)) {
-            throw new NotEnoughRightsException("Other person's data can only be changed by the Administrator");
-        }
+        checkIdsEqualOrAdminRole(servletRequest, userId, entity);
         entity.setDeleted(true);
         hhRepository.save(entity);
         log.debug("Marked as removed {} by id #{}", ENTITY_SIMPLE_NAME, hhId);
@@ -68,7 +66,9 @@ public class HhServiceImpl implements HhService {
 
     @Override
     public HhDtoResponse findById(Long hhId) {
-        return null;
+        Hh found = getNonNullObject(hhRepository, hhId);
+        log.debug("Found {}: {}", ENTITY_SIMPLE_NAME, found);
+        return hhMapper.toResponseDto(found);
     }
 
     @Override
@@ -82,5 +82,11 @@ public class HhServiceImpl implements HhService {
 
     private boolean hasRole(HttpServletRequest servletRequest, RoleName roleName) {
         return JwtUtils.hasRole(servletRequest, roleName.name(), jwtProvider);
+    }
+
+    private void checkIdsEqualOrAdminRole(HttpServletRequest servletRequest, Long userId, Hh entity) {
+        if (!Objects.equals(entity.getUserId(), userId) && !hasRole(servletRequest, RoleName.ADMIN)) {
+            throw new NotEnoughRightsException("Other person's data can only be changed by the Administrator");
+        }
     }
 }
