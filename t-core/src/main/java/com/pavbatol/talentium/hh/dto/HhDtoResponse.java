@@ -1,6 +1,9 @@
 package com.pavbatol.talentium.hh.dto;
 
+import com.pavbatol.talentium.management.model.Management;
 import lombok.Value;
+
+import java.util.Set;
 
 @Value
 public class HhDtoResponse {
@@ -17,7 +20,7 @@ public class HhDtoResponse {
 
     String authority;
 
-    String management;
+    Set<Management> managements;
 
     String address;
 

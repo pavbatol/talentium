@@ -1,8 +1,11 @@
 package com.pavbatol.talentium.hh.dto;
 
+import com.pavbatol.talentium.management.model.Management;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
 import lombok.Value;
+
+import java.util.Set;
 
 @Value
 public class HhDtoUpdate {
@@ -26,7 +29,7 @@ public class HhDtoUpdate {
 
     String authority;
 
-    String management;
+    Set<Management> managements;
 
     String address;
 

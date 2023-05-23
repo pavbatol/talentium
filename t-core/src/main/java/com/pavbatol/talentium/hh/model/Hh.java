@@ -1,6 +1,7 @@
 package com.pavbatol.talentium.hh.model;
 
 import com.pavbatol.talentium.hh.feedback.model.HhFeedback;
+import com.pavbatol.talentium.management.model.Management;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.Accessors;
@@ -9,6 +10,7 @@ import lombok.experimental.FieldDefaults;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Setter
 @Getter
@@ -39,8 +41,11 @@ public class Hh {
     @Column(name = "authority", nullable = false)
     String authority;
 
-    @Column(name = "management", nullable = false)
-    String management;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "hhs_managements",
+            joinColumns = @JoinColumn(name = "hh_id"),
+            inverseJoinColumns = @JoinColumn(name = "management_id"))
+    Set<Management> managements;
 
     @Column(name = "address", nullable = false)
     String address;

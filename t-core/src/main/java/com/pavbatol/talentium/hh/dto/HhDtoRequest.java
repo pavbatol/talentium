@@ -1,10 +1,13 @@
 package com.pavbatol.talentium.hh.dto;
 
+import com.pavbatol.talentium.management.model.Management;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Value;
+
+import java.util.Set;
 
 @Value
 public class HhDtoRequest {
@@ -32,8 +35,8 @@ public class HhDtoRequest {
     @NotBlank
     String authority;
 
-    @NotBlank
-    String management;
+    @NotNull
+    Set<Management> managements;
 
     @NotBlank
     String address;

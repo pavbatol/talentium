@@ -23,6 +23,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -50,6 +52,7 @@ public class HhServiceImpl implements HhService {
         return hhMapper.toResponseDto(saved);
     }
 
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     @Override
     public HhDtoResponse update(HttpServletRequest servletRequest, Long hhId, HhDtoUpdate dto) {
         Long userId = getUserId(servletRequest);
@@ -71,6 +74,7 @@ public class HhServiceImpl implements HhService {
         log.debug("Marked as removed {} by id #{}", ENTITY_SIMPLE_NAME, hhId);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public HhDtoResponse findById(Long hhId) {
         Hh found = getNonNullObject(hhRepository, hhId);
@@ -78,6 +82,7 @@ public class HhServiceImpl implements HhService {
         return hhMapper.toResponseDto(found);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<HhDtoResponse> findAll(HttpServletRequest servletRequest, HhFilter hhFilter, HhSort hhSort, Integer from, Integer size) {
         Sort sort;
@@ -124,7 +129,7 @@ public class HhServiceImpl implements HhService {
                 Objects.isNull(obj) || (obj instanceof Collection && ((Collection<?>) obj).isEmpty());
         QHh qHh = QHh.hh;
         return new BooleanBuilder()
-                .and(!isNullOrEmpty.test(filter.getManagement()) ? qHh.management.containsIgnoreCase(filter.getManagement()) : null)
+                .and(!isNullOrEmpty.test(filter.getManagement()) ? qHh.managements.any().name.containsIgnoreCase(filter.getManagement()) : null)
                 .and(!isNullOrEmpty.test(filter.getAuthority()) ? qHh.authority.containsIgnoreCase(filter.getAuthority()) : null)
                 .and(!isNullOrEmpty.test(filter.getContacts()) ? qHh.contacts.containsIgnoreCase(filter.getContacts()) : null)
                 .and(!isNullOrEmpty.test(filter.getAddress()) ? qHh.address.containsIgnoreCase(filter.getAddress()) : null);
