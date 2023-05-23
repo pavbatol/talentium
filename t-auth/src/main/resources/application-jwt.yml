@@ -2,7 +2,7 @@ app:
   jwt:
     access:
       key: RtT3L/B5F18vXQ1HKRl7NE9xaUzAPPsLY7lcojaSSxkJK517RXn+QshOMqvJVFxvj2KOJ2/qzmDzNLnNXzdNoA==
-      life-seconds: 3600
+      life-seconds: 36000
     refresh:
       key: IQH/dPyjpv/zDUFhVNnQH30+w2aYnUEAuoH7o5bgMxYfYE7M68g6brXyna+BA9u3lfEHbymVDz3P1PCg2AYFsQ==
       life-seconds: 2592000

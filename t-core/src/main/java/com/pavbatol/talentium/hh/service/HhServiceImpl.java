@@ -12,13 +12,20 @@ import com.pavbatol.talentium.hh.mapper.HhMapper;
 import com.pavbatol.talentium.hh.model.Hh;
 import com.pavbatol.talentium.hh.model.HhFilter;
 import com.pavbatol.talentium.hh.model.HhSort;
+import com.pavbatol.talentium.hh.model.QHh;
 import com.pavbatol.talentium.hh.repository.HHRepository;
+import com.querydsl.core.BooleanBuilder;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -73,7 +80,15 @@ public class HhServiceImpl implements HhService {
 
     @Override
     public List<HhDtoResponse> findAll(HttpServletRequest servletRequest, HhFilter hhFilter, HhSort hhSort, Integer from, Integer size) {
-        return null;
+        Sort sort = hhSort == HhSort.AUTHORITY
+                ? Sort.by("authority").ascending()
+                : Sort.by("rate").descending();
+        BooleanBuilder booleanBuilder = makeBooleanBuilder(hhFilter);
+        PageRequest pageable = PageRequest.of(from, size, sort);
+        Page<Hh> page = hhRepository.findAll(booleanBuilder, pageable);
+        log.debug("Found {}-count: {}, totalPages: {}, from: {}, size: {}, sort: {}", ENTITY_SIMPLE_NAME,
+                page.getTotalElements(), page.getTotalPages(), pageable.getOffset(), page.getSize(), page.getSort());
+        return hhMapper.toDtos(page.getContent());
     }
 
     private Long getUserId(HttpServletRequest servletRequest) {
@@ -88,5 +103,16 @@ public class HhServiceImpl implements HhService {
         if (!Objects.equals(entity.getUserId(), userId) && !hasRole(servletRequest, RoleName.ADMIN)) {
             throw new NotEnoughRightsException("Other person's data can only be changed by the Administrator");
         }
+    }
+
+    private BooleanBuilder makeBooleanBuilder(@NonNull HhFilter filter) {
+        java.util.function.Predicate<Object> isNullOrEmpty = obj ->
+                Objects.isNull(obj) || (obj instanceof Collection && ((Collection<?>) obj).isEmpty());
+        QHh qHh = QHh.hh;
+        return new BooleanBuilder()
+                .and(!isNullOrEmpty.test(filter.getManagement()) ? qHh.management.containsIgnoreCase(filter.getManagement()) : null)
+                .and(!isNullOrEmpty.test(filter.getAuthority()) ? qHh.authority.containsIgnoreCase(filter.getAuthority()) : null)
+                .and(!isNullOrEmpty.test(filter.getContacts()) ? qHh.contacts.containsIgnoreCase(filter.getContacts()) : null)
+                .and(!isNullOrEmpty.test(filter.getAddress()) ? qHh.address.containsIgnoreCase(filter.getAddress()) : null);
     }
 }

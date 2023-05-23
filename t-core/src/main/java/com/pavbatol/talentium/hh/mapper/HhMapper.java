@@ -6,6 +6,8 @@ import com.pavbatol.talentium.hh.dto.HhDtoUpdate;
 import com.pavbatol.talentium.hh.model.Hh;
 import org.mapstruct.*;
 
+import java.util.List;
+
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE,
         componentModel = "spring")
 public interface HhMapper {
@@ -22,4 +24,6 @@ public interface HhMapper {
     @Mapping(target = "registeredOn", ignore = true)
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     Hh updateEntity(HhDtoUpdate dto, @MappingTarget Hh entity);
+
+    List<HhDtoResponse> toDtos(List<Hh> content);
 }
