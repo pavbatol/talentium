@@ -37,17 +37,17 @@ create table if not exists hhs_managements
 create sequence if not exists seq_curators minvalue 0 start with 0 increment 1;
 create table if not exists curators
 (
-    curator_id    bigint default nextval('curators')  not null,
+    curator_id    bigint default nextval('seq_curators')                 not null,
     user_id       bigint,
-    email         varchar(255)                            not null,
-    first_name    varchar(255)                            not null,
+    email         varchar(255)                                       not null,
+    first_name    varchar(255)                                       not null,
     second_name   varchar(255),
-    registered_on timestamp without time zone             not null,
+    registered_on timestamp without time zone default now()          not null,
     deleted       boolean default false,
     owner         bigint,
     constraint pk_curators primary key (curator_id),
     constraint uc_curators_email unique (email),
-    constraint uc_curators_user unique (user_id),
+    constraint uc_curators_user_id unique (user_id),
     constraint fk_curators_on_owner foreign key (owner) references hhs (hh_id)
 );
 
