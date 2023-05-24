@@ -2,6 +2,7 @@ package com.pavbatol.talentium.student.model;
 
 import com.pavbatol.talentium.app.enums.Level;
 import com.pavbatol.talentium.app.enums.Position;
+import com.pavbatol.talentium.mentor.model.Mentor;
 import com.pavbatol.talentium.student.feedback.model.StudentFeedback;
 import jakarta.persistence.*;
 import lombok.*;
@@ -45,6 +46,10 @@ public class Student {
 
     @Column(name = "intern_On")
     LocalDateTime internOn;
+
+    @ManyToOne
+    @JoinColumn(name = "mentor")
+    Mentor mentor;
 
     @ToString.Exclude
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "student")

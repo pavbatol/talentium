@@ -26,28 +26,12 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/hunter")
-@Tag(name = "Private: Company", description = "API for working with company's")
+@Tag(name = "Private: Company", description = "API for working with companies")
 public class HhController {
 
     public static final String HAS_ROLE_HH = "hasRole('HH')";
     public static final String IS_AUTHENTICATED = "isAuthenticated()";
     private final HhService hhService;
-    private final JwtProvider jwtProvider;
-
-
-//    @PreAuthorize("hasRole('ADMIN')")
-//    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
-//    @PreAuthorize("hasAnyRole('ADMIN', 'HH')")
-//    @PostMapping("/test")
-//    @SecurityRequirement(name = "JWT")
-//    @Operation(summary = "add", description = "adding a hand hunter")
-//    public ResponseEntity<?> test(HttpServletRequest servletRequest) {
-//        log.debug("POST add() ");
-//        Long body = jwtProvider.geUserId(servletRequest);
-//        Claims claims = jwtProvider.getAccessClaims(jwtProvider.resolveToken(servletRequest).orElse("---"));
-////        body = body + "\n\n" + claims;
-//        return ResponseEntity.status(HttpStatus.CREATED).body(body + "\n\n" + claims);
-//    }
 
     @PreAuthorize(HAS_ROLE_HH)
     @PostMapping()

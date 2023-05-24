@@ -1,13 +1,16 @@
 package com.pavbatol.talentium.mentor.model;
 
+import com.pavbatol.talentium.hh.model.Hh;
+import com.pavbatol.talentium.management.model.Management;
 import com.pavbatol.talentium.mentor.feedback.model.MentorFeedback;
+import com.pavbatol.talentium.student.model.Student;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Setter
 @Getter
@@ -32,7 +35,35 @@ public class Mentor {
     @Column(name = "second_name")
     String secondName;
 
+    @Column(name = "rate")
+    Integer rate = 0;
+
+    @Column(name = "deleted")
+    Boolean deleted = false;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "owner")
     @ToString.Exclude
+    Hh owner;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "mentors-managements",
+            joinColumns = @JoinColumn(name = "mentor_id"),
+            inverseJoinColumns = @JoinColumn(name = "management_id"))
+    Set<Management> managements;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "mentor")
-    List<MentorFeedback> feedbacks = new ArrayList<>();
+    @ToString.Exclude
+    Set<Student> students = new HashSet<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "mentor")
+    @ToString.Exclude
+    Set<MentorFeedback> feedbacks = new HashSet<>();
+
+    public void addFeedback(MentorFeedback feedback) {
+        feedbacks.add(feedback);
+        rate = feedbacks.stream()
+                .map(MentorFeedback::getRate)
+                .reduce(0, Integer::sum) / feedbacks.size();
+    }
 }

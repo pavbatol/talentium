@@ -41,7 +41,7 @@ public class ManagementServiceImpl implements ManagementService {
 
     @Override
     public void remove(Long managementId) {
-        throw new UnsupportedOperationException("Thу method is not supported");
+        throw new UnsupportedOperationException("The remove method is not supported");
     }
 
     @Override
