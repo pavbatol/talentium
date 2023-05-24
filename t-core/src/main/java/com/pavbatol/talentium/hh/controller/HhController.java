@@ -1,6 +1,5 @@
 package com.pavbatol.talentium.hh.controller;
 
-import com.pavbatol.talentium.auth.jwt.JwtProvider;
 import com.pavbatol.talentium.hh.dto.HhDtoRequest;
 import com.pavbatol.talentium.hh.dto.HhDtoResponse;
 import com.pavbatol.talentium.hh.dto.HhDtoUpdate;
@@ -29,11 +28,11 @@ import java.util.List;
 @Tag(name = "Private: Company", description = "API for working with companies")
 public class HhController {
 
-    public static final String HAS_ROLE_HH = "hasRole('HH')";
+    public static final String HAS_ANY_ROLE_CURATOR_ADMIN = "hasAnyRole('HH', 'ADMIN')";
     public static final String IS_AUTHENTICATED = "isAuthenticated()";
     private final HhService hhService;
 
-    @PreAuthorize(HAS_ROLE_HH)
+    @PreAuthorize(HAS_ANY_ROLE_CURATOR_ADMIN)
     @PostMapping()
     @SecurityRequirement(name = "JWT")
     @Operation(summary = "add", description = "adding a hunter")
@@ -44,7 +43,7 @@ public class HhController {
         return ResponseEntity.status(HttpStatus.CREATED).body(body);
     }
 
-    @PreAuthorize(HAS_ROLE_HH)
+    @PreAuthorize(HAS_ANY_ROLE_CURATOR_ADMIN)
     @PatchMapping("/{hhId}")
     @SecurityRequirement(name = "JWT")
     @Operation(summary = "update", description = "hunter update")
@@ -56,7 +55,7 @@ public class HhController {
         return ResponseEntity.ok(body);
     }
 
-    @PreAuthorize(HAS_ROLE_HH)
+    @PreAuthorize(HAS_ANY_ROLE_CURATOR_ADMIN)
     @DeleteMapping("/{hhId}")
     @SecurityRequirement(name = "JWT")
     @Operation(summary = "remove", description = "deleting a hunter")
