@@ -6,6 +6,8 @@ import lombok.*;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDateTime;
+
 @Setter
 @Getter
 @ToString
@@ -31,6 +33,9 @@ public class Curator {
 
     @Column(name = "second_name")
     String secondName;
+
+    @Column(name = "registered_on", nullable = false)
+    LocalDateTime registeredOn;
 
     @Column(name = "deleted")
     Boolean deleted = false;
