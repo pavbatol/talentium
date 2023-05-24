@@ -26,6 +26,9 @@ public class Mentor {
     @Column(name = "mentor_id", nullable = false)
     Long id;
 
+    @Column(name = "user_id", unique = true)
+    Long userId;
+
     @Column(name = "email", nullable = false, unique = true)
     String email;
 
@@ -42,15 +45,13 @@ public class Mentor {
     Boolean deleted = false;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "owner")
+    @JoinColumn(name = "owner", nullable = false)
     @ToString.Exclude
     Hh owner;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "mentors-managements",
-            joinColumns = @JoinColumn(name = "mentor_id"),
-            inverseJoinColumns = @JoinColumn(name = "management_id"))
-    Set<Management> managements;
+    @ManyToOne
+    @JoinColumn(name = "management")
+    Management management;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "mentor")
     @ToString.Exclude

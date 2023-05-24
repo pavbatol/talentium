@@ -45,6 +45,7 @@ public class Hh {
     @JoinTable(name = "hhs_managements",
             joinColumns = @JoinColumn(name = "hh_id"),
             inverseJoinColumns = @JoinColumn(name = "management_id"))
+    @ToString.Exclude
     Set<Management> managements;
 
     @Column(name = "address", nullable = false)

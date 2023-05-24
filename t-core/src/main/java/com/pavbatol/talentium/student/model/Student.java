@@ -2,6 +2,7 @@ package com.pavbatol.talentium.student.model;
 
 import com.pavbatol.talentium.app.enums.Level;
 import com.pavbatol.talentium.app.enums.Position;
+import com.pavbatol.talentium.management.model.Management;
 import com.pavbatol.talentium.mentor.model.Mentor;
 import com.pavbatol.talentium.student.feedback.model.StudentFeedback;
 import jakarta.persistence.*;
@@ -10,8 +11,8 @@ import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Setter
 @Getter
@@ -26,6 +27,9 @@ public class Student {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "student_id", nullable = false)
     Long id;
+
+    @Column(name = "user_id", unique = true)
+    Long userId;
 
     @Column(name = "email", nullable = false, unique = true)
     String email;
@@ -51,7 +55,24 @@ public class Student {
     @JoinColumn(name = "mentor")
     Mentor mentor;
 
-    @ToString.Exclude
+    @ManyToOne
+    @JoinColumn(name = "management")
+    Management management;
+
+    @Column(name = "rate")
+    Integer rate = 0;
+
+    @Column(name = "deleted")
+    Boolean deleted = false;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "student")
-    List<StudentFeedback> feedbacks = new ArrayList<>();
+    @ToString.Exclude
+    Set<StudentFeedback> feedbacks = new HashSet<>();
+
+    public void addFeedback(StudentFeedback feedback) {
+        feedbacks.add(feedback);
+        rate = feedbacks.stream()
+                .map(StudentFeedback::getRate)
+                .reduce(0, Integer::sum) / feedbacks.size();
+    }
 }
