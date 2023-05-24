@@ -1,6 +1,6 @@
 package com.pavbatol.talentium.curator.dto;
 
-import com.pavbatol.talentium.hh.model.Hh;
+import com.pavbatol.talentium.hh.dto.HhDtoResponse;
 import lombok.Value;
 
 @Value
@@ -15,5 +15,5 @@ public class CuratorDtoResponse {
 
     String secondName;
 
-    Hh owner;
+    HhDtoResponse owner;
 }

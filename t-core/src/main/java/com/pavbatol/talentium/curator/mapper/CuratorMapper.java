@@ -4,12 +4,14 @@ import com.pavbatol.talentium.curator.dto.CuratorDtoRequest;
 import com.pavbatol.talentium.curator.dto.CuratorDtoResponse;
 import com.pavbatol.talentium.curator.dto.CuratorDtoUpdate;
 import com.pavbatol.talentium.curator.model.Curator;
+import com.pavbatol.talentium.hh.mapper.HhMapper;
 import org.mapstruct.*;
 
 import java.util.List;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE,
-        componentModel = "spring")
+        componentModel = "spring",
+        uses = HhMapper.class)
 public interface CuratorMapper {
 
     @Mapping(target = "id", ignore = true)

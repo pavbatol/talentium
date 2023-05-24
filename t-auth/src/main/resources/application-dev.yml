@@ -4,16 +4,16 @@ server:
 spring:
   datasource:
 
-#    driver-class-name: org.h2.Driver
-##    url: jdbc:h2:mem:atmaze
-#    url: jdbc:h2:file:./db/atmaze
-#    username: test
-#    password: test
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:test
+#    url: jdbc:h2:file:./db/t-auth
+    username: test
+    password: test
 
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://${app.db.host}:${app.db.port}/${app.db.name}
-    username: ${app.db.user}
-    password: ${app.db.password}
+#    driver-class-name: org.postgresql.Driver
+#    url: jdbc:postgresql://${app.db.host}:${app.db.port}/${app.db.name}
+#    username: ${app.db.user}
+#    password: ${app.db.password}
   jpa:
     open-in-view: false #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     hibernate:

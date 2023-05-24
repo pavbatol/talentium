@@ -15,6 +15,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -40,6 +42,7 @@ public class CuratorServiceImpl implements CuratorService {
         return curatorMapper.toResponseDto(saved);
     }
 
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     @Override
     public CuratorDtoResponse update(HttpServletRequest servletRequest, Long curatorId, CuratorDtoUpdate dto) {
         Long userId = ServiceUtils.getUserId(servletRequest, jwtProvider);
@@ -61,6 +64,7 @@ public class CuratorServiceImpl implements CuratorService {
         log.debug("Marked as removed {} by id #{}", ENTITY_SIMPLE_NAME, curatorId);
     }
 
+    @Transactional
     @Override
     public CuratorDtoResponse findById(Long curatorId) {
         Curator found = getNonNullObject(curatorRepository, curatorId);
@@ -68,6 +72,7 @@ public class CuratorServiceImpl implements CuratorService {
         return curatorMapper.toResponseDto(found);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<CuratorDtoResponse> findAll(Integer from, Integer size) {
         Page<Curator> page = curatorRepository.findAll(PageRequest.of(from, size));
