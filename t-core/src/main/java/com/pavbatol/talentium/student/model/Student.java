@@ -1,7 +1,7 @@
 package com.pavbatol.talentium.student.model;
 
-import com.pavbatol.talentium.app.enums.Level;
-import com.pavbatol.talentium.app.enums.Position;
+import com.pavbatol.talentium.student.model.enums.InternLevel;
+import com.pavbatol.talentium.student.model.enums.StudentPosition;
 import com.pavbatol.talentium.management.model.Management;
 import com.pavbatol.talentium.mentor.model.Mentor;
 import com.pavbatol.talentium.student.feedback.model.StudentFeedback;
@@ -37,30 +37,33 @@ public class Student {
     @Column(name = "first_name", nullable = false)
     String firstName;
 
-    @Column(name = "second_name")
+    @Column(name = "second_name", nullable = false)
     String secondName;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "position")
-    Position position = Position.CANDIDATE;
+    @Column(name = "position", nullable = false)
+    StudentPosition position = StudentPosition.CANDIDATE;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "level")
-    Level level;
+    InternLevel level;
 
     @Column(name = "intern_On")
     LocalDateTime internOn;
 
     @ManyToOne
-    @JoinColumn(name = "mentor")
+    @JoinColumn(name = "mentor_id")
     Mentor mentor;
 
     @ManyToOne
-    @JoinColumn(name = "management")
+    @JoinColumn(name = "management_id")
     Management management;
 
     @Column(name = "rate")
     Integer rate = 0;
+
+    @Column(name = "registered_on", nullable = false)
+    LocalDateTime registeredOn;
 
     @Column(name = "deleted")
     Boolean deleted = false;

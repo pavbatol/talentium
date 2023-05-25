@@ -1,15 +1,15 @@
-package com.pavbatol.talentium.app.enums;
+package com.pavbatol.talentium.student.model.enums;
 
 import lombok.NonNull;
 
-public enum Level {
+public enum InternLevel {
     BEGINNER,
     INTERMEDIATE,
     ADVANCED;
 
-    public static Level of(@NonNull String name) throws IllegalArgumentException {
+    public static InternLevel of(@NonNull String name) throws IllegalArgumentException {
         try {
-            return Level.valueOf(name.toUpperCase());
+            return InternLevel.valueOf(name.toUpperCase());
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException("Unknown name: " + name, e);
         }

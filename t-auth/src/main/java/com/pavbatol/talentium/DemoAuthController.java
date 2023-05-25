@@ -1,8 +1,10 @@
 package com.pavbatol.talentium;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+@Hidden
 @CrossOrigin
 @RestController
 public class DemoAuthController {
