@@ -15,8 +15,8 @@ import java.util.List;
 public interface CuratorMapper {
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "userId", source = "userId")
-    Curator toEntity(CuratorDtoRequest dto, Long userId);
+    @Mapping(target = "userId",  expression = "java(authUserId)")
+    Curator toEntity(CuratorDtoRequest dto, Long authUserId);
 
     CuratorDtoResponse toResponseDto(Curator entity);
 

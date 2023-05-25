@@ -1,7 +1,9 @@
 package com.pavbatol.talentium.hh.service;
 
 import com.pavbatol.talentium.app.exception.NotEnoughRightsException;
+import com.pavbatol.talentium.app.exception.ValidationException;
 import com.pavbatol.talentium.app.util.Checker;
+import com.pavbatol.talentium.app.util.ServiceUtils;
 import com.pavbatol.talentium.auth.jwt.JwtProvider;
 import com.pavbatol.talentium.auth.jwt.JwtUtils;
 import com.pavbatol.talentium.auth.role.model.RoleName;
@@ -44,7 +46,15 @@ public class HhServiceImpl implements HhService {
 
     @Override
     public HhDtoResponse add(HttpServletRequest servletRequest, HhDtoRequest dto) {
-        Long userId = getUserId(servletRequest);
+        Long userId;
+        if (!ServiceUtils.hasRole(servletRequest, RoleName.HH, jwtProvider)) {
+            userId = dto.getUserId();
+            if (Objects.isNull(userId)) {
+                throw new ValidationException(String.format("For a non-%s, you must specify the userId from the auth-service", ENTITY_SIMPLE_NAME));
+            }
+        } else {
+            userId = ServiceUtils.getUserId(servletRequest, jwtProvider);
+        }
         Hh entity = hhMapper.toEntity(dto, userId);
         entity.setRegisteredOn(LocalDateTime.now());
         Hh saved = hhRepository.save(entity);

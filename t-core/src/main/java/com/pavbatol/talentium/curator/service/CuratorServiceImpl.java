@@ -1,8 +1,10 @@
 package com.pavbatol.talentium.curator.service;
 
+import com.pavbatol.talentium.app.exception.ValidationException;
 import com.pavbatol.talentium.app.util.Checker;
 import com.pavbatol.talentium.app.util.ServiceUtils;
 import com.pavbatol.talentium.auth.jwt.JwtProvider;
+import com.pavbatol.talentium.auth.role.model.RoleName;
 import com.pavbatol.talentium.curator.dto.CuratorDtoRequest;
 import com.pavbatol.talentium.curator.dto.CuratorDtoResponse;
 import com.pavbatol.talentium.curator.dto.CuratorDtoUpdate;
@@ -20,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 import static com.pavbatol.talentium.app.util.Checker.getNonNullObject;
 
@@ -34,7 +37,15 @@ public class CuratorServiceImpl implements CuratorService {
 
     @Override
     public CuratorDtoResponse add(HttpServletRequest servletRequest, CuratorDtoRequest dto) {
-        Long userId = ServiceUtils.getUserId(servletRequest, jwtProvider);
+        Long userId;
+        if (!ServiceUtils.hasRole(servletRequest, RoleName.CURATOR, jwtProvider)) {
+            userId = dto.getUserId();
+            if (Objects.isNull(userId)) {
+                throw new ValidationException(String.format("For a non-%s, you must specify the userId from the auth-service", ENTITY_SIMPLE_NAME));
+            }
+        } else {
+            userId = ServiceUtils.getUserId(servletRequest, jwtProvider);
+        }
         Curator entity = curatorMapper.toEntity(dto, userId);
         entity.setRegisteredOn(LocalDateTime.now());
         Curator saved = curatorRepository.save(entity);

@@ -13,8 +13,8 @@ import java.util.List;
 public interface HhMapper {
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "userId", source = "userId")
-    Hh toEntity(HhDtoRequest dto, Long userId);
+    @Mapping(target = "userId", expression = "java(authUserId)")
+    Hh toEntity(HhDtoRequest dto, Long authUserId);
 
     HhDtoResponse toResponseDto(Hh saved);
 

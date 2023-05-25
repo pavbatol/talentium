@@ -1,9 +1,6 @@
 package com.pavbatol.talentium.app.exception.handler;
 
-import com.pavbatol.talentium.app.exception.AuthorizationFailedException;
-import com.pavbatol.talentium.app.exception.ConflictException;
-import com.pavbatol.talentium.app.exception.NotEnoughRightsException;
-import com.pavbatol.talentium.app.exception.NotFoundException;
+import com.pavbatol.talentium.app.exception.*;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -82,6 +79,11 @@ public class RestErrorHandler {
     @ExceptionHandler({NotFoundException.class})
     protected ResponseEntity<Object> handleNotFoundEx(NotFoundException ex, WebRequest request) {
         return makeResponseEntity(ex.getReason(), ex, NOT_FOUND, request);
+    }
+
+    @ExceptionHandler({ValidationException.class})
+    protected ResponseEntity<Object> handleNotFoundEx(ValidationException ex, WebRequest request) {
+        return makeResponseEntity(ex.getReason(), ex, BAD_REQUEST, request);
     }
 
     @ExceptionHandler({ConflictException.class})

@@ -12,6 +12,8 @@ import java.util.Set;
 @Value
 public class HhDtoRequest {
 
+    Long userId;
+
     @NotBlank
     @Email
     String email;

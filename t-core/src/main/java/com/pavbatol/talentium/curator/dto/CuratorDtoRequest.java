@@ -10,6 +10,8 @@ import lombok.Value;
 @Value
 public class CuratorDtoRequest {
 
+    Long userId;
+
     @NotBlank
     @Email
     String email;
