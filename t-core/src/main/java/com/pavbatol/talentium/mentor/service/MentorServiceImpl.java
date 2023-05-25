@@ -24,7 +24,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
-import static com.pavbatol.talentium.app.util.Checker.getNonNullObject;
 
 @Slf4j
 @Service
@@ -34,6 +33,7 @@ public class MentorServiceImpl implements MentorService {
     private final JwtProvider jwtProvider;
     private final MentorMapper mentorMapper;
     private final MentorRepository mentorRepository;
+
     @Override
     public MentorDtoResponse add(HttpServletRequest servletRequest, MentorDtoRequest dto) {
         Long userId;
@@ -50,24 +50,26 @@ public class MentorServiceImpl implements MentorService {
         Mentor saved = mentorRepository.save(entity);
         log.debug("-Add: New {} saved: {}", ENTITY_SIMPLE_NAME, saved);
         return mentorMapper.toResponseDto(saved);
+        // TODO: 25.05.2023 Check having management only from owner
     }
 
     @Transactional(isolation = Isolation.SERIALIZABLE)
     @Override
     public MentorDtoResponse update(HttpServletRequest servletRequest, Long mentorId, MentorDtoUpdate dto) {
         Long userId = ServiceUtils.getUserId(servletRequest, jwtProvider);
-        Mentor entity = getNonNullObject(mentorRepository, mentorId);
+        Mentor entity = Checker.getNonNullObject(mentorRepository, mentorId);
         ServiceUtils.checkIdsEqualOrAdminRole(servletRequest, userId, entity.getUserId(), jwtProvider);
         Mentor updated = mentorMapper.updateEntity(dto, entity);
         updated = mentorRepository.save(updated);
         log.debug("Updated {}: {}", ENTITY_SIMPLE_NAME, updated);
         return mentorMapper.toResponseDto(updated);
+        // TODO: 25.05.2023 Check having management only from owner
     }
 
     @Override
     public void remove(HttpServletRequest servletRequest, Long mentorId) {
         Long userId = ServiceUtils.getUserId(servletRequest, jwtProvider);
-        Mentor entity = getNonNullObject(mentorRepository, mentorId);
+        Mentor entity = Checker.getNonNullObject(mentorRepository, mentorId);
         ServiceUtils.checkIdsEqualOrAdminRole(servletRequest, userId, entity.getUserId(), jwtProvider);
         entity.setDeleted(true);
         mentorRepository.save(entity);
@@ -77,7 +79,7 @@ public class MentorServiceImpl implements MentorService {
     @Transactional(readOnly = true)
     @Override
     public MentorDtoResponse findById(Long mentorId) {
-        Mentor found = getNonNullObject(mentorRepository, mentorId);
+        Mentor found = Checker.getNonNullObject(mentorRepository, mentorId);
         log.debug("Found {}: {}", ENTITY_SIMPLE_NAME, found);
         return mentorMapper.toResponseDto(found);
     }

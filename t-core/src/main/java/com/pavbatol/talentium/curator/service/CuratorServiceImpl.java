@@ -24,8 +24,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
-import static com.pavbatol.talentium.app.util.Checker.getNonNullObject;
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -78,7 +76,7 @@ public class CuratorServiceImpl implements CuratorService {
     @Transactional
     @Override
     public CuratorDtoResponse findById(Long curatorId) {
-        Curator found = getNonNullObject(curatorRepository, curatorId);
+        Curator found = Checker.getNonNullObject(curatorRepository, curatorId);
         log.debug("Found {}: {}", ENTITY_SIMPLE_NAME, found);
         return curatorMapper.toResponseDto(found);
     }
