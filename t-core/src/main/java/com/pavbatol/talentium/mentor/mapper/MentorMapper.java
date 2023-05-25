@@ -1,7 +1,7 @@
 package com.pavbatol.talentium.mentor.mapper;
 
 import com.pavbatol.talentium.hh.mapper.HhMapper;
-import com.pavbatol.talentium.management.model.Management;
+import com.pavbatol.talentium.management.mapper.ManagementMapper;
 import com.pavbatol.talentium.mentor.dto.MentorDtoRequest;
 import com.pavbatol.talentium.mentor.dto.MentorDtoResponse;
 import com.pavbatol.talentium.mentor.dto.MentorDtoUpdate;
@@ -12,7 +12,7 @@ import java.util.List;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE,
         componentModel = "spring",
-        uses = {HhMapper.class, Management.class})
+        uses = {HhMapper.class, ManagementMapper.class})
 public interface MentorMapper {
 
     @Mapping(target = "id", ignore = true)

@@ -55,6 +55,7 @@ public class Mentor {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "management_id", nullable = false)
+    @ToString.Exclude
     Management management;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "mentor")

@@ -1,4 +1,4 @@
-package com.pavbatol.talentium.student.model.enums;
+package com.pavbatol.talentium.student.model;
 
 import lombok.NonNull;
 

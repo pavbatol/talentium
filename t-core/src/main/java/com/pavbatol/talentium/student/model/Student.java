@@ -1,7 +1,5 @@
 package com.pavbatol.talentium.student.model;
 
-import com.pavbatol.talentium.student.model.enums.InternLevel;
-import com.pavbatol.talentium.student.model.enums.StudentPosition;
 import com.pavbatol.talentium.management.model.Management;
 import com.pavbatol.talentium.mentor.model.Mentor;
 import com.pavbatol.talentium.student.feedback.model.StudentFeedback;

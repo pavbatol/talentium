@@ -69,3 +69,12 @@ FROM (VALUES (8, 'mentor_1@aaa.bb', 'first_name_mentor_1', 'secondName_mentor_1'
              (10, 'mentor_3@aaa.bb', 'first_name_mentor_3', 'secondName_mentor_3', 0, NOW(), false, 2, 2))
          AS v(user_id, email, first_name, second_name, rate, registered_on, deleted, owner_id, management_id)
 WHERE NOT EXISTS (SELECT 1 FROM mentors WHERE user_id = v.user_id);
+
+--students
+INSERT INTO students(user_id, email, first_name, second_name, position, level,  mentor_id, management_id, rate, registered_on, deleted)
+SELECT *
+FROM (VALUES (11, 'student_1@aaa.bb', 'first_name_student_1', 'secondName_student_1', 'CANDIDATE', null,  0, 0, 0, NOW(), false),
+             (12, 'student_2@aaa.bb', 'first_name_student_2', 'secondName_student_2', 'CANDIDATE', null,  1, 1, 0, NOW(), false),
+             (13, 'student_3@aaa.bb', 'first_name_student_3', 'secondName_student_3', 'CANDIDATE', null,  1, 2, 0, NOW(), false))
+         AS v(user_id, email, first_name, second_name, position, level,  mentor_id, management_id, rate, registered_on, deleted)
+WHERE NOT EXISTS (SELECT 1 FROM mentors WHERE user_id = v.user_id);

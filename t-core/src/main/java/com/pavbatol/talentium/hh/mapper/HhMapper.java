@@ -4,13 +4,13 @@ import com.pavbatol.talentium.hh.dto.HhDtoRequest;
 import com.pavbatol.talentium.hh.dto.HhDtoResponse;
 import com.pavbatol.talentium.hh.dto.HhDtoUpdate;
 import com.pavbatol.talentium.hh.model.Hh;
-import com.pavbatol.talentium.management.model.Management;
+import com.pavbatol.talentium.management.mapper.ManagementMapper;
 import org.mapstruct.*;
 
 import java.util.List;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE,
-        componentModel = "spring", uses = Management.class)
+        componentModel = "spring", uses = ManagementMapper.class)
 public interface HhMapper {
 
     @Mapping(target = "id", ignore = true)

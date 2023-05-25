@@ -59,7 +59,7 @@ create table if not exists mentors
     email         varchar(255)                                  not null,
     first_name    varchar(255)                                  not null,
     second_name   varchar(255)                                  not null,
-    rate          integer,
+    rate          integer default 0,
     registered_on timestamp without time zone  default now()    not null,
     deleted       boolean default false,
     owner_id      bigint                                        not null,
@@ -69,5 +69,28 @@ create table if not exists mentors
     constraint uc_mentors_user_id unique (user_id),
     constraint fk_mentors_on_owner foreign key (owner_id) references hhs (hh_id),
     constraint fk_mentors_on_management foreign key (management_id) references managements (management_id)
+);
+
+create sequence if not exists seq_students minvalue 0 start with 0 increment 1;
+create table students
+(
+    student_id    bigint default nextval('seq_students')   not null,
+    user_id       bigint,
+    email         varchar(255)                              not null,
+    first_name    varchar(255)                              not null,
+    second_name   varchar(255)                              not null,
+    position      varchar(255)                              not null,
+    level         varchar(255),
+    intern_on     timestamp without time zone,
+    mentor_id     bigint,
+    management_id bigint,
+    rate          integer default 0,
+    registered_on timestamp without time zone  default now() not null,
+    deleted       boolean,
+    constraint pk_students primary key (student_id),
+    constraint uc_students_email unique (email),
+    constraint uc_students_user_id unique (user_id),
+    constraint fk_students_on_mentor foreign key (mentor_id) references mentors (mentor_id),
+    constraint fk_students_on_management foreign key (management_id) references managements (management_id)
 );
 
