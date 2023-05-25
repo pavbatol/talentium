@@ -18,10 +18,10 @@ select 'hh_3@aaa.ru','hh_3@aaa.ru','$2a$10$UatTmmnYZLfOHHaRPR5CSuQT6tS2ZyGSGQeb0
 -- Curator
 INSERT into users (email, username, password, enabled, first_name, registered_on)
 select * from (
-                  values
-                      ('Curator_custom_1@aaa.ru','Curator_custom_1@aaa.ru','$2a$10$p3kJsUik7PncE2ehLqiWWuZFeHZXKUnJDkdowcBij/ZR9Vkk8J3T2', true, 'first_name_Curator_1',now()),
-                      ('Curator_custom_2@aaa.ru','Curator_custom_2@aaa.ru','$2a$10$nKQ0zqrr1bWoSD0pcXy8bOqaDuOtHDKvICngLzKo8UFb0NEhJE7Bi', true, 'first_name_Curator_2',now()),
-                      ('Curator_custom_3@aaa.ru','Curator_custom_3@aaa.ru','$2a$10$qIKeuxQ/VLfcUN2agDbR6eisW/EC1pMEiVlZ0k3gvN4.resiyoNN2', true, 'first_name_Curator_3',now())
+                values
+                    ('Curator_1@aaa.ru','Curator_1@aaa.ru','$2a$10$2zwt1ImDJ6gVdVifroJF9O5h0IZy8LUeq8C8X0tecQj17rFKTiVAK', true, 'first_name_Curator_1',now()),
+                    ('Curator_2@aaa.ru','Curator_2@aaa.ru','$2a$10$KBoljejlLqE4M2NRsWCxL.zeBD1qYNiK2Qxb2vxx622uGjC.v4mR2', true, 'first_name_Curator_2',now()),
+                    ('Curator_3@aaa.ru','Curator_3@aaa.ru','$2a$10$toLLOMfbKTeF3rYlzVpxHecVdd9ET.tZUJ4hHoaoAqALq/HbyjPB.', true, 'first_name_Curator_3',now())
               ) as v (email, username, password, enabled, first_name, registered_on)
 where not exists(select 1 from users where email=v.email or username=v.username);
 
