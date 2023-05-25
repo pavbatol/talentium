@@ -27,7 +27,7 @@ public class Mentor {
     @Column(name = "mentor_id", nullable = false)
     Long id;
 
-    @Column(name = "user_id", unique = true)
+    @Column(name = "user_id", nullable = false, unique = true)
     Long userId;
 
     @Column(name = "email", nullable = false, unique = true)
@@ -36,7 +36,7 @@ public class Mentor {
     @Column(name = "first_name", nullable = false)
     String firstName;
 
-    @Column(name = "second_name")
+    @Column(name = "second_name", nullable = false)
     String secondName;
 
     @Column(name = "rate")
@@ -54,7 +54,7 @@ public class Mentor {
     Hh owner;
 
     @ManyToOne
-    @JoinColumn(name = "management")
+    @JoinColumn(name = "management", nullable = false)
     Management management;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "mentor")

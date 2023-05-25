@@ -24,6 +24,15 @@ select * from (
                     ('Curator_3@aaa.ru','Curator_3@aaa.ru','$2a$10$toLLOMfbKTeF3rYlzVpxHecVdd9ET.tZUJ4hHoaoAqALq/HbyjPB.', true, 'first_name_Curator_3',now())
               ) as v (email, username, password, enabled, first_name, registered_on)
 where not exists(select 1 from users where email=v.email or username=v.username);
+-- Mentor
+INSERT into users (email, username, password, enabled, first_name, registered_on)
+select * from (
+                values
+                    ('Mentor_1@aaa.ru','Mentor_1@aaa.ru','$2a$10$jgW7ZKKYEp6./UzfiE2PletIs0vNJG4znF24UNCNkpKx.NAMu0HWq', true, 'first_name_Mentor_1',now()),
+                    ('Mentor_2@aaa.ru','Mentor_2@aaa.ru','$2a$10$NP4yNpgSpY5tkmLxzqRiX.7YnrqibOr7NV8p2YOL998uWMrKUxHB.', true, 'first_name_Mentor_2',now()),
+                    ('Mentor_3@aaa.ru','Mentor_3@aaa.ru','$2a$10$7kn7MkCOpQUNg7i/qXLftuzJo0N4LbfTxIEe7XaB3FmTTuedEiSy.', true, 'first_name_Mentor_3',now())
+              ) as v (email, username, password, enabled, first_name, registered_on)
+where not exists(select 1 from users where email=v.email or username=v.username);
 
 -- fill all roles
 insert into roles (role_name)
@@ -67,4 +76,11 @@ select * from (
     values (5, 4),
            (6, 4),
            (7, 4)) as v (user_id, role_id)
+ where not exists(select 1 from users_roles where user_id = v.user_id and role_id = v.role_id) ;
+-- Mentor
+insert into users_roles (user_id, role_id)
+select * from (
+    values (8, 5),
+           (9, 5),
+           (10, 5)) as v (user_id, role_id)
  where not exists(select 1 from users_roles where user_id = v.user_id and role_id = v.role_id) ;

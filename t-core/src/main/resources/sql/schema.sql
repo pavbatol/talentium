@@ -51,3 +51,24 @@ create table if not exists curators
     constraint fk_curators_on_owner foreign key (owner) references hhs (hh_id)
 );
 
+create sequence if not exists seq_mentors minvalue 0 start with 0 increment 1;
+create table if not exists mentors
+(
+    mentor_id     bigint default nextval('seq_mentors')         not null,
+    user_id       bigint                                        not null,
+    email         varchar(255)                                  not null,
+    first_name    varchar(255)                                  not null,
+    second_name   varchar(255)                                  not null,
+    rate          integer,
+    registered_on timestamp without time zone  default now()    not null,
+    deleted       boolean default false,
+    owner         bigint                                        not null,
+    management    bigint                                        not null,
+    constraint pk_mentors primary key (mentor_id),
+    constraint uc_mentors_email unique (email),
+    constraint uc_mentors_user_id unique (user_id),
+    constraint fk_mentors_on_owner foreign key (owner) references hhs (hh_id),
+    constraint fk_mentors_on_management foreign key (management) references managements (management_id)
+
+);
+
