@@ -9,6 +9,7 @@ import lombok.*;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -40,6 +41,9 @@ public class Mentor {
 
     @Column(name = "rate")
     Integer rate = 0;
+
+    @Column(name = "registered_on", nullable = false)
+    LocalDateTime registeredOn;
 
     @Column(name = "deleted")
     Boolean deleted = false;

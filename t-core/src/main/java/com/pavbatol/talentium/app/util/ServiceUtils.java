@@ -22,12 +22,12 @@ public final class ServiceUtils {
     public static void checkIdsEqualOrAdminRole(HttpServletRequest servletRequest,
                                                 Long userId, Long entityUserId,
                                                 JwtProvider jwtProvider) {
-        if (!Objects.equals(entityUserId, userId) && !hasRole(servletRequest, RoleName.ADMIN, jwtProvider)) {
+        if (!Objects.equals(entityUserId, userId) && !hasRole(RoleName.ADMIN, servletRequest, jwtProvider)) {
             throw new NotEnoughRightsException("The IDs don't match and there are also no Administrator rights ");
         }
     }
 
-    public static boolean hasRole(HttpServletRequest servletRequest, RoleName roleName, JwtProvider jwtProvider) {
+    public static boolean hasRole(RoleName roleName, HttpServletRequest servletRequest, JwtProvider jwtProvider) {
         return JwtUtils.hasRole(servletRequest, roleName.name(), jwtProvider);
     }
 }

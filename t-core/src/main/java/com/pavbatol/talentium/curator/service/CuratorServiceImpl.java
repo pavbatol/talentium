@@ -38,7 +38,7 @@ public class CuratorServiceImpl implements CuratorService {
     @Override
     public CuratorDtoResponse add(HttpServletRequest servletRequest, CuratorDtoRequest dto) {
         Long userId;
-        if (!ServiceUtils.hasRole(servletRequest, RoleName.CURATOR, jwtProvider)) {
+        if (!ServiceUtils.hasRole(RoleName.CURATOR, servletRequest, jwtProvider)) {
             userId = dto.getUserId();
             if (Objects.isNull(userId)) {
                 throw new ValidationException(String.format("For a non-%s, you must specify the userId from the auth-service", ENTITY_SIMPLE_NAME));
