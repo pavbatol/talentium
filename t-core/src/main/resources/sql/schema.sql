@@ -62,13 +62,12 @@ create table if not exists mentors
     rate          integer,
     registered_on timestamp without time zone  default now()    not null,
     deleted       boolean default false,
-    owner         bigint                                        not null,
-    management    bigint                                        not null,
+    owner_id      bigint                                        not null,
+    management_id bigint                                        not null,
     constraint pk_mentors primary key (mentor_id),
     constraint uc_mentors_email unique (email),
     constraint uc_mentors_user_id unique (user_id),
-    constraint fk_mentors_on_owner foreign key (owner) references hhs (hh_id),
-    constraint fk_mentors_on_management foreign key (management) references managements (management_id)
-
+    constraint fk_mentors_on_owner foreign key (owner_id) references hhs (hh_id),
+    constraint fk_mentors_on_management foreign key (management_id) references managements (management_id)
 );
 

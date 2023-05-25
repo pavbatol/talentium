@@ -2,19 +2,11 @@ package com.pavbatol.talentium.mentor.dto;
 
 import com.pavbatol.talentium.hh.model.Hh;
 import com.pavbatol.talentium.management.model.Management;
-import com.pavbatol.talentium.mentor.feedback.model.MentorFeedback;
-import com.pavbatol.talentium.student.model.Student;
-import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
-import lombok.*;
-import lombok.experimental.Accessors;
-import lombok.experimental.FieldDefaults;
-
-import java.util.HashSet;
-import java.util.Set;
+import lombok.Value;
 
 @Value
 public class MentorDtoRequest {

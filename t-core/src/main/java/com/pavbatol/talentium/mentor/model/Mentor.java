@@ -49,12 +49,12 @@ public class Mentor {
     Boolean deleted = false;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "owner", nullable = false)
+    @JoinColumn(name = "owner_id", nullable = false)
     @ToString.Exclude
     Hh owner;
 
-    @ManyToOne
-    @JoinColumn(name = "management", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "management_id", nullable = false)
     Management management;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "mentor")

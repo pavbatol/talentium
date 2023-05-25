@@ -34,10 +34,10 @@ FROM (VALUES (5, 'curators_1@aaa.bb', 'first_name_curator_1', 'secondName_curato
 WHERE NOT EXISTS (SELECT 1 FROM curators WHERE user_id = new_curators.user_id);
 
 --mentors
-INSERT INTO mentors(user_id, email, first_name, second_name, rate, registered_on, deleted, owner, management)
+INSERT INTO mentors(user_id, email, first_name, second_name, rate, registered_on, deleted, owner_id, management_id)
 SELECT *
 FROM (VALUES (8, 'mentor_1@aaa.bb', 'first_name_mentor_1', 'secondName_mentor_1', 0, NOW(), false, 0, 0),
              (9, 'mentor_2@aaa.bb', 'first_name_mentor_2', 'secondName_mentor_2', 0, NOW(), false, 2, 1),
              (10, 'mentor_3@aaa.bb', 'first_name_mentor_3', 'secondName_mentor_3', 0, NOW(), false, 2, 2))
-         AS new_curators(user_id, email, first_name, second_name, rate, registered_on, deleted, owner, management)
-WHERE NOT EXISTS (SELECT 1 FROM curators WHERE user_id = new_curators.user_id);
+         AS v(user_id, email, first_name, second_name, rate, registered_on, deleted, owner_id, management_id)
+WHERE NOT EXISTS (SELECT 1 FROM mentors WHERE user_id = v.user_id);
