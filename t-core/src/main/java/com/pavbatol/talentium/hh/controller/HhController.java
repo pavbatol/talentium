@@ -79,7 +79,7 @@ public class HhController {
     @PreAuthorize(IS_AUTHENTICATED)
     @GetMapping
     @SecurityRequirement(name = "JWT")
-    @Operation(summary = "findAll", description = "find all hunter by filter getting page by page")
+    @Operation(summary = "findAll", description = "Find all hunters page by page with filter and sorting")
     public ResponseEntity<List<HhDtoResponse>> findAll(
             HttpServletRequest servletRequest,
             @RequestParam(value = "authority", required = false) String authority,
