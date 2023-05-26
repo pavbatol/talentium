@@ -21,7 +21,7 @@ import java.util.List;
 @CrossOrigin
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/management")
+@RequestMapping("/managements")
 @Tag(name = "Admin: Management", description = "API for working with managements of department")
 public class ManagementController {
     public static final String HAS_ROLE_ADMIN = "hasRole('ADMIN')";

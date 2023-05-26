@@ -1,12 +1,12 @@
 package com.pavbatol.talentium.internship.model.enums;
 
-public enum ActionState {
+public enum InternshipActionState {
     SEND_TO_REVIEW,
     CANCEL_REVIEW;
 
-    public static ActionState by(String stateName) {
+    public static InternshipActionState by(String stateName) {
         try {
-            return ActionState.valueOf(stateName.toUpperCase());
+            return InternshipActionState.valueOf(stateName.toUpperCase());
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException("Unknown state: " + stateName, e);
         }

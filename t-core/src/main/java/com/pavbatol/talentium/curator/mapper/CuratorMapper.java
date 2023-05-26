@@ -2,6 +2,7 @@ package com.pavbatol.talentium.curator.mapper;
 
 import com.pavbatol.talentium.curator.dto.CuratorDtoRequest;
 import com.pavbatol.talentium.curator.dto.CuratorDtoResponse;
+import com.pavbatol.talentium.curator.dto.CuratorDtoShort;
 import com.pavbatol.talentium.curator.dto.CuratorDtoUpdate;
 import com.pavbatol.talentium.curator.model.Curator;
 import com.pavbatol.talentium.hh.mapper.HhMapper;
@@ -15,8 +16,14 @@ import java.util.List;
 public interface CuratorMapper {
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "userId",  expression = "java(authUserId)")
+    @Mapping(target = "userId", expression = "java(authUserId)")
     Curator toEntity(CuratorDtoRequest dto, Long authUserId);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "userId", expression = "java(authUserId)")
+    Curator toEntity(CuratorDtoShort dto, Long authUserId);
+
+    CuratorDtoShort toDtoShort(Curator entity);
 
     CuratorDtoResponse toResponseDto(Curator entity);
 

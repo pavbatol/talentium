@@ -2,6 +2,7 @@ package com.pavbatol.talentium.internship.model;
 
 import com.pavbatol.talentium.hh.model.Hh;
 import com.pavbatol.talentium.internship.model.enums.InternshipState;
+import com.pavbatol.talentium.internship.model.enums.WorkingDayDuration;
 import com.pavbatol.talentium.management.model.Management;
 import jakarta.persistence.*;
 import lombok.*;
@@ -49,6 +50,12 @@ public class Internship {
     @Column(name = "longitude", nullable = false)
     Double longitude;
 
+    @Column(name = "age_from", nullable = false)
+    Integer ageFrom;
+
+    @Column(name = "age_to", nullable = false)
+    Integer ageTo;
+
     @Column(name = "participantLimit", columnDefinition = "INTEGER DEFAULT 0", nullable = false)
     Integer participantLimit;
 
@@ -66,6 +73,10 @@ public class Internship {
 
     @Column(name = "end_date")
     LocalDateTime endDate;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    WorkingDayDuration dayDuration;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

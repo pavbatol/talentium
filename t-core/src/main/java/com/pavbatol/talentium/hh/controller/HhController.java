@@ -24,7 +24,7 @@ import java.util.List;
 @CrossOrigin
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/hunter")
+@RequestMapping("/hunters")
 @Tag(name = "Private: Company", description = "API for working with companies")
 public class HhController {
 

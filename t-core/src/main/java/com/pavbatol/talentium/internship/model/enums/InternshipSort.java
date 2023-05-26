@@ -1,8 +1,10 @@
 package com.pavbatol.talentium.internship.model.enums;
 
 public enum InternshipSort {
-    EVENT_DATE,
-    VIEWS;
+    START_DATE,
+    PUBLISHED_ON,
+    TITLE,
+    AGE_FROM;
 
     public static InternshipSort by(String stateName) {
         try {
