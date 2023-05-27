@@ -5,7 +5,7 @@ import com.pavbatol.talentium.internship.dto.InternshipDtoResponse;
 import com.pavbatol.talentium.internship.dto.InternshipDtoUpdate;
 import com.pavbatol.talentium.internship.model.enums.InternshipSort;
 import com.pavbatol.talentium.internship.model.filter.InternshipAdminSearchFilter;
-import com.pavbatol.talentium.internship.model.filter.InternshipSearchFilter;
+import com.pavbatol.talentium.internship.model.filter.InternshipPublicSearchFilter;
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.List;
@@ -17,7 +17,7 @@ public interface InternshipService {
 
     InternshipDtoResponse findById(Long internshipId);
 
-    List<InternshipDtoResponse> findAll(InternshipSearchFilter filter,
+    List<InternshipDtoResponse> findAll(InternshipPublicSearchFilter filter,
                                         Integer from,
                                         Integer size,
                                         InternshipSort sort);

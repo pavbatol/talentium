@@ -11,6 +11,6 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder(toBuilder = true)
 @EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
-public class InternshipSearchFilter extends AbstractInternshipSearchFilter {
+public class InternshipPublicSearchFilter extends BaseInternshipSearchFilter {
 
 }

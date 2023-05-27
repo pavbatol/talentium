@@ -1,6 +1,5 @@
 package com.pavbatol.talentium.internship.model.filter;
 
-import com.pavbatol.talentium.internship.model.enums.InternshipState;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -12,7 +11,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder(toBuilder = true)
 @EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
-public class InternshipAdminSearchFilter extends AbstractInternshipSearchFilter {
+public class InternshipAdminSearchFilter extends BaseInternshipSearchFilter {
 
-    InternshipState state;
+    String state;
 }

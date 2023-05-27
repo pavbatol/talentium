@@ -1,6 +1,5 @@
 package com.pavbatol.talentium.internship.model.filter;
 
-import com.pavbatol.talentium.internship.model.enums.WorkingDayDuration;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @SuperBuilder(toBuilder = true)
-public class AbstractInternshipSearchFilter {
+public class BaseInternshipSearchFilter {
     String title;
     String annotation;
     String description;
@@ -23,11 +22,13 @@ public class AbstractInternshipSearchFilter {
     List<Long> initiatorIds;
     List<Long> managementIds;
 
-    Double latitude;
-    Double longitude;
+    Double startLatitude;
+    Double endLatitude;
+    Double startLongitude;
+    Double endLongitude;
 
     Integer rangeStartAgeFrom;
-    Integer rangeEndAgeTo;
+    Integer rangeStartAgeTo;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     LocalDateTime rangeStartPublishedOn;
@@ -44,5 +45,5 @@ public class AbstractInternshipSearchFilter {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     LocalDateTime rangeEndEndDate;
 
-    WorkingDayDuration dayDuration;
+    String dayDuration;
 }

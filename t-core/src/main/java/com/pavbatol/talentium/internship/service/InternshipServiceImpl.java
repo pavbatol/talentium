@@ -12,15 +12,14 @@ import com.pavbatol.talentium.internship.dto.InternshipDtoResponse;
 import com.pavbatol.talentium.internship.dto.InternshipDtoUpdate;
 import com.pavbatol.talentium.internship.mapper.InternshipMapper;
 import com.pavbatol.talentium.internship.model.Internship;
-import com.pavbatol.talentium.internship.model.QInternship;
 import com.pavbatol.talentium.internship.model.enums.InternshipSort;
 import com.pavbatol.talentium.internship.model.enums.InternshipState;
 import com.pavbatol.talentium.internship.model.filter.InternshipAdminSearchFilter;
-import com.pavbatol.talentium.internship.model.filter.InternshipSearchFilter;
+import com.pavbatol.talentium.internship.model.filter.InternshipFilterHelper;
+import com.pavbatol.talentium.internship.model.filter.InternshipPublicSearchFilter;
 import com.pavbatol.talentium.internship.repository.InternshipRepository;
 import com.querydsl.core.BooleanBuilder;
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -29,9 +28,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 
 @Slf4j
 @Service
@@ -75,14 +72,38 @@ public class InternshipServiceImpl implements InternshipService {
     }
 
     @Override
-    public List<InternshipDtoResponse> findAll(InternshipSearchFilter filter,
+    public List<InternshipDtoResponse> findAll(InternshipPublicSearchFilter filter,
                                                Integer from,
                                                Integer size,
                                                InternshipSort internshipSort) {
+        Sort sort = getSort(internshipSort);
+        BooleanBuilder booleanBuilder = InternshipFilterHelper.getInternshipPublicBooleanBuilder(filter);
+        PageRequest pageable = PageRequest.of(from, size, sort);
+        Page<Internship> page = internshipRepository.findAll(booleanBuilder, pageable);
+        log.debug("Found {}-count: {}, totalPages: {}, from: {}, size: {}, sort: {}", ENTITY_SIMPLE_NAME,
+                page.getTotalElements(), page.getTotalPages(), pageable.getOffset(), page.getSize(), page.getSort());
+        return internshipMapper.toDtos(page.getContent());
+    }
+
+    @Override
+    public List<InternshipDtoResponse> adminFindAll(InternshipAdminSearchFilter filter,
+                                                    Integer from,
+                                                    Integer size,
+                                                    InternshipSort internshipSort) {
+        Sort sort = getSort(internshipSort);
+        BooleanBuilder booleanBuilder = InternshipFilterHelper.getInternshipAdminBooleanBuilder(filter);
+        PageRequest pageable = PageRequest.of(from, size, sort);
+        Page<Internship> page = internshipRepository.findAll(booleanBuilder, pageable);
+        log.debug("Found {}-count: {}, totalPages: {}, from: {}, size: {}, sort: {}", ENTITY_SIMPLE_NAME,
+                page.getTotalElements(), page.getTotalPages(), pageable.getOffset(), page.getSize(), page.getSort());
+        return internshipMapper.toDtos(page.getContent());
+    }
+
+    private static Sort getSort(InternshipSort internshipSort) {
         Sort sort;
         switch (internshipSort) {
             case START_DATE:
-                sort = Sort.by("startDate").ascending();
+                sort = Sort.by("startDate").descending();
                 break;
             case TITLE:
                 sort = Sort.by("title").ascending();
@@ -96,20 +117,7 @@ public class InternshipServiceImpl implements InternshipService {
             default:
                 sort = Sort.by("createdOn").descending();
         }
-        BooleanBuilder booleanBuilder = makeBooleanBuilder(filter);
-        PageRequest pageable = PageRequest.of(from, size, sort);
-        Page<Internship> page = internshipRepository.findAll(booleanBuilder, pageable);
-        log.debug("Found {}-count: {}, totalPages: {}, from: {}, size: {}, sort: {}", ENTITY_SIMPLE_NAME,
-                page.getTotalElements(), page.getTotalPages(), pageable.getOffset(), page.getSize(), page.getSort());
-        return internshipMapper.toDtos(page.getContent());
-    }
-
-    @Override
-    public List<InternshipDtoResponse> adminFindAll(InternshipAdminSearchFilter filter,
-                                                    Integer from,
-                                                    Integer size,
-                                                    InternshipSort sort) {
-        return null;
+        return sort;
     }
 
     private Long getIdByAuthUserId(HttpServletRequest servletRequest) {
@@ -119,14 +127,30 @@ public class InternshipServiceImpl implements InternshipService {
         return hhDtoShort.getId();
     }
 
-        private BooleanBuilder makeBooleanBuilder(@NonNull InternshipSearchFilter filter) {
-        java.util.function.Predicate<Object> isNullOrEmpty = obj ->
-                Objects.isNull(obj) || (obj instanceof Collection && ((Collection<?>) obj).isEmpty());
-        QInternship qHh = QInternship.internship;
-        return new BooleanBuilder()
-                .and(!isNullOrEmpty.test(filter.getManagement()) ? qHh.managements.any().name.containsIgnoreCase(filter.getManagement()) : null)
-                .and(!isNullOrEmpty.test(filter.getAuthority()) ? qHh.authority.containsIgnoreCase(filter.getAuthority()) : null)
-                .and(!isNullOrEmpty.test(filter.getContacts()) ? qHh.contacts.containsIgnoreCase(filter.getContacts()) : null)
-                .and(!isNullOrEmpty.test(filter.getAddress()) ? qHh.address.containsIgnoreCase(filter.getAddress()) : null);
-    }
+//    private BooleanBuilder makeBooleanBuilder(@NonNull InternshipPublicSearchFilter filter) {
+//        java.util.function.Predicate<Object> isNullOrEmpty = obj ->
+//                Objects.isNull(obj) || (obj instanceof Collection && ((Collection<?>) obj).isEmpty());
+//        QInternship qInternship = QInternship.internship;
+//        return new BooleanBuilder()
+//                .and(!isNullOrEmpty.test(filter.getInitiatorIds()) ? qInternship.initiator.id.in(filter.getInitiatorIds()) : null)
+//                .and(!isNullOrEmpty.test(filter.getManagementIds()) ? qInternship.management.id.in(filter.getManagementIds()) : null)
+//
+//                .and(!isNullOrEmpty.test(filter.getStartLatitude()) ? qInternship.longitude.goe(filter.getStartLatitude()) : null)
+//                .and(!isNullOrEmpty.test(filter.getEndLatitude()) ? qInternship.longitude.loe(filter.getEndLatitude()) : null)
+//                .and(!isNullOrEmpty.test(filter.getStartLongitude()) ? qInternship.longitude.goe(filter.getStartLongitude()) : null)
+//                .and(!isNullOrEmpty.test(filter.getEndLongitude()) ? qInternship.longitude.loe(filter.getEndLongitude()) : null)
+//                .and(!isNullOrEmpty.test(filter.getRangeStartAgeFrom()) ? qInternship.longitude.goe(filter.getRangeStartAgeFrom()) : null)
+//                .and(!isNullOrEmpty.test(filter.getRangeStartAgeTo()) ? qInternship.longitude.goe(filter.getRangeStartAgeTo()) : null)
+//
+//                .and(!isNullOrEmpty.test(filter.getRangeStartPublishedOn()) ? qInternship.startDate.after(filter.getRangeStartPublishedOn()) : null)
+//                .and(!isNullOrEmpty.test(filter.getRangeEndPublishedOn()) ? qInternship.startDate.before(filter.getRangeEndPublishedOn()) : null)
+//
+//                .and(!isNullOrEmpty.test(filter.getRangeStartStartDate()) ? qInternship.startDate.after(filter.getRangeStartStartDate()) : null)
+//                .and(!isNullOrEmpty.test(filter.getRangeEndStartDate()) ? qInternship.startDate.before(filter.getRangeEndStartDate()) : null)
+//
+//                .and(!isNullOrEmpty.test(filter.getRangeStartEndDate()) ? qInternship.startDate.after(filter.getRangeStartEndDate()) : null)
+//                .and(!isNullOrEmpty.test(filter.getRangeEndEndDate()) ? qInternship.startDate.before(filter.getRangeEndEndDate()) : null)
+//
+//                .and(!isNullOrEmpty.test(filter.getDayDuration()) ? qInternship.dayDuration.eq(WorkingDayDuration.by(filter.getDayDuration())) : null);
+//    }
 }

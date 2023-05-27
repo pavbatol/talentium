@@ -2,7 +2,7 @@ package com.pavbatol.talentium.internship.controller;
 
 import com.pavbatol.talentium.internship.dto.InternshipDtoResponse;
 import com.pavbatol.talentium.internship.model.enums.InternshipSort;
-import com.pavbatol.talentium.internship.model.filter.InternshipSearchFilter;
+import com.pavbatol.talentium.internship.model.filter.InternshipPublicSearchFilter;
 import com.pavbatol.talentium.internship.service.InternshipService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -40,7 +40,7 @@ public class PublicInternshipController {
     @SecurityRequirement(name = "JWT")
     @Operation(summary = "findAll", description = "find all Internships getting page by page")
     public ResponseEntity<List<InternshipDtoResponse>> findAllByFilter(
-            InternshipSearchFilter filter,
+            InternshipPublicSearchFilter filter,
             @RequestParam(value = "from", defaultValue = "0") Integer from,
             @RequestParam(value = "size", defaultValue = "10") Integer size,
             @RequestParam(value = "sort", required = false) String sort) {
