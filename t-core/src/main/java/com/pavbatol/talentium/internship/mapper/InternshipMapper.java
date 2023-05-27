@@ -18,9 +18,11 @@ public interface InternshipMapper {
     @Mapping(target = "createdOn", ignore = true)
     @Mapping(target = "publishedOn", ignore = true)
     @Mapping(target = "state", ignore = true)
+    @Mapping(target = "management.id", source = "management.id")
     Internship toEntity(InternshipDtoRequest dto);
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "management.id", source = "management.id")
     Internship toEntity(InternshipDtoShort dto);
 
     InternshipDtoResponse toResponseDto(Internship entity);
@@ -34,6 +36,7 @@ public interface InternshipMapper {
     @Mapping(target = "createdOn", ignore = true)
     @Mapping(target = "publishedOn", ignore = true)
     @Mapping(target = "state", ignore = true)
+    @Mapping(target = "management.id", source = "management.id")
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     Internship updateEntity(InternshipDtoUpdate dto, @MappingTarget Internship entity);
 

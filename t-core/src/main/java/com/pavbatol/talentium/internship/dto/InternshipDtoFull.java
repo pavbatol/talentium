@@ -32,7 +32,7 @@ public class InternshipDtoFull {
 
     Integer participantLimit;
 
-    Long confirmedRequests;
+    Integer confirmedRequests;
 
     LocalDateTime createdOn;
 

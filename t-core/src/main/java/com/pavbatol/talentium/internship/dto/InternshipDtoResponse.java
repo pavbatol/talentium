@@ -32,7 +32,7 @@ public class InternshipDtoResponse {
 
     Integer participantLimit;
 
-    Long confirmedRequests;
+    Integer confirmedRequests;
 
     LocalDateTime createdOn;
 

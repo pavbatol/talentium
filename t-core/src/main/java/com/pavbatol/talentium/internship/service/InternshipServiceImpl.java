@@ -27,6 +27,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -43,10 +45,11 @@ public class InternshipServiceImpl implements InternshipService {
 
     @Override
     public InternshipDtoResponse add(HttpServletRequest servletRequest, InternshipDtoRequest dto) {
-        Long hhId = getIdByAuthUserId(servletRequest);
+        Long hhId = getIdByAuthUserIdForHh(servletRequest);
         Internship entity = internshipMapper.toEntity(dto);
         entity.setCreatedOn(LocalDateTime.now());
         entity.setInitiator(new Hh().setId(hhId));
+        entity.setConfirmedRequests(0);
         entity.setPublishedOn(null);
         entity.setState(InternshipState.PENDING);
         Internship saved = internshipRepository.save(entity);
@@ -54,6 +57,7 @@ public class InternshipServiceImpl implements InternshipService {
         return internshipMapper.toResponseDto(saved);
     }
 
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     @Override
     public InternshipDtoResponse update(HttpServletRequest servletRequest, Long internshipId, InternshipDtoUpdate dto) {
         Long userId = ServiceUtils.getUserId(servletRequest, jwtProvider);
@@ -65,6 +69,7 @@ public class InternshipServiceImpl implements InternshipService {
         return internshipMapper.toResponseDto(updated);
     }
 
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     @Override
     public InternshipDtoResponse updateState(HttpServletRequest servletRequest, Long internshipId, InternshipAdminActionState actionState) {
         Internship entity = Checker.getNonNullObject(internshipRepository, internshipId);
@@ -78,7 +83,7 @@ public class InternshipServiceImpl implements InternshipService {
                 if (actionState == InternshipAdminActionState.PUBLISH_INTERNSHIP) {
                     throw new IllegalArgumentException("The internship has already been published");
                 } else {
-                    throw new IllegalArgumentException("You cannot cancel a published internship");
+                    throw new IllegalArgumentException("You cannot reject a published internship");
                 }
             case CANCELED:
                 throw new IllegalArgumentException("The internship has been canceled, all actions are prohibited");
@@ -88,6 +93,7 @@ public class InternshipServiceImpl implements InternshipService {
         return internshipMapper.toResponseDto(updated);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public InternshipDtoResponse findById(Long internshipId) {
         Internship found = Checker.getNonNullObject(internshipRepository, internshipId);
@@ -95,6 +101,7 @@ public class InternshipServiceImpl implements InternshipService {
         return internshipMapper.toResponseDto(found);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<InternshipDtoResponse> findAll(InternshipPublicSearchFilter filter,
                                                Integer from,
@@ -109,6 +116,7 @@ public class InternshipServiceImpl implements InternshipService {
         return internshipMapper.toDtos(page.getContent());
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<InternshipDtoResponse> adminFindAll(InternshipAdminSearchFilter filter,
                                                     Integer from,
@@ -144,10 +152,10 @@ public class InternshipServiceImpl implements InternshipService {
         return sort;
     }
 
-    private Long getIdByAuthUserId(HttpServletRequest servletRequest) {
+    private Long getIdByAuthUserIdForHh(HttpServletRequest servletRequest) {
         Long userId = ServiceUtils.getUserId(servletRequest, jwtProvider);
-        HhDtoShort hhDtoShort = hhRepository.findAllByUserId(userId).orElseThrow(() ->
-                new NotFoundException(String.format("Not found %s with userId: %s", ENTITY_SIMPLE_NAME, userId)));
+        HhDtoShort hhDtoShort = hhRepository.findByUserId(userId).orElseThrow(() ->
+                new NotFoundException(String.format("Not found %s with userId: %s", Hh.class.getSimpleName(), userId)));
         return hhDtoShort.getId();
     }
 }

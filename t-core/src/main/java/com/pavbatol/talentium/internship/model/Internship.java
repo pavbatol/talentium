@@ -60,7 +60,7 @@ public class Internship {
     Integer participantLimit;
 
     @Column(name = "confirmed_requests", columnDefinition = "BIGINT DEFAULT 0", nullable = false)
-    Long confirmedRequests;
+    Integer confirmedRequests;
 
     @Column(name = "created_on", nullable = false)
     LocalDateTime createdOn;

@@ -77,7 +77,7 @@ FROM (VALUES (11, 'student_1@aaa.bb', 'first_name_student_1', 'secondName_studen
              (12, 'student_2@aaa.bb', 'first_name_student_2', 'secondName_student_2', 'CANDIDATE', null,  1, 1, 0, NOW(), false),
              (13, 'student_3@aaa.bb', 'first_name_student_3', 'secondName_student_3', 'CANDIDATE', null,  1, 2, 0, NOW(), false))
          AS v(user_id, email, first_name, second_name, position, level,  mentor_id, management_id, rate, registered_on, deleted)
-WHERE NOT EXISTS (SELECT 1 FROM mentors WHERE user_id = v.user_id);
+WHERE NOT EXISTS (SELECT 1 FROM students WHERE user_id = v.user_id);
 
 --internships
 insert into internships(title, annotation, description, initiator_id, management_id, latitude, longitude, age_from, age_to, participant_limit, confirmed_requests, start_date, end_date, day_duration, state)

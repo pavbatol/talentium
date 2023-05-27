@@ -108,7 +108,7 @@ create table if not exists internships
     age_from           integer                                   not null,
     age_to             integer                                   not null,
     participant_limit  integer default 0                         not null,
-    confirmed_requests bigint  default 0                         not null,
+    confirmed_requests integer default 0                         not null,
     created_on         timestamp without time zone default now() not null,
     published_on       timestamp without time zone,
     start_date         timestamp without time zone               not null,
