@@ -49,15 +49,4 @@ public class PrivateInternshipController {
         InternshipDtoResponse body = internshipService.update(servletRequest, internshipId, dto);
         return ResponseEntity.ok(body);
     }
-
-//    @PreAuthorize(HAS_ROLE_HH)
-//    @DeleteMapping("/{internshipId}")
-//    @SecurityRequirement(name = "JWT")
-//    @Operation(summary = "remove", description = "deleting a Internship")
-//    public ResponseEntity<Void> remove(HttpServletRequest servletRequest,
-//                                       @PathVariable("internshipId") Long internshipId) {
-//        log.debug("DELETE remove() with userId {}", internshipId);
-//        internshipService.remove(servletRequest, internshipId);
-//        return ResponseEntity.noContent().build();
-//    }
 }

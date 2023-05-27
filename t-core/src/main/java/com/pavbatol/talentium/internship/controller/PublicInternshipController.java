@@ -22,10 +22,9 @@ import java.util.List;
 @RequestMapping("/internships")
 @Tag(name = "Public: Internship", description = "API for working with Internships ")
 public class PublicInternshipController {
-    public static final String IS_AUTHENTICATED = "isAuthenticated()";
     private final InternshipService internshipService;
 
-    @PreAuthorize(IS_AUTHENTICATED)
+    @PreAuthorize("permitAll()")
     @GetMapping("/{internshipId}")
     @SecurityRequirement(name = "JWT")
     @Operation(summary = "findById", description = "getting a Internship by Id")
@@ -35,7 +34,7 @@ public class PublicInternshipController {
         return ResponseEntity.ok(body);
     }
 
-    @PreAuthorize(IS_AUTHENTICATED)
+    @PreAuthorize("permitAll()")
     @GetMapping
     @SecurityRequirement(name = "JWT")
     @Operation(summary = "findAll", description = "find all Internships getting page by page")
