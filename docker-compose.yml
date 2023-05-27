@@ -1,0 +1,66 @@
+version: '3.1'
+
+services:
+  auth-service:
+    build: ./t-auth
+    image: t-auth
+    container_name: t-auth
+    ports:
+      - "8078:8078"
+      - "8079:8079"
+    depends_on:
+      - auth-db
+      - auth-redis-db
+    environment:
+      - APP_DB_HOST=auth-db
+      - APP_DB_PORT=5432
+      - APP_DB_NAME=t-auth
+      - APP_DB_USER=root
+      - APP_DB_PASSWORD=root
+      - APP_AUTH_CORE_URL=http://core-service:8080
+      - SPRING_PROFILES_ACTIVE=default
+      - REDIS_HOST=auth-redis-db
+
+  auth-redis-db:
+    image: redis:latest
+    container_name: t-auth-redis-db
+    ports:
+      - "6380:6379"
+
+  auth-db:
+    image: postgres:14-alpine
+    container_name: t-auth-db
+    ports:
+      - "5799:5432"
+    environment:
+      - POSTGRES_DB=t-auth
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+
+  core-service:
+    build: ./t-core
+    image: t-core
+    container_name: t-core
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    depends_on:
+      - core-db
+    environment:
+      - APP_DB_HOST=core-db
+      - APP_DB_PORT=5432
+      - APP_DB_NAME=t-core
+      - APP_DB_USER=root
+      - APP_DB_PASSWORD=root
+      - APP_AUTH_SERVICE_URL=http://auth-service:8078
+      - SPRING_PROFILES_ACTIVE=default
+
+  core-db:
+    image: postgres:14-alpine
+    container_name: t-core-db
+    ports:
+      - "5588:5432"
+    environment:
+      - POSTGRES_DB=t-core
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
