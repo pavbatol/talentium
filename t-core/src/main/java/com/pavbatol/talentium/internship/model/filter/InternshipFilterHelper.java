@@ -8,18 +8,13 @@ import lombok.NonNull;
 
 import java.util.Collection;
 import java.util.Objects;
+import java.util.function.Predicate;
 
 public class InternshipFilterHelper {
 
-    public static java.util.function.Predicate<Object> isNullOrEmpty() {
-        return obj ->
-                Objects.isNull(obj) || (obj instanceof Collection && ((Collection<?>) obj).isEmpty());
-    }
-
     public static BooleanBuilder getInternshipBaseBooleanBuilder(@NonNull BaseInternshipSearchFilter filter) {
-        java.util.function.Predicate<Object> isNullOrEmpty = obj ->
-                Objects.isNull(obj) || (obj instanceof Collection && ((Collection<?>) obj).isEmpty());
         QInternship qInternship = QInternship.internship;
+        Predicate<Object> isNullOrEmpty = isNullOrEmpty();
         return new BooleanBuilder()
                 .and(!isNullOrEmpty.test(filter.getInitiatorIds()) ? qInternship.initiator.id.in(filter.getInitiatorIds()) : null)
                 .and(!isNullOrEmpty.test(filter.getManagementIds()) ? qInternship.management.id.in(filter.getManagementIds()) : null)
@@ -49,8 +44,14 @@ public class InternshipFilterHelper {
 
     public static BooleanBuilder getInternshipAdminBooleanBuilder(@NonNull InternshipAdminSearchFilter filter) {
         QInternship qInternship = QInternship.internship;
+        Predicate<Object> isNullOrEmpty = isNullOrEmpty();
         BooleanBuilder builder = getInternshipBaseBooleanBuilder(filter);
         return builder
-                .and(!isNullOrEmpty().test(filter.getState()) ? qInternship.state.eq(InternshipState.by(filter.getState())) : null);
+                .and(!isNullOrEmpty.test(filter.getState()) ? qInternship.state.eq(InternshipState.by(filter.getState())) : null);
+    }
+
+    private static java.util.function.Predicate<Object> isNullOrEmpty() {
+        return obj ->
+                Objects.isNull(obj) || (obj instanceof Collection && ((Collection<?>) obj).isEmpty());
     }
 }
