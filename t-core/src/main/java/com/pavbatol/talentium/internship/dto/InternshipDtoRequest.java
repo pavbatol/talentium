@@ -1,6 +1,5 @@
 package com.pavbatol.talentium.internship.dto;
 
-import com.pavbatol.talentium.hh.dto.HhDtoShort;
 import com.pavbatol.talentium.internship.model.enums.WorkingDayDuration;
 import com.pavbatol.talentium.management.dto.ManagementDtoShort;
 import jakarta.validation.constraints.*;

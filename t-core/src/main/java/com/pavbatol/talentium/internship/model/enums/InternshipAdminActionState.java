@@ -1,8 +1,8 @@
 package com.pavbatol.talentium.internship.model.enums;
 
 public enum InternshipAdminActionState {
-    PUBLISH_EVENT,
-    REJECT_EVENT;
+    PUBLISH_INTERNSHIP,
+    REJECT_INTERNSHIP;
 
     public static InternshipAdminActionState by(String stateName) {
         try {

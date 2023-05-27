@@ -1,8 +1,8 @@
 package com.pavbatol.talentium.internship.controller;
 
 import com.pavbatol.talentium.internship.dto.InternshipDtoResponse;
+import com.pavbatol.talentium.internship.model.enums.InternshipAdminActionState;
 import com.pavbatol.talentium.internship.model.enums.InternshipSort;
-import com.pavbatol.talentium.internship.model.enums.InternshipState;
 import com.pavbatol.talentium.internship.model.filter.InternshipAdminSearchFilter;
 import com.pavbatol.talentium.internship.service.InternshipService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -33,9 +33,10 @@ public class AdminInternshipController {
     @Operation(summary = "update", description = "Internship update")
     public ResponseEntity<InternshipDtoResponse> updateState(HttpServletRequest servletRequest,
                                                              @PathVariable("internshipId") Long internshipId,
-                                                             @RequestParam(value = "state") String state) {
-        log.debug("PATCH update() with userId {}, state {}", internshipId, state);
-        InternshipDtoResponse body = internshipService.updateState(servletRequest, internshipId, InternshipState.by(state));
+                                                             @RequestParam(value = "actionState") String actionState) {
+        log.debug("PATCH update() with userId {}, state {}", internshipId, actionState);
+        InternshipDtoResponse body =
+                internshipService.updateState(servletRequest, internshipId, InternshipAdminActionState.by(actionState));
         return ResponseEntity.ok(body);
     }
 

@@ -12,6 +12,7 @@ import com.pavbatol.talentium.internship.dto.InternshipDtoResponse;
 import com.pavbatol.talentium.internship.dto.InternshipDtoUpdate;
 import com.pavbatol.talentium.internship.mapper.InternshipMapper;
 import com.pavbatol.talentium.internship.model.Internship;
+import com.pavbatol.talentium.internship.model.enums.InternshipAdminActionState;
 import com.pavbatol.talentium.internship.model.enums.InternshipSort;
 import com.pavbatol.talentium.internship.model.enums.InternshipState;
 import com.pavbatol.talentium.internship.model.filter.InternshipAdminSearchFilter;
@@ -65,9 +66,23 @@ public class InternshipServiceImpl implements InternshipService {
     }
 
     @Override
-    public InternshipDtoResponse updateState(HttpServletRequest servletRequest, Long internshipId, InternshipState state) {
+    public InternshipDtoResponse updateState(HttpServletRequest servletRequest, Long internshipId, InternshipAdminActionState actionState) {
         Internship entity = Checker.getNonNullObject(internshipRepository, internshipId);
-        entity.setState(state);
+        switch (entity.getState()) {
+            case PENDING:
+                entity.setState(actionState == InternshipAdminActionState.PUBLISH_INTERNSHIP
+                        ? InternshipState.PUBLISHED
+                        : InternshipState.CANCELED);
+                break;
+            case PUBLISHED:
+                if (actionState == InternshipAdminActionState.PUBLISH_INTERNSHIP) {
+                    throw new IllegalArgumentException("The internship has already been published");
+                } else {
+                    throw new IllegalArgumentException("You cannot cancel a published internship");
+                }
+            case CANCELED:
+                throw new IllegalArgumentException("The internship has been canceled, all actions are prohibited");
+        }
         Internship updated = internshipRepository.save(entity);
         log.debug("Updated {}: {}", ENTITY_SIMPLE_NAME, updated);
         return internshipMapper.toResponseDto(updated);
