@@ -72,7 +72,7 @@ create table if not exists mentors
 );
 
 create sequence if not exists seq_students minvalue 0 start with 0 increment 1;
-create table students
+create table if not exists students
 (
     student_id    bigint default nextval('seq_students')   not null,
     user_id       bigint,
@@ -93,4 +93,31 @@ create table students
     constraint fk_students_on_mentor foreign key (mentor_id) references mentors (mentor_id),
     constraint fk_students_on_management foreign key (management_id) references managements (management_id)
 );
+
+create sequence if not exists seq_internships minvalue 0 start with 0 increment 1;
+create table if not exists internships
+(
+    internship_id      bigint default nextVal('seq_internships') not null,
+    title              varchar(120)                              not null,
+    annotation         varchar(2000)                             not null,
+    description        varchar(7000)                             not null,
+    initiator_id       bigint,
+    management_id      bigint,
+    latitude           double precision                          not null,
+    longitude          double precision                          not null,
+    age_from           integer                                   not null,
+    age_to             integer                                   not null,
+    participant_limit  integer default 0                         not null,
+    confirmed_requests bigint  default 0                         not null,
+    created_on         timestamp without time zone default now() not null,
+    published_on       timestamp without time zone,
+    start_date         timestamp without time zone               not null,
+    end_date           timestamp without time zone               not null,
+    day_duration       varchar(255)                              not null,
+    state              varchar(255)                              not null,
+    constraint pk_internships primary key (internship_id),
+    constraint fk_internships_on_initiator foreign key (initiator_id) references hhs (hh_id),
+    constraint fk_internships_on_management foreign key (management_id) references managements (management_id)
+);
+
 

@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
 public class Internship {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "internships_id", nullable = false)
+    @Column(name = "internship_id", nullable = false)
     Long id;
 
     @Column(name = "title", length = 120, nullable = false)
@@ -68,10 +68,10 @@ public class Internship {
     @Column(name = "published_on")
     LocalDateTime publishedOn;
 
-    @Column(name = "start_date")
+    @Column(name = "start_date", nullable = false)
     LocalDateTime startDate;
 
-    @Column(name = "end_date")
+    @Column(name = "end_date", nullable = false)
     LocalDateTime endDate;
 
     @Enumerated(EnumType.STRING)

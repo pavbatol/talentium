@@ -43,10 +43,34 @@ FROM (VALUES (8, 'mentor_1@aaa.bb', 'first_name_mentor_1', 'secondName_mentor_1'
 WHERE NOT EXISTS (SELECT 1 FROM mentors WHERE user_id = v.user_id);
 
 --students
-INSERT INTO students(user_id, email, first_name, second_name, position, level,  mentor_id, management_id, rate, registered_on, deleted)
-SELECT *
-FROM (VALUES (11, 'student_1@aaa.bb', 'first_name_student_1', 'secondName_student_1', 'CANDIDATE', null,  0, 0, 0, NOW(), false),
-             (12, 'student_2@aaa.bb', 'first_name_student_2', 'secondName_student_2', 'CANDIDATE', null,  1, 1, 0, NOW(), false),
-             (13, 'student_3@aaa.bb', 'first_name_student_3', 'secondName_student_3', 'CANDIDATE', null,  1, 2, 0, NOW(), false))
-         AS v(user_id, email, first_name, second_name, position, level,  mentor_id, management_id, rate, registered_on, deleted)
-WHERE NOT EXISTS (SELECT 1 FROM mentors WHERE user_id = v.user_id);
+insert into students(user_id, email, first_name, second_name, position, level,  mentor_id, management_id, rate, registered_on, deleted)
+select *
+from (values (11, 'student_1@aaa.bb', 'first_name_student_1', 'secondName_student_1', 'CANDIDATE', null,  0, 0, 0, now(), false),
+             (12, 'student_2@aaa.bb', 'first_name_student_2', 'secondName_student_2', 'CANDIDATE', null,  1, 1, 0, now(), false),
+             (13, 'student_3@aaa.bb', 'first_name_student_3', 'secondName_student_3', 'CANDIDATE', null,  1, 2, 0, now(), false))
+         as v(user_id, email, first_name, second_name, position, level,  mentor_id, management_id, rate, registered_on, deleted)
+where not exists (select 1 from mentors where user_id = v.user_id);
+
+--internships
+insert into internships(title, annotation, description, initiator_id, management_id, latitude, longitude, age_from, age_to, participant_limit, confirmed_requests, start_date, end_date, day_duration, state)
+select
+    'title_1', 'annotation_1', 'description', 0, 0, 55.7558, 37.6173, 18, 35, 4000, 0,
+    CAST('2029-05-27T11:55:48.680' AS timestamp),
+    CAST('2029-11-27T11:55:48.680' AS timestamp),
+    'HALF', 'PENDING'
+where not exists (select 1 from internships  where internship_id  = 0);
+insert into internships(title, annotation, description, initiator_id, management_id, latitude, longitude, age_from, age_to, participant_limit, confirmed_requests, start_date, end_date, day_duration, state)
+select
+    'title_2', 'annotation_2', 'description', 1, 1, 55.7558, 37.6173, 18, 40, 5000, 0,
+    CAST('2030-05-27T11:55:48.680' AS timestamp),
+    CAST('2030-11-27T11:55:48.680' AS timestamp),
+    'HALF', 'PENDING'
+where not exists (select 1 from internships where internship_id = 1);
+insert into internships(title, annotation, description, initiator_id, management_id, latitude, longitude, age_from, age_to, participant_limit, confirmed_requests, start_date, end_date, day_duration, state)
+select
+    'title_3', 'annotation_3', 'description', 1, 2, 55.7558, 37.6173, 18, 45, 6000, 0,
+    CAST('2031-05-27T11:55:48.680' AS timestamp),
+    CAST('2031-11-27T11:55:48.680' AS timestamp),
+    'HALF', 'PENDING'
+where not exists (select 1 from internships where internship_id = 2);
+
