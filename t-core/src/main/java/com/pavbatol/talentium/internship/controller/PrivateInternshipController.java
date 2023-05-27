@@ -20,9 +20,10 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/nunters/internships")
+@RequestMapping("/hunters/internships")
 @Tag(name = "Private: Internship", description = "API for working with Internships ")
 public class PrivateInternshipController {
+    public static final String HAS_ANY_ROLE_CURATOR_ADMIN = "hasAnyRole('HH', 'ADMIN')";
     public static final String HAS_ROLE_HH = "hasRole('HH')";
     private final InternshipService internshipService;
 
@@ -37,7 +38,7 @@ public class PrivateInternshipController {
         return ResponseEntity.status(HttpStatus.CREATED).body(body);
     }
 
-    @PreAuthorize(HAS_ROLE_HH)
+    @PreAuthorize(HAS_ANY_ROLE_CURATOR_ADMIN)
     @PatchMapping("/{internshipId}")
     @SecurityRequirement(name = "JWT")
     @Operation(summary = "update", description = "Internship update")
@@ -49,14 +50,14 @@ public class PrivateInternshipController {
         return ResponseEntity.ok(body);
     }
 
-    @PreAuthorize(HAS_ROLE_HH)
-    @DeleteMapping("/{internshipId}")
-    @SecurityRequirement(name = "JWT")
-    @Operation(summary = "remove", description = "deleting a Internship")
-    public ResponseEntity<Void> remove(HttpServletRequest servletRequest,
-                                       @PathVariable("internshipId") Long internshipId) {
-        log.debug("DELETE remove() with userId {}", internshipId);
-        internshipService.remove(servletRequest, internshipId);
-        return ResponseEntity.noContent().build();
-    }
+//    @PreAuthorize(HAS_ROLE_HH)
+//    @DeleteMapping("/{internshipId}")
+//    @SecurityRequirement(name = "JWT")
+//    @Operation(summary = "remove", description = "deleting a Internship")
+//    public ResponseEntity<Void> remove(HttpServletRequest servletRequest,
+//                                       @PathVariable("internshipId") Long internshipId) {
+//        log.debug("DELETE remove() with userId {}", internshipId);
+//        internshipService.remove(servletRequest, internshipId);
+//        return ResponseEntity.noContent().build();
+//    }
 }

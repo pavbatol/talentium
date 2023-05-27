@@ -15,8 +15,6 @@ public interface InternshipService {
 
     InternshipDtoResponse update(HttpServletRequest servletRequest, Long internshipId, InternshipDtoUpdate dto);
 
-    void remove(HttpServletRequest servletRequest, Long internshipId);
-
     InternshipDtoResponse findById(Long internshipId);
 
     List<InternshipDtoResponse> findAll(InternshipSearchFilter filter,

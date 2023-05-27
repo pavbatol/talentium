@@ -45,6 +45,7 @@ public class InternshipDtoRequest {
     Integer participantLimit;
 
     @NotNull
+    @Future
     LocalDateTime startDate;
 
     @NotNull
