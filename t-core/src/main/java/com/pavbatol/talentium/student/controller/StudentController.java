@@ -25,11 +25,11 @@ import java.util.List;
 @RequestMapping("/students")
 @Tag(name = "Private: Student", description = "API for working with Students ")
 public class StudentController {
-    public static final String HAS_ANY_ROLE_CURATOR_ADMIN = "hasAnyRole('STUDENT', 'ADMIN')";
+    public static final String HAS_ANY_ROLE_CANDIDATE_ADMIN = "hasAnyRole('CANDIDATE', 'ADMIN')";
     public static final String IS_AUTHENTICATED = "isAuthenticated()";
     private final StudentService studentService;
 
-    @PreAuthorize(HAS_ANY_ROLE_CURATOR_ADMIN)
+    @PreAuthorize(HAS_ANY_ROLE_CANDIDATE_ADMIN)
     @PostMapping()
     @SecurityRequirement(name = "JWT")
     @Operation(summary = "add", description = "adding a Student")
@@ -40,7 +40,7 @@ public class StudentController {
         return ResponseEntity.status(HttpStatus.CREATED).body(body);
     }
 
-    @PreAuthorize(HAS_ANY_ROLE_CURATOR_ADMIN)
+    @PreAuthorize(HAS_ANY_ROLE_CANDIDATE_ADMIN)
     @PatchMapping("/{studentId}")
     @SecurityRequirement(name = "JWT")
     @Operation(summary = "update", description = "Student update")
@@ -52,7 +52,7 @@ public class StudentController {
         return ResponseEntity.ok(body);
     }
 
-    @PreAuthorize(HAS_ANY_ROLE_CURATOR_ADMIN)
+    @PreAuthorize(HAS_ANY_ROLE_CANDIDATE_ADMIN)
     @DeleteMapping("/{studentId}")
     @SecurityRequirement(name = "JWT")
     @Operation(summary = "remove", description = "deleting a Student")

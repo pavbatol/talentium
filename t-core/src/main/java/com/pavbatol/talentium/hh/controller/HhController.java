@@ -28,11 +28,11 @@ import java.util.List;
 @Tag(name = "Private: Company", description = "API for working with companies")
 public class HhController {
 
-    public static final String HAS_ANY_ROLE_CURATOR_ADMIN = "hasAnyRole('HH', 'ADMIN')";
+    public static final String HAS_ANY_ROLE_HH_ADMIN = "hasAnyRole('HH', 'ADMIN')";
     public static final String IS_AUTHENTICATED = "isAuthenticated()";
     private final HhService hhService;
 
-    @PreAuthorize(HAS_ANY_ROLE_CURATOR_ADMIN)
+    @PreAuthorize(HAS_ANY_ROLE_HH_ADMIN)
     @PostMapping()
     @SecurityRequirement(name = "JWT")
     @Operation(summary = "add", description = "adding a hunter")
@@ -43,7 +43,7 @@ public class HhController {
         return ResponseEntity.status(HttpStatus.CREATED).body(body);
     }
 
-    @PreAuthorize(HAS_ANY_ROLE_CURATOR_ADMIN)
+    @PreAuthorize(HAS_ANY_ROLE_HH_ADMIN)
     @PatchMapping("/{hhId}")
     @SecurityRequirement(name = "JWT")
     @Operation(summary = "update", description = "hunter update")
@@ -55,7 +55,7 @@ public class HhController {
         return ResponseEntity.ok(body);
     }
 
-    @PreAuthorize(HAS_ANY_ROLE_CURATOR_ADMIN)
+    @PreAuthorize(HAS_ANY_ROLE_HH_ADMIN)
     @DeleteMapping("/{hhId}")
     @SecurityRequirement(name = "JWT")
     @Operation(summary = "remove", description = "deleting a hunter")

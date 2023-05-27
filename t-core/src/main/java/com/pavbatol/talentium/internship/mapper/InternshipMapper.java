@@ -36,7 +36,7 @@ public interface InternshipMapper {
     @Mapping(target = "createdOn", ignore = true)
     @Mapping(target = "publishedOn", ignore = true)
     @Mapping(target = "state", ignore = true)
-    @Mapping(target = "management.id", source = "management.id")
+    @Mapping(target = "management", expression = "java(new Management().setId(dto.getManagement().getId()))")
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     Internship updateEntity(InternshipDtoUpdate dto, @MappingTarget Internship entity);
 

@@ -1,9 +1,7 @@
 package com.pavbatol.talentium.student.dto;
 
 import com.pavbatol.talentium.management.dto.ManagementDtoRequest;
-import com.pavbatol.talentium.management.dto.ManagementDtoResponse;
-import com.pavbatol.talentium.mentor.dto.MentorDtoRequest;
-import com.pavbatol.talentium.mentor.dto.MentorDtoResponse;
+import com.pavbatol.talentium.mentor.dto.MentorDtoShort;
 import com.pavbatol.talentium.student.model.InternLevel;
 import com.pavbatol.talentium.student.model.StudentPosition;
 import lombok.Value;
@@ -27,7 +25,7 @@ public class StudentDtoUpdate {
 
     LocalDateTime internOn;
 
-    MentorDtoRequest mentor;
+    MentorDtoShort mentor;
 
     ManagementDtoRequest management;
 
