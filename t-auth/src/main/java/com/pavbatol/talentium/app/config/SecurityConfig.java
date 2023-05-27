@@ -28,7 +28,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     public static final String[] PUBLIC_PATHS = {
-            "/login", // TODO: 12.05.2023 for testing, must be deleted
+            "/login",
             "/auth/**",
             "/v3/api-docs.yaml",
             "/v3/api-docs/**",
@@ -81,18 +81,6 @@ public class SecurityConfig {
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
-
-//                .and()
-//                .formLogin()
-//                .loginPage("/login")
-//                .defaultSuccessUrl("/dashboard")
-//                .permitAll()
-//
-//                .and()
-//                .logout()
-//                .logoutUrl("/auth/logout")
-//                .logoutSuccessUrl("/login")
-//                .permitAll()
 
                 .and()
                 .authenticationProvider(authenticationProvider())
