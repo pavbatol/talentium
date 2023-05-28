@@ -1,0 +1,670 @@
+openapi: 3.0.1
+info:
+  title: Talent Pulls (back-service as talentium) Api
+  description: talentium
+  contact:
+    name: Pavlik Sergey
+    email: pavbatol@yandex.ru
+  version: 1.0.0
+servers:
+  - url: http://localhost:8078
+    description: Generated server url
+tags:
+  - name: 'Private: Authorization'
+    description: API for working with authorization
+  - name: 'Public: User'
+    description: API for working with User registration
+  - name: 'Admin: User'
+    description: API for working with users
+  - name: 'Public: Authorization'
+    description: API for working with authorization
+  - name: 'Admin: Authorization'
+    description: API for working with authorization
+  - name: 'Admin: Role'
+    description: API for working with roles
+paths:
+  /auth/user/registry:
+    post:
+      tags:
+        - 'Public: User'
+      summary: register
+      description: registering a new user
+      operationId: register
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDtoRegistry'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /auth/token:
+    post:
+      tags:
+        - 'Public: Authorization'
+      summary: getNewAccessToken
+      description: getting a new access token to replace the old one
+      operationId: getNewAccessToken
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthDtoRefreshRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AuthDtoResponse'
+  /auth/refresh:
+    post:
+      tags:
+        - 'Private: Authorization'
+      summary: getNewRefreshToken
+      description: getting a new refresh token to replace the old one
+      operationId: getNewRefreshToken
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthDtoRefreshRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AuthDtoResponse'
+      security:
+        - JWT: []
+  /auth/login:
+    post:
+      tags:
+        - 'Public: Authorization'
+      summary: login
+      description: checking login and password and provide access and refresh tokens
+      operationId: login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthDtoRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AuthDtoResponse'
+  /admin/user:
+    get:
+      tags:
+        - 'Admin: User'
+      summary: findAll
+      description: getting users page by page
+      operationId: findAll
+      parameters:
+        - name: from
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 10
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserDtoResponse'
+      security:
+        - JWT: []
+    post:
+      tags:
+        - 'Admin: User'
+      summary: add
+      description: adding a user
+      operationId: add
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDtoRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/UserDtoResponse'
+      security:
+        - JWT: []
+  /admin/role:
+    get:
+      tags:
+        - 'Admin: Role'
+      summary: findAll
+      description: getting roles page by page
+      operationId: findAll_1
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RoleDto'
+      security:
+        - JWT: []
+    post:
+      tags:
+        - 'Admin: Role'
+      summary: add
+      description: adding a role
+      operationId: add_1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoleDto'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RoleDto'
+      security:
+        - JWT: []
+  /private/user/{userId}:
+    patch:
+      tags:
+        - 'Admin: User'
+      summary: update
+      description: user update
+      operationId: update
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDtoUpdateShort'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/UserDtoResponse'
+      security:
+        - JWT: []
+  /admin/user/{userId}:
+    get:
+      tags:
+        - 'Admin: User'
+      summary: findById
+      description: getting a user by Id
+      operationId: findById
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/UserDtoResponse'
+      security:
+        - JWT: []
+    delete:
+      tags:
+        - 'Admin: User'
+      summary: remove
+      description: deleting a user
+      operationId: remove
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+      security:
+        - JWT: []
+    patch:
+      tags:
+        - 'Admin: User'
+      summary: update
+      description: user update
+      operationId: update_1
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDtoUpdate'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/UserDtoResponse'
+      security:
+        - JWT: []
+  /admin/role/{roleId}:
+    get:
+      tags:
+        - 'Admin: Role'
+      summary: findById
+      description: getting a role by Id
+      operationId: findById_1
+      parameters:
+        - name: roleId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RoleDto'
+      security:
+        - JWT: []
+    delete:
+      tags:
+        - 'Admin: Role'
+      summary: remove
+      description: deleting a role
+      operationId: remove_1
+      parameters:
+        - name: roleId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+      security:
+        - JWT: []
+    patch:
+      tags:
+        - 'Admin: Role'
+      summary: update
+      description: role update
+      operationId: update_2
+      parameters:
+        - name: roleId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoleDto'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RoleDto'
+      security:
+        - JWT: []
+  /auth/user/confirmation:
+    get:
+      tags:
+        - 'Public: User'
+      summary: confirmRegistration
+      description: endpoint to confirm registration
+      operationId: confirmRegistration
+      parameters:
+        - name: code
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /auth/logout:
+    get:
+      tags:
+        - 'Public: Authorization'
+      summary: logout
+      description: de - logging (let the frontend not forget to delete the access token)
+      operationId: logout
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /admin/role/acceptable:
+    get:
+      tags:
+        - 'Admin: Role'
+      summary: getAcceptableRoles
+      description: getting acceptable user roles
+      operationId: getAcceptableRoles
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  type: string
+      security:
+        - JWT: []
+  /admin/auth/secret:
+    get:
+      tags:
+        - 'Admin: Authorization'
+      summary: printRandomSecrets
+      description: printing random twu secret strings
+      operationId: printRandomSecrets
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+      security:
+        - JWT: []
+  /admin/auth/refresh:
+    delete:
+      tags:
+        - 'Admin: Authorization'
+      summary: removeAllRefreshTokens
+      description: deleting all refresh tokens
+      operationId: removeAllRefreshTokens
+      responses:
+        '200':
+          description: OK
+      security:
+        - JWT: []
+  /admin/auth/refresh/{userId}:
+    delete:
+      tags:
+        - 'Admin: Authorization'
+      summary: removeRefreshTokensByUserId
+      description: deleting all refresh tokens
+      operationId: removeRefreshTokensByUserId
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+      security:
+        - JWT: []
+components:
+  schemas:
+    Role:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        roleName:
+          type: string
+          enum:
+            - ADMIN
+            - USER
+            - CANDIDATE
+            - INTERN
+            - CURATOR
+            - MENTOR
+            - HH
+    UserDtoRegistry:
+      required:
+        - email
+        - firstName
+        - password
+        - role
+        - username
+      type: object
+      properties:
+        username:
+          pattern: ^\S{6,}$
+          type: string
+        password:
+          pattern: ^(?=\S)(?!.*\s$).{6,}$
+          type: string
+        email:
+          type: string
+        firstName:
+          pattern: ^(?!\s)(?!.*\s{2,}.*)(?!.*\s$).{2,}$
+          type: string
+        role:
+          $ref: '#/components/schemas/Role'
+    AuthDtoRefreshRequest:
+      required:
+        - refreshToken
+      type: object
+      properties:
+        refreshToken:
+          type: string
+    AuthDtoResponse:
+      type: object
+      properties:
+        type:
+          type: string
+        accessToken:
+          type: string
+        refreshToken:
+          type: string
+    AuthDtoRequest:
+      required:
+        - password
+        - username
+      type: object
+      properties:
+        username:
+          maxLength: 2147483647
+          minLength: 6
+          type: string
+        password:
+          maxLength: 2147483647
+          minLength: 6
+          type: string
+    RoleDtoShort:
+      required:
+        - id
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+          description: Name of role according Enum in server
+          example: ADMIN
+      description: Security access roles
+    UserDtoRequest:
+      required:
+        - email
+        - enabled
+        - firstName
+        - password
+        - username
+      type: object
+      properties:
+        email:
+          type: string
+        username:
+          pattern: ^\S{6,}$
+          type: string
+        password:
+          pattern: ^(?=\S)(?!.*\s$).{6,}$
+          type: string
+        enabled:
+          type: boolean
+          description: Enabled or not for security access
+          example: true
+        roles:
+          uniqueItems: true
+          type: array
+          description: Security access roles
+          items:
+            $ref: '#/components/schemas/RoleDtoShort'
+        firstName:
+          pattern: ^(?!\s)(?!.*\s{2,}.*)(?!.*\s$).{2,}$
+          type: string
+        secondName:
+          pattern: ^(?!\s)(?!.*\s{2,}.*)(?!.*\s$).{2,}$
+          type: string
+      description: JSON with user data
+    RoleDto:
+      required:
+        - name
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          readOnly: true
+        name:
+          type: string
+          description: Name of role according Enum in server
+          example: ADMIN
+      description: JSON with role data
+    UserDtoResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          readOnly: true
+        email:
+          type: string
+        username:
+          type: string
+        enabled:
+          type: boolean
+          description: Enabled or not for security access
+          example: true
+        roles:
+          uniqueItems: true
+          type: array
+          description: Security access roles
+          items:
+            $ref: '#/components/schemas/RoleDto'
+        firstName:
+          type: string
+        secondName:
+          type: string
+    UserDtoUpdateShort:
+      type: object
+      properties:
+        email:
+          pattern: .*\S.*
+          type: string
+        password:
+          pattern: .*\S{6}.*
+          type: string
+        roles:
+          uniqueItems: true
+          type: array
+          description: Security access roles
+          items:
+            $ref: '#/components/schemas/RoleDto'
+    UserDtoUpdate:
+      type: object
+      properties:
+        email:
+          pattern: .*\S.*
+          type: string
+        username:
+          pattern: .*\S{5}.*
+          type: string
+        password:
+          pattern: .*\S{6}.*
+          type: string
+        enabled:
+          type: boolean
+          description: Enabled or not for security access
+          example: true
+        roles:
+          uniqueItems: true
+          type: array
+          description: Security access roles
+          items:
+            $ref: '#/components/schemas/RoleDto'
+        firstName:
+          pattern: .*\S.*
+          type: string
+        secondName:
+          pattern: .*\S.*
+          type: string
+  securitySchemes:
+    JWT:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

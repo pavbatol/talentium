@@ -1,0 +1,1635 @@
+openapi: 3.0.1
+info:
+  title: Talent Pulls (back-service as talentium) Api
+  description: talentium
+  contact:
+    name: Pavlik Sergey
+    email: pavbatol@yandex.ru
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+    description: Generated server url
+tags:
+  - name: 'Private: Mentor'
+    description: 'API for working with Mentors '
+  - name: 'Admin: Management'
+    description: API for working with managements of department
+  - name: 'Public: Internship'
+    description: 'API for working with Internships '
+  - name: 'Private: Internship'
+    description: 'API for working with Internships '
+  - name: 'Private: Company'
+    description: API for working with companies
+  - name: 'Private: Curator'
+    description: 'API for working with Curators '
+  - name: 'Admin: Internship'
+    description: 'API for working with Internships '
+  - name: 'Private: Student'
+    description: 'API for working with Students '
+paths:
+  /students:
+    get:
+      tags:
+        - 'Private: Student'
+      summary: findAll
+      description: find all Students getting page by page
+      operationId: findAll
+      parameters:
+        - name: from
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 10
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StudentDtoResponse'
+      security:
+        - JWT: []
+    post:
+      tags:
+        - 'Private: Student'
+      summary: add
+      description: adding a Student
+      operationId: add
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StudentDtoRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/StudentDtoResponse'
+      security:
+        - JWT: []
+  /mentors:
+    get:
+      tags:
+        - 'Private: Mentor'
+      summary: findAll
+      description: find all Mentors getting page by page
+      operationId: findAll_1
+      parameters:
+        - name: from
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 10
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MentorDtoResponse'
+      security:
+        - JWT: []
+    post:
+      tags:
+        - 'Private: Mentor'
+      summary: add
+      description: adding a Mentor
+      operationId: add_1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MentorDtoRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/MentorDtoResponse'
+      security:
+        - JWT: []
+  /managements:
+    get:
+      tags:
+        - 'Admin: Management'
+      summary: findAll
+      description: getting Managements
+      operationId: findAll_2
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ManagementDtoResponse'
+      security:
+        - JWT: []
+    post:
+      tags:
+        - 'Admin: Management'
+      summary: add
+      description: adding a Management
+      operationId: add_2
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ManagementDtoRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ManagementDtoResponse'
+      security:
+        - JWT: []
+  /hunters:
+    get:
+      tags:
+        - 'Private: Company'
+      summary: findAll
+      description: Find all hunters page by page with filter and sorting
+      operationId: findAll_3
+      parameters:
+        - name: authority
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: management
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: address
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: contacts
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: sort
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: from
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 10
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/HhDtoResponse'
+      security:
+        - JWT: []
+    post:
+      tags:
+        - 'Private: Company'
+      summary: add
+      description: adding a hunter
+      operationId: add_3
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HhDtoRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/HhDtoResponse'
+      security:
+        - JWT: []
+  /hunters/internships:
+    post:
+      tags:
+        - 'Private: Internship'
+      summary: add
+      description: adding a Internship
+      operationId: add_4
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InternshipDtoRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/InternshipDtoResponse'
+      security:
+        - JWT: []
+  /curators:
+    get:
+      tags:
+        - 'Private: Curator'
+      summary: findAll
+      description: find all Curators getting page by page
+      operationId: findAll_4
+      parameters:
+        - name: from
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 10
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CuratorDtoResponse'
+      security:
+        - JWT: []
+    post:
+      tags:
+        - 'Private: Curator'
+      summary: add
+      description: adding a Curator
+      operationId: add_5
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CuratorDtoRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CuratorDtoResponse'
+      security:
+        - JWT: []
+  /students/{studentId}:
+    get:
+      tags:
+        - 'Private: Student'
+      summary: findById
+      description: getting a Student by Id
+      operationId: findById
+      parameters:
+        - name: studentId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/StudentDtoResponse'
+      security:
+        - JWT: []
+    delete:
+      tags:
+        - 'Private: Student'
+      summary: remove
+      description: deleting a Student
+      operationId: remove
+      parameters:
+        - name: studentId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+      security:
+        - JWT: []
+    patch:
+      tags:
+        - 'Private: Student'
+      summary: update
+      description: Student update
+      operationId: update
+      parameters:
+        - name: studentId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StudentDtoUpdate'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/StudentDtoResponse'
+      security:
+        - JWT: []
+  /mentors/{mentorId}:
+    get:
+      tags:
+        - 'Private: Mentor'
+      summary: findById
+      description: getting a Mentor by Id
+      operationId: findById_1
+      parameters:
+        - name: mentorId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/MentorDtoResponse'
+      security:
+        - JWT: []
+    delete:
+      tags:
+        - 'Private: Mentor'
+      summary: remove
+      description: deleting a Mentor
+      operationId: remove_1
+      parameters:
+        - name: mentorId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+      security:
+        - JWT: []
+    patch:
+      tags:
+        - 'Private: Mentor'
+      summary: update
+      description: Mentor update
+      operationId: update_1
+      parameters:
+        - name: mentorId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MentorDtoUpdate'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/MentorDtoResponse'
+      security:
+        - JWT: []
+  /managements/{managementId}:
+    get:
+      tags:
+        - 'Admin: Management'
+      summary: findById
+      description: getting a Management by Id
+      operationId: findById_2
+      parameters:
+        - name: managementId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ManagementDtoResponse'
+      security:
+        - JWT: []
+    delete:
+      tags:
+        - 'Admin: Management'
+      summary: remove
+      description: deleting a Management
+      operationId: remove_2
+      parameters:
+        - name: managementId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+      security:
+        - JWT: []
+    patch:
+      tags:
+        - 'Admin: Management'
+      summary: update
+      description: Management update
+      operationId: update_2
+      parameters:
+        - name: managementId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ManagementDtoUpdate'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ManagementDtoResponse'
+      security:
+        - JWT: []
+  /hunters/{hhId}:
+    get:
+      tags:
+        - 'Private: Company'
+      summary: findById
+      description: getting a hunter by Id
+      operationId: findById_4
+      parameters:
+        - name: hhId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/HhDtoResponse'
+      security:
+        - JWT: []
+    delete:
+      tags:
+        - 'Private: Company'
+      summary: remove
+      description: deleting a hunter
+      operationId: remove_3
+      parameters:
+        - name: hhId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+      security:
+        - JWT: []
+    patch:
+      tags:
+        - 'Private: Company'
+      summary: update
+      description: hunter update
+      operationId: update_3
+      parameters:
+        - name: hhId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HhDtoUpdate'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/HhDtoResponse'
+      security:
+        - JWT: []
+  /hunters/internships/{internshipId}:
+    patch:
+      tags:
+        - 'Private: Internship'
+      summary: update
+      description: Internship update
+      operationId: update_4
+      parameters:
+        - name: internshipId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InternshipDtoUpdate'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/InternshipDtoResponse'
+      security:
+        - JWT: []
+  /curators/{curatorId}:
+    get:
+      tags:
+        - 'Private: Curator'
+      summary: findById
+      description: getting a Curator by Id
+      operationId: findById_5
+      parameters:
+        - name: curatorId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CuratorDtoResponse'
+      security:
+        - JWT: []
+    delete:
+      tags:
+        - 'Private: Curator'
+      summary: remove
+      description: deleting a Curator
+      operationId: remove_4
+      parameters:
+        - name: curatorId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+      security:
+        - JWT: []
+    patch:
+      tags:
+        - 'Private: Curator'
+      summary: update
+      description: Curator update
+      operationId: update_5
+      parameters:
+        - name: curatorId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CuratorDtoUpdate'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CuratorDtoResponse'
+      security:
+        - JWT: []
+  /admin/internships/{internshipId}:
+    patch:
+      tags:
+        - 'Admin: Internship'
+      summary: update
+      description: Internship update
+      operationId: updateState
+      parameters:
+        - name: internshipId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: actionState
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/InternshipDtoResponse'
+      security:
+        - JWT: []
+  /internships:
+    get:
+      tags:
+        - 'Public: Internship'
+      summary: findAll
+      description: find all Internships getting page by page
+      operationId: findAllByFilter
+      parameters:
+        - name: filter
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/InternshipPublicSearchFilter'
+        - name: from
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 10
+        - name: sort
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InternshipDtoResponse'
+  /internships/{internshipId}:
+    get:
+      tags:
+        - 'Public: Internship'
+      summary: findById
+      description: getting a Internship by Id
+      operationId: findById_3
+      parameters:
+        - name: internshipId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/InternshipDtoResponse'
+  /admin/internships:
+    get:
+      tags:
+        - 'Admin: Internship'
+      summary: findAll
+      description: find all Internships getting page by page
+      operationId: findAllByFilter_1
+      parameters:
+        - name: filter
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/InternshipAdminSearchFilter'
+        - name: from
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 10
+        - name: sort
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InternshipDtoResponse'
+      security:
+        - JWT: []
+components:
+  schemas:
+    ManagementDtoRequest:
+      required:
+        - name
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+    StudentDtoRequest:
+      required:
+        - email
+        - firstName
+        - secondName
+      type: object
+      properties:
+        userId:
+          type: integer
+          format: int64
+        email:
+          type: string
+        firstName:
+          pattern: ^(?!\s)(?!.*\s{2,}.*)(?!.*\s$).{2,}$
+          type: string
+        secondName:
+          pattern: ^(?!\s)(?!.*\s{2,}.*)(?!.*\s$).{2,}$
+          type: string
+        management:
+          $ref: '#/components/schemas/ManagementDtoRequest'
+    HhDtoResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        userId:
+          type: integer
+          format: int64
+        email:
+          type: string
+        firstName:
+          type: string
+        secondName:
+          type: string
+        authority:
+          type: string
+        managements:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/ManagementDtoResponse'
+        address:
+          type: string
+        contacts:
+          type: string
+        rate:
+          type: integer
+          format: int32
+    ManagementDtoResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+    MentorDtoResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        userId:
+          type: integer
+          format: int64
+        email:
+          type: string
+        firstName:
+          type: string
+        secondName:
+          type: string
+        rate:
+          type: integer
+          format: int32
+        registeredOn:
+          type: string
+          format: date-time
+        deleted:
+          type: boolean
+        owner:
+          $ref: '#/components/schemas/HhDtoResponse'
+        management:
+          $ref: '#/components/schemas/ManagementDtoResponse'
+    StudentDtoResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        userId:
+          type: integer
+          format: int64
+        email:
+          type: string
+        firstName:
+          type: string
+        secondName:
+          type: string
+        position:
+          type: string
+          enum:
+            - CANDIDATE
+            - INVITEE
+            - LEARNER
+            - CONTESTANT
+            - CHALLENGER
+            - INTERN
+        level:
+          type: string
+          enum:
+            - BEGINNER
+            - INTERMEDIATE
+            - ADVANCED
+        internOn:
+          type: string
+          format: date-time
+        mentor:
+          $ref: '#/components/schemas/MentorDtoResponse'
+        management:
+          $ref: '#/components/schemas/ManagementDtoResponse'
+        rate:
+          type: integer
+          format: int32
+        registeredOn:
+          type: string
+          format: date-time
+    Hh:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        userId:
+          type: integer
+          format: int64
+        email:
+          type: string
+        firstName:
+          type: string
+        secondName:
+          type: string
+        authority:
+          type: string
+        managements:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/Management'
+        address:
+          type: string
+        contacts:
+          type: string
+        registeredOn:
+          type: string
+          format: date-time
+        rate:
+          type: integer
+          format: int32
+        deleted:
+          type: boolean
+        feedbacks:
+          type: array
+          items:
+            $ref: '#/components/schemas/HhFeedback'
+    HhFeedback:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        hh:
+          $ref: '#/components/schemas/Hh'
+        student:
+          $ref: '#/components/schemas/Student'
+        text:
+          type: string
+        rate:
+          type: integer
+          format: int32
+    Management:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+    Mentor:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        userId:
+          type: integer
+          format: int64
+        email:
+          type: string
+        firstName:
+          type: string
+        secondName:
+          type: string
+        rate:
+          type: integer
+          format: int32
+        registeredOn:
+          type: string
+          format: date-time
+        deleted:
+          type: boolean
+        owner:
+          $ref: '#/components/schemas/Hh'
+        management:
+          $ref: '#/components/schemas/Management'
+        students:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/Student'
+        feedbacks:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/MentorFeedback'
+    MentorDtoRequest:
+      required:
+        - email
+        - firstName
+        - management
+        - owner
+        - secondName
+      type: object
+      properties:
+        userId:
+          type: integer
+          format: int64
+        email:
+          type: string
+        firstName:
+          pattern: ^(?!\s)(?!.*\s{2,}.*)(?!.*\s$).{2,}$
+          type: string
+        secondName:
+          pattern: ^(?!\s)(?!.*\s{2,}.*)(?!.*\s$).{2,}$
+          type: string
+        owner:
+          $ref: '#/components/schemas/Hh'
+        management:
+          $ref: '#/components/schemas/Management'
+    MentorFeedback:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        mentor:
+          $ref: '#/components/schemas/Mentor'
+        student:
+          $ref: '#/components/schemas/Student'
+        text:
+          type: string
+        rate:
+          type: integer
+          format: int32
+    Student:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        userId:
+          type: integer
+          format: int64
+        email:
+          type: string
+        firstName:
+          type: string
+        secondName:
+          type: string
+        position:
+          type: string
+          enum:
+            - CANDIDATE
+            - INVITEE
+            - LEARNER
+            - CONTESTANT
+            - CHALLENGER
+            - INTERN
+        level:
+          type: string
+          enum:
+            - BEGINNER
+            - INTERMEDIATE
+            - ADVANCED
+        internOn:
+          type: string
+          format: date-time
+        mentor:
+          $ref: '#/components/schemas/Mentor'
+        management:
+          $ref: '#/components/schemas/Management'
+        rate:
+          type: integer
+          format: int32
+        registeredOn:
+          type: string
+          format: date-time
+        deleted:
+          type: boolean
+        feedbacks:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/StudentFeedback'
+    StudentFeedback:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        student:
+          $ref: '#/components/schemas/Student'
+        mentor:
+          $ref: '#/components/schemas/Mentor'
+        text:
+          type: string
+        rate:
+          type: integer
+          format: int32
+    HhDtoRequest:
+      required:
+        - address
+        - authority
+        - contacts
+        - email
+        - firstName
+        - managements
+        - secondName
+      type: object
+      properties:
+        userId:
+          type: integer
+          format: int64
+        email:
+          type: string
+        firstName:
+          pattern: ^(?!\s)(?!.*\s{2,}.*)(?!.*\s$).{2,}$
+          type: string
+        secondName:
+          pattern: ^(?!\s)(?!.*\s{2,}.*)(?!.*\s$).{2,}$
+          type: string
+        authority:
+          type: string
+        managements:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/Management'
+        address:
+          type: string
+        contacts:
+          type: string
+    InternshipDtoRequest:
+      required:
+        - ageFrom
+        - ageTo
+        - annotation
+        - dayDuration
+        - description
+        - endDate
+        - latitude
+        - longitude
+        - management
+        - participantLimit
+        - startDate
+        - title
+      type: object
+      properties:
+        title:
+          maxLength: 120
+          minLength: 3
+          type: string
+        annotation:
+          maxLength: 2000
+          minLength: 20
+          type: string
+        description:
+          maxLength: 7000
+          minLength: 20
+          type: string
+        management:
+          $ref: '#/components/schemas/ManagementDtoShort'
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
+        ageFrom:
+          type: integer
+          format: int32
+        ageTo:
+          type: integer
+          format: int32
+        participantLimit:
+          type: integer
+          format: int32
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+        dayDuration:
+          type: string
+          enum:
+            - FULL
+            - HALF
+        validDates:
+          type: boolean
+    ManagementDtoShort:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+    InternshipDtoResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        title:
+          type: string
+        annotation:
+          type: string
+        description:
+          type: string
+        initiator:
+          $ref: '#/components/schemas/HhDtoResponse'
+        management:
+          $ref: '#/components/schemas/ManagementDtoResponse'
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
+        ageFrom:
+          type: integer
+          format: int32
+        ageTo:
+          type: integer
+          format: int32
+        participantLimit:
+          type: integer
+          format: int32
+        confirmedRequests:
+          type: integer
+          format: int32
+        createdOn:
+          type: string
+          format: date-time
+        publishedOn:
+          type: string
+          format: date-time
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+        dayDuration:
+          type: string
+          enum:
+            - FULL
+            - HALF
+        state:
+          type: string
+          enum:
+            - PENDING
+            - PUBLISHED
+            - CANCELED
+    CuratorDtoRequest:
+      required:
+        - email
+        - firstName
+        - owner
+        - secondName
+      type: object
+      properties:
+        userId:
+          type: integer
+          format: int64
+        email:
+          type: string
+        firstName:
+          pattern: ^(?!\s)(?!.*\s{2,}.*)(?!.*\s$).{2,}$
+          type: string
+        secondName:
+          pattern: ^(?!\s)(?!.*\s{2,}.*)(?!.*\s$).{2,}$
+          type: string
+        owner:
+          $ref: '#/components/schemas/Hh'
+    CuratorDtoResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        userId:
+          type: integer
+          format: int64
+        email:
+          type: string
+        firstName:
+          type: string
+        secondName:
+          type: string
+        registeredOn:
+          type: string
+          format: date-time
+        owner:
+          $ref: '#/components/schemas/HhDtoResponse'
+    MentorDtoShort:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        userId:
+          type: integer
+          format: int64
+    StudentDtoUpdate:
+      type: object
+      properties:
+        userId:
+          type: integer
+          format: int64
+        email:
+          type: string
+        firstName:
+          type: string
+        secondName:
+          type: string
+        position:
+          type: string
+          enum:
+            - CANDIDATE
+            - INVITEE
+            - LEARNER
+            - CONTESTANT
+            - CHALLENGER
+            - INTERN
+        level:
+          type: string
+          enum:
+            - BEGINNER
+            - INTERMEDIATE
+            - ADVANCED
+        internOn:
+          type: string
+          format: date-time
+        mentor:
+          $ref: '#/components/schemas/MentorDtoShort'
+        management:
+          $ref: '#/components/schemas/ManagementDtoRequest'
+        deleted:
+          type: boolean
+    MentorDtoUpdate:
+      type: object
+      properties:
+        email:
+          type: string
+        firstName:
+          type: string
+        secondName:
+          type: string
+        deleted:
+          type: boolean
+        owner:
+          $ref: '#/components/schemas/Hh'
+        management:
+          $ref: '#/components/schemas/Management'
+    ManagementDtoUpdate:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+    HhDtoUpdate:
+      type: object
+      properties:
+        email:
+          type: string
+        firstName:
+          pattern: ^(?!\s)(?!.*\s{2,}.*)(?!.*\s$).{2,}$
+          type: string
+        secondName:
+          pattern: ^(?!\s)(?!.*\s{2,}.*)(?!.*\s$).{2,}$
+          type: string
+        authority:
+          type: string
+        managements:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/Management'
+        address:
+          type: string
+        contacts:
+          type: string
+    InternshipDtoUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+        annotation:
+          type: string
+        description:
+          type: string
+        management:
+          $ref: '#/components/schemas/ManagementDtoShort'
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
+        ageFrom:
+          type: integer
+          format: int32
+        ageTo:
+          type: integer
+          format: int32
+        participantLimit:
+          type: integer
+          format: int32
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+        dayDuration:
+          type: string
+          enum:
+            - FULL
+            - HALF
+    CuratorDtoUpdate:
+      type: object
+      properties:
+        email:
+          type: string
+        firstName:
+          type: string
+        secondName:
+          type: string
+        owner:
+          $ref: '#/components/schemas/Hh'
+    InternshipPublicSearchFilter:
+      type: object
+      properties:
+        title:
+          type: string
+        annotation:
+          type: string
+        description:
+          type: string
+        initiatorIds:
+          type: array
+          items:
+            type: integer
+            format: int64
+        managementIds:
+          type: array
+          items:
+            type: integer
+            format: int64
+        startLatitude:
+          type: number
+          format: double
+        endLatitude:
+          type: number
+          format: double
+        startLongitude:
+          type: number
+          format: double
+        endLongitude:
+          type: number
+          format: double
+        rangeStartAgeFrom:
+          type: integer
+          format: int32
+        rangeStartAgeTo:
+          type: integer
+          format: int32
+        rangeStartPublishedOn:
+          type: string
+          format: date-time
+        rangeEndPublishedOn:
+          type: string
+          format: date-time
+        rangeStartStartDate:
+          type: string
+          format: date-time
+        rangeEndStartDate:
+          type: string
+          format: date-time
+        rangeStartEndDate:
+          type: string
+          format: date-time
+        rangeEndEndDate:
+          type: string
+          format: date-time
+        dayDuration:
+          type: string
+    InternshipAdminSearchFilter:
+      type: object
+      properties:
+        title:
+          type: string
+        annotation:
+          type: string
+        description:
+          type: string
+        initiatorIds:
+          type: array
+          items:
+            type: integer
+            format: int64
+        managementIds:
+          type: array
+          items:
+            type: integer
+            format: int64
+        startLatitude:
+          type: number
+          format: double
+        endLatitude:
+          type: number
+          format: double
+        startLongitude:
+          type: number
+          format: double
+        endLongitude:
+          type: number
+          format: double
+        rangeStartAgeFrom:
+          type: integer
+          format: int32
+        rangeStartAgeTo:
+          type: integer
+          format: int32
+        rangeStartPublishedOn:
+          type: string
+          format: date-time
+        rangeEndPublishedOn:
+          type: string
+          format: date-time
+        rangeStartStartDate:
+          type: string
+          format: date-time
+        rangeEndStartDate:
+          type: string
+          format: date-time
+        rangeStartEndDate:
+          type: string
+          format: date-time
+        rangeEndEndDate:
+          type: string
+          format: date-time
+        dayDuration:
+          type: string
+        state:
+          type: string
+  securitySchemes:
+    JWT:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
