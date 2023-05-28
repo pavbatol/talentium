@@ -33,11 +33,10 @@ public class PublicAuthController {
 
     @PostMapping("/login")
     @Operation(summary = "login", description = "checking login and password and provide access and refresh tokens")
-    public ResponseEntity<?> login(HttpServletRequest request, @Valid @RequestBody AuthDtoRequest dtoAuthRequest) {
+    public ResponseEntity<AuthDtoResponse> login(HttpServletRequest request, @Valid @RequestBody AuthDtoRequest dtoAuthRequest) {
         log.debug("POST login() with {}", dtoAuthRequest);
         AuthDtoResponse dtoAuthResponse = authService.login(request, dtoAuthRequest);
-        String body = String.format("%s\n\n%s", dtoAuthResponse.getAccessToken(), dtoAuthResponse.getRefreshToken());
-        return ResponseEntity.ok(body);
+        return ResponseEntity.ok(dtoAuthResponse);
     }
 
     @PostMapping("/token")
