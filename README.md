@@ -50,7 +50,7 @@
 ![t-core-er-diagram.png](public%2Fer-diagram%2Ft-core-er-diagram.png)
 
 ### Инструментарий
-
+  - Микро-сервисная архитектура
   - SpringBoot, Spring Security
   - JPA, HIBERNATE
   - Postgresql, Redis
@@ -66,7 +66,9 @@
     - t-core: host:8080/docs
   - specification
     - t-auth: [talentium-t-auth-openapi.yaml](public%2Fopen-api-specification%2Ftalentium-t-auth-openapi.yaml)
+    - t-auth: [Посмотреть в PDF](public%2Fopen-api-specification%2FSwagger%20U_t-auth.pdf) 
     - t-core: [talentium-t-core-openapi.yaml](public%2Fopen-api-specification%2Ftalentium-t-core-openapi.yaml)
+    - t-core: [Посмотреть в PDF](public%2Fopen-api-specification%2FSwagger%20U_t-core.pdf)
 
 ### Запуск
 - Собрать проект командой: mvn clean package
