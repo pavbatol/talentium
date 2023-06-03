@@ -78,6 +78,7 @@ public class UserServiceImpl implements UserService {
         updated = userRepository.save(updated);
         log.debug("Updated {}: {}", ENTITY_SIMPLE_NAME, updated);
         return userMapper.toResponseDto(updated);
+        // TODO: 03.06.2023 Do password update correctly
     }
 
     @Override
@@ -86,29 +87,36 @@ public class UserServiceImpl implements UserService {
         Long requesterId = jwtProvider.geUserId(servletRequest);
         User requester = getNonNullObject(userRepository, requesterId);
 
-        boolean equalsId = Objects.equals(requesterId, origUser.getId());
-        boolean origHasOnlyCandidate = origUser.getRoles().stream()
-                .map(Role::getRoleName).noneMatch(roleName -> roleName != RoleName.CANDIDATE);
-        boolean dtoHasOnlyIntern = dto.getRoles().stream()
-                .map(RoleDto::getName).allMatch(s -> RoleName.INTERN.name().equals(s));
-
-        Set<RoleName> requesterRoleNames = requester.getRoles().stream()
-                .map(Role::getRoleName).collect(Collectors.toSet());
         User updated;
-        if (requesterRoleNames.contains(RoleName.ADMIN)
-                || (requesterRoleNames.contains(RoleName.MENTOR) && (origHasOnlyCandidate && dtoHasOnlyIntern))
-        ) {
-            updated = userMapper.updateEntity(dto, origUser);
-        } else if (equalsId) {
-            updated = userMapper.updateEntityWithoutRole(dto, origUser);
+        boolean equalsId = Objects.equals(requesterId, origUser.getId());
+        if (Objects.nonNull(dto.getRoles())) {
+            boolean origHasOnlyCandidate = origUser.getRoles().stream()
+                    .map(Role::getRoleName).noneMatch(roleName -> roleName != RoleName.CANDIDATE);
+            boolean dtoHasOnlyIntern = dto.getRoles().stream()
+                    .map(RoleDto::getName).allMatch(s -> RoleName.INTERN.name().equals(s));
+
+            Set<RoleName> requesterRoleNames = requester.getRoles().stream()
+                    .map(Role::getRoleName).collect(Collectors.toSet());
+
+            if (requesterRoleNames.contains(RoleName.ADMIN)
+                    || (requesterRoleNames.contains(RoleName.MENTOR) && (origHasOnlyCandidate && dtoHasOnlyIntern))
+            ) {
+                updated = userMapper.updateEntity(dto, origUser);
+            } else if (equalsId) {
+                updated = userMapper.updateEntityWithoutRole(dto, origUser);
+            } else {
+                log.debug("No condition for updating {}: {}", ENTITY_SIMPLE_NAME, origUser);
+                throw new BadRequestException("No condition for updating " + ENTITY_SIMPLE_NAME + ". You cannot update roles " +
+                        "except for the candidate and you can only change your own data");
+            }
         } else {
-            updated = origUser;
-            log.debug("No condition for updating {}: {}", ENTITY_SIMPLE_NAME, origUser);
-            throw new BadRequestException("No condition for updating " + ENTITY_SIMPLE_NAME + ". You cannot update roles " +
-                    "except for the candidate and you can only change your own data");
+            updated = userMapper.updateEntityWithoutRole(dto, origUser);
         }
+
+        updated = userRepository.save(updated);
         log.debug("Updated {}: {}", ENTITY_SIMPLE_NAME, updated);
         return userMapper.toResponseDto(updated);
+        // TODO: 03.06.2023 Do password update correctly
     }
 
     @Override

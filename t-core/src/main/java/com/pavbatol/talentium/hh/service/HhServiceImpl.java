@@ -1,6 +1,9 @@
 package com.pavbatol.talentium.hh.service;
 
+import com.pavbatol.talentium.app.client.AuthUserClient;
+import com.pavbatol.talentium.app.client.UserDtoUpdateShort;
 import com.pavbatol.talentium.app.exception.NotEnoughRightsException;
+import com.pavbatol.talentium.app.exception.NotFoundException;
 import com.pavbatol.talentium.app.exception.ValidationException;
 import com.pavbatol.talentium.app.util.Checker;
 import com.pavbatol.talentium.app.util.ServiceUtils;
@@ -24,9 +27,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -43,6 +48,7 @@ public class HhServiceImpl implements HhService {
     private final JwtProvider jwtProvider;
     private final HhMapper hhMapper;
     private final HHRepository hhRepository;
+    private final AuthUserClient authUserClient;
 
     @Override
     public HhDtoResponse add(HttpServletRequest servletRequest, HhDtoRequest dto) {
@@ -62,12 +68,55 @@ public class HhServiceImpl implements HhService {
         return hhMapper.toResponseDto(saved);
     }
 
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public HhDtoResponse update(HttpServletRequest servletRequest, Long hhId, HhDtoUpdate dto) {
         Long userId = getUserId(servletRequest);
         Hh entity = Checker.getNonNullObject(hhRepository, hhId);
         checkIdsEqualOrAdminRole(servletRequest, userId, entity);
+
+        boolean emailChanged = Objects.nonNull(dto.getEmail()) && !entity.getEmail().equals(dto.getEmail());
+        boolean firstNameChanged = Objects.nonNull(dto.getFirstName()) && !entity.getFirstName().equals(dto.getFirstName());
+        boolean secondNameChanged = Objects.nonNull(dto.getSecondName()) && !entity.getSecondName().equals(dto.getSecondName());
+        String token = jwtProvider.resolveToken(servletRequest).orElseThrow(() -> new NotFoundException("Token not found"));
+        if (emailChanged || firstNameChanged || secondNameChanged) {
+            Mono<ResponseEntity<String>> entityMono = authUserClient.update(entity.getUserId(), token,
+                    new UserDtoUpdateShort(dto.getEmail(), null));
+            ResponseEntity<String> responseEntity = entityMono.block();
+            assert responseEntity != null;
+            if (!responseEntity.getStatusCode().is2xxSuccessful()) {
+                throw new RuntimeException("Failed to update User in Auth service");
+            }
+
+//            entityMono
+////                    .onErrorMap(WebClientResponseException.class, ex -> new RuntimeException("An error has occurred", ex))
+//                    .subscribe(responseEntity -> {
+//                        if (responseEntity.getStatusCode().is2xxSuccessful()) {
+//                            log.debug("The update operation successful in the 'auth' service");
+//
+//                            Hh updated = hhMapper.updateEntity(dto, entity);
+//                            updated = hhRepository.save(updated);
+//                            log.debug("Updated {}: {}", ENTITY_SIMPLE_NAME, updated);
+//
+//                        } else {
+//                            log.debug("The update operation failed in the 'auth' service");
+////                    throw new RuntimeException("The update operation failed in the 'auth' service");
+//                        }
+//                    });
+
+//            CompletableFuture<ResponseEntity<String>> future = entityMono.toFuture();
+//            future.thenApplyAsync(responseEntity -> {
+//                if (!responseEntity.getStatusCode().is2xxSuccessful()) {
+//                    throw new RuntimeException("Failed to update user in Auth service");
+//                }
+//
+//                Hh updated = hhMapper.updateEntity(dto, entity);
+//                updated = hhRepository.save(updated);
+//                log.debug("Updated {}: {}", ENTITY_SIMPLE_NAME, updated);
+//                return hhMapper.toResponseDto(updated);
+//            });
+        }
+
         Hh updated = hhMapper.updateEntity(dto, entity);
         updated = hhRepository.save(updated);
         log.debug("Updated {}: {}", ENTITY_SIMPLE_NAME, updated);
