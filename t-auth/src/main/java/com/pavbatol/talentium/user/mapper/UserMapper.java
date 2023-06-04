@@ -3,6 +3,8 @@ package com.pavbatol.talentium.user.mapper;
 import com.pavbatol.talentium.app.util.BaseMapper;
 import com.pavbatol.talentium.role.mapper.RoleMapper;
 import com.pavbatol.talentium.role.model.Role;
+import com.pavbatol.talentium.shared.auth.dto.UserDtoUpdateInsensitiveData;
+import com.pavbatol.talentium.shared.auth.dto.UserDtoUpdateSensitiveData;
 import com.pavbatol.talentium.user.dto.*;
 import com.pavbatol.talentium.user.model.User;
 import org.mapstruct.*;
@@ -29,16 +31,24 @@ public interface UserMapper extends BaseMapper<User, UserDtoRequest> {
         return Set.of(role);
     }
 
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "username", ignore = true)
+    @Mapping(target = "password", ignore = true)
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     User updateEntity(UserDtoUpdate dto, @MappingTarget User targetEntity);
 
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "username", ignore = true)
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    User updateEntity(UserDtoUpdateShort dto, @MappingTarget User targetEntity);
+    User updateEntity(UserDtoUpdateSensitiveData dto, @MappingTarget User targetEntity);
 
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "username", ignore = true)
+    @Mapping(target = "password", ignore = true)
     @Mapping(target = "roles", ignore = true)
+    @Mapping(target = "enabled", ignore = true)
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    User updateEntityWithoutRole(UserDtoUpdateShort dto, @MappingTarget User targetEntity);
-
+    User updateEntity(UserDtoUpdateInsensitiveData dto, @MappingTarget User targetEntity);
 
     UserDtoResponse toResponseDto(User user);
 

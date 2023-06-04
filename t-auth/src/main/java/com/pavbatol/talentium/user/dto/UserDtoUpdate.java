@@ -18,9 +18,6 @@ public class UserDtoUpdate {
     @Pattern(regexp = ".*\\S{5}.*")
     String username;
 
-    @Pattern(regexp = ".*\\S{6}.*")
-    String password;
-
     @Schema(description = "Enabled or not for security access", example = "true")
     Boolean enabled;
 

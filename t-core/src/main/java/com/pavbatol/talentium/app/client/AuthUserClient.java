@@ -2,7 +2,6 @@ package com.pavbatol.talentium.app.client;
 
 import com.pavbatol.talentium.shared.auth.dto.UserDtoUpdateInsensitiveData;
 import com.pavbatol.talentium.shared.auth.dto.UserDtoUpdateSensitiveData;
-import com.pavbatol.talentium.shared.auth.dto.UserDtoUpdateShort;
 import io.netty.channel.ChannelOption;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.handler.timeout.WriteTimeoutHandler;
@@ -50,9 +49,9 @@ public class AuthUserClient extends BaseWebClient {
         );
     }
 
-    public Mono<ResponseEntity<String>> updateShort(long userId, String token, UserDtoUpdateShort dto) {
-        return patch("/" + userId, userId, token, dto);
-    }
+//    public Mono<ResponseEntity<String>> updateShort(long userId, String token, UserDtoUpdateShort dto) {
+//        return patch("/" + userId, userId, token, dto);
+//    }
 
     public Mono<ResponseEntity<String>> updateInsensitive(long userId, String token, UserDtoUpdateInsensitiveData dto) {
         return patch("/" + userId + "/insensitive", userId, token, dto);

@@ -5,10 +5,12 @@ import com.pavbatol.talentium.app.exception.NotFoundException;
 import com.pavbatol.talentium.app.util.Checker;
 import com.pavbatol.talentium.email.service.EmailService;
 import com.pavbatol.talentium.jwt.JwtProvider;
-import com.pavbatol.talentium.role.dto.RoleDto;
 import com.pavbatol.talentium.role.model.Role;
 import com.pavbatol.talentium.role.model.RoleName;
 import com.pavbatol.talentium.role.storage.RoleRepository;
+import com.pavbatol.talentium.shared.auth.dto.RoleDto;
+import com.pavbatol.talentium.shared.auth.dto.UserDtoUpdateInsensitiveData;
+import com.pavbatol.talentium.shared.auth.dto.UserDtoUpdateSensitiveData;
 import com.pavbatol.talentium.user.Verification.model.VerificationToken;
 import com.pavbatol.talentium.user.Verification.service.VerificationTokenService;
 import com.pavbatol.talentium.user.Verification.storage.VerificationTokenRepository;
@@ -78,45 +80,49 @@ public class UserServiceImpl implements UserService {
         updated = userRepository.save(updated);
         log.debug("Updated {}: {}", ENTITY_SIMPLE_NAME, updated);
         return userMapper.toResponseDto(updated);
-        // TODO: 03.06.2023 Do password update correctly
     }
 
     @Override
-    public UserDtoResponse update(HttpServletRequest servletRequest, Long userId, UserDtoUpdateShort dto) {
+    public UserDtoResponse updateRoles(HttpServletRequest servletRequest, Long userId, UserDtoUpdateSensitiveData dto) {
         User origUser = getNonNullObject(userRepository, userId);
         Long requesterId = jwtProvider.geUserId(servletRequest);
         User requester = getNonNullObject(userRepository, requesterId);
 
-        User updated;
-        boolean equalsId = Objects.equals(requesterId, origUser.getId());
-        if (Objects.nonNull(dto.getRoles())) {
-            boolean origHasOnlyCandidate = origUser.getRoles().stream()
-                    .map(Role::getRoleName).noneMatch(roleName -> roleName != RoleName.CANDIDATE);
-            boolean dtoHasOnlyIntern = dto.getRoles().stream()
-                    .map(RoleDto::getName).allMatch(s -> RoleName.INTERN.name().equals(s));
-
-            Set<RoleName> requesterRoleNames = requester.getRoles().stream()
-                    .map(Role::getRoleName).collect(Collectors.toSet());
-
-            if (requesterRoleNames.contains(RoleName.ADMIN)
-                    || (requesterRoleNames.contains(RoleName.MENTOR) && (origHasOnlyCandidate && dtoHasOnlyIntern))
-            ) {
-                updated = userMapper.updateEntity(dto, origUser);
-            } else if (equalsId) {
-                updated = userMapper.updateEntityWithoutRole(dto, origUser);
-            } else {
-                log.debug("No condition for updating {}: {}", ENTITY_SIMPLE_NAME, origUser);
-                throw new BadRequestException("No condition for updating " + ENTITY_SIMPLE_NAME + ". You cannot update roles " +
-                        "except for the candidate and you can only change your own data");
-            }
-        } else {
-            updated = userMapper.updateEntityWithoutRole(dto, origUser);
+        if (Objects.isNull(dto.getRoles())) {
+            throw new BadRequestException("Provided roles is null");
         }
 
+        boolean origHasOnlyCandidate = origUser.getRoles().stream()
+                .map(Role::getRoleName).noneMatch(roleName -> roleName != com.pavbatol.talentium.shared.auth.model.RoleName.CANDIDATE);
+        boolean dtoHasOnlyIntern = dto.getRoles().stream()
+                .map(RoleDto::getName).allMatch(s -> com.pavbatol.talentium.shared.auth.model.RoleName.INTERN.name().equals(s));
+
+        Set<com.pavbatol.talentium.shared.auth.model.RoleName> requesterRoleNames = requester.getRoles().stream()
+                .map(Role::getRoleName).collect(Collectors.toSet());
+
+        if (requesterRoleNames.contains(com.pavbatol.talentium.shared.auth.model.RoleName.ADMIN)
+                || (requesterRoleNames.contains(com.pavbatol.talentium.shared.auth.model.RoleName.MENTOR) && (origHasOnlyCandidate && dtoHasOnlyIntern))
+        ) {
+            User updated = userMapper.updateEntity(dto, origUser);
+            updated = userRepository.save(updated);
+            log.debug("Updated {}: {}", ENTITY_SIMPLE_NAME, updated);
+            return userMapper.toResponseDto(updated);
+        } else {
+            throw new BadRequestException("No condition to allow updating " + ENTITY_SIMPLE_NAME);
+        }
+    }
+
+    @Override
+    public UserDtoResponse updateInsensitive(HttpServletRequest servletRequest, Long userId, UserDtoUpdateInsensitiveData dto) {
+        User origUser = getNonNullObject(userRepository, userId);
+        Long requesterId = jwtProvider.geUserId(servletRequest);
+        if (!Objects.equals(requesterId, origUser.getId())) {
+            throw new BadRequestException("You can only edit your own data");
+        }
+        User updated = userMapper.updateEntity(dto, origUser);
         updated = userRepository.save(updated);
         log.debug("Updated {}: {}", ENTITY_SIMPLE_NAME, updated);
         return userMapper.toResponseDto(updated);
-        // TODO: 03.06.2023 Do password update correctly
     }
 
     @Override

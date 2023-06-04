@@ -79,48 +79,12 @@ public class HhServiceImpl implements HhService {
         boolean secondNameChanged = Objects.nonNull(dto.getSecondName()) && !entity.getSecondName().equals(dto.getSecondName());
         String token = jwtProvider.resolveToken(servletRequest).orElseThrow(() -> new NotFoundException("Token not found"));
         if (emailChanged || firstNameChanged || secondNameChanged) {
-
-//            ResponseEntity<String> responseEntity = authUserClient.updateShort(entity.getUserId(), token,
-//                    new UserDtoUpdateShort(dto.getEmail(), null, null)).block();
-//            if (Objects.isNull(responseEntity) || !responseEntity.getStatusCode().is2xxSuccessful()) {
-//                throw new RuntimeException("Failed to update User in Auth service");
-//            }
-
             ResponseEntity<String> responseEntity = authUserClient.updateInsensitive(entity.getUserId(), token,
-                    new UserDtoUpdateInsensitiveData(dto.getEmail(), null, null)).block();
+                    new UserDtoUpdateInsensitiveData(dto.getEmail(), dto.getFirstName(), dto.getSecondName())).block();
             if (Objects.isNull(responseEntity) || !responseEntity.getStatusCode().is2xxSuccessful()) {
                 throw new RuntimeException("Failed to update User in Auth service");
             }
-
-//            entityMono
-////                    .onErrorMap(WebClientResponseException.class, ex -> new RuntimeException("An error has occurred", ex))
-//                    .subscribe(responseEntity -> {
-//                        if (responseEntity.getStatusCode().is2xxSuccessful()) {
-//                            log.debug("The update operation successful in the 'auth' service");
-//
-//                            Hh updated = hhMapper.updateEntity(dto, entity);
-//                            updated = hhRepository.save(updated);
-//                            log.debug("Updated {}: {}", ENTITY_SIMPLE_NAME, updated);
-//
-//                        } else {
-//                            log.debug("The update operation failed in the 'auth' service");
-////                    throw new RuntimeException("The update operation failed in the 'auth' service");
-//                        }
-//                    });
-
-//            CompletableFuture<ResponseEntity<String>> future = entityMono.toFuture();
-//            future.thenApplyAsync(responseEntity -> {
-//                if (!responseEntity.getStatusCode().is2xxSuccessful()) {
-//                    throw new RuntimeException("Failed to update user in Auth service");
-//                }
-//
-//                Hh updated = hhMapper.updateEntity(dto, entity);
-//                updated = hhRepository.save(updated);
-//                log.debug("Updated {}: {}", ENTITY_SIMPLE_NAME, updated);
-//                return hhMapper.toResponseDto(updated);
-//            });
         }
-
         Hh updated = hhMapper.updateEntity(dto, entity);
         updated = hhRepository.save(updated);
         log.debug("Updated {}: {}", ENTITY_SIMPLE_NAME, updated);
