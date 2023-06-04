@@ -1,7 +1,6 @@
 package com.pavbatol.talentium.hh.service;
 
 import com.pavbatol.talentium.app.client.AuthUserClient;
-import com.pavbatol.talentium.app.client.UserDtoUpdateShort;
 import com.pavbatol.talentium.app.exception.NotEnoughRightsException;
 import com.pavbatol.talentium.app.exception.NotFoundException;
 import com.pavbatol.talentium.app.exception.ValidationException;
@@ -19,6 +18,7 @@ import com.pavbatol.talentium.hh.model.HhFilter;
 import com.pavbatol.talentium.hh.model.HhSort;
 import com.pavbatol.talentium.hh.model.QHh;
 import com.pavbatol.talentium.hh.repository.HHRepository;
+import com.pavbatol.talentium.shared.auth.dto.UserDtoUpdateInsensitiveData;
 import com.querydsl.core.BooleanBuilder;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.NonNull;
@@ -31,7 +31,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -80,11 +79,16 @@ public class HhServiceImpl implements HhService {
         boolean secondNameChanged = Objects.nonNull(dto.getSecondName()) && !entity.getSecondName().equals(dto.getSecondName());
         String token = jwtProvider.resolveToken(servletRequest).orElseThrow(() -> new NotFoundException("Token not found"));
         if (emailChanged || firstNameChanged || secondNameChanged) {
-            Mono<ResponseEntity<String>> entityMono = authUserClient.update(entity.getUserId(), token,
-                    new UserDtoUpdateShort(dto.getEmail(), null));
-            ResponseEntity<String> responseEntity = entityMono.block();
-            assert responseEntity != null;
-            if (!responseEntity.getStatusCode().is2xxSuccessful()) {
+
+//            ResponseEntity<String> responseEntity = authUserClient.updateShort(entity.getUserId(), token,
+//                    new UserDtoUpdateShort(dto.getEmail(), null, null)).block();
+//            if (Objects.isNull(responseEntity) || !responseEntity.getStatusCode().is2xxSuccessful()) {
+//                throw new RuntimeException("Failed to update User in Auth service");
+//            }
+
+            ResponseEntity<String> responseEntity = authUserClient.updateInsensitive(entity.getUserId(), token,
+                    new UserDtoUpdateInsensitiveData(dto.getEmail(), null, null)).block();
+            if (Objects.isNull(responseEntity) || !responseEntity.getStatusCode().is2xxSuccessful()) {
                 throw new RuntimeException("Failed to update User in Auth service");
             }
 
