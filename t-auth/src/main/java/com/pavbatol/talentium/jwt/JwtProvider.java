@@ -2,7 +2,7 @@ package com.pavbatol.talentium.jwt;
 
 import com.pavbatol.talentium.app.exception.NotFoundException;
 import com.pavbatol.talentium.role.model.Role;
-import com.pavbatol.talentium.role.model.RoleName;
+import com.pavbatol.talentium.shared.auth.model.RoleName;
 import com.pavbatol.talentium.user.model.User;
 import io.jsonwebtoken.*;
 import jakarta.servlet.http.HttpServletRequest;

@@ -1,7 +1,7 @@
 package com.pavbatol.talentium.jwt;
 
 import com.pavbatol.talentium.role.model.Role;
-import com.pavbatol.talentium.role.model.RoleName;
+import com.pavbatol.talentium.shared.auth.model.RoleName;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;

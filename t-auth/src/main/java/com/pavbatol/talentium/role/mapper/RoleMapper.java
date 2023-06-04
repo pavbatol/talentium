@@ -1,9 +1,9 @@
 package com.pavbatol.talentium.role.mapper;
 
 import com.pavbatol.talentium.app.util.BaseMapper;
-import com.pavbatol.talentium.role.dto.RoleDto;
 import com.pavbatol.talentium.role.model.Role;
-import com.pavbatol.talentium.role.model.RoleName;
+import com.pavbatol.talentium.shared.auth.dto.RoleDto;
+import com.pavbatol.talentium.shared.auth.model.RoleName;
 import org.mapstruct.*;
 
 @Mapper(componentModel = "spring")
