@@ -11,6 +11,7 @@
 
     <groupId>com.pavbatol.talentium.t-shared</groupId>
     <artifactId>t-shared</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>t-shared</name>
     <description>Common classes for the project</description>
