@@ -1,7 +1,8 @@
 package com.pavbatol.talentium.user.controller;
 
+import com.pavbatol.talentium.shared.auth.dto.UserDtoUpdateInsensitiveData;
+import com.pavbatol.talentium.shared.auth.dto.UserDtoUpdateSensitiveData;
 import com.pavbatol.talentium.user.dto.UserDtoResponse;
-import com.pavbatol.talentium.user.dto.UserDtoUpdateShort;
 import com.pavbatol.talentium.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -24,14 +25,27 @@ public class PrivateUserController {
 
     private final UserService userService;
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'CANDIDATE', 'INTERN', 'CURATOR', 'MENTOR', 'HH')")
-    @PatchMapping("/{userId}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MENTOR')")
+    @PatchMapping("/{userId}/roles")
     @SecurityRequirement(name = "JWT")
-    @Operation(summary = "update", description = "user update")
-    public ResponseEntity<UserDtoResponse> update(HttpServletRequest servletRequest, @PathVariable("userId") Long userId,
-                                                  @Valid @RequestBody UserDtoUpdateShort dto) {
-        log.debug("PATCH update() with userId {}, dto {}", userId, dto);
-        UserDtoResponse body = userService.update(servletRequest, userId, dto);
+    @Operation(summary = "updateRoles", description = "user update")
+    public ResponseEntity<UserDtoResponse> updateRoles(HttpServletRequest servletRequest,
+                                                       @PathVariable("userId") Long userId,
+                                                       @Valid @RequestBody UserDtoUpdateSensitiveData dto) {
+        log.debug("PATCH updateRoles() with userId {}, dto {}", userId, dto);
+        UserDtoResponse body = userService.updateRoles(servletRequest, userId, dto);
+        return ResponseEntity.ok(body);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'CANDIDATE', 'INTERN', 'CURATOR', 'MENTOR', 'HH')")
+    @PatchMapping("/{userId}/insensitive")
+    @SecurityRequirement(name = "JWT")
+    @Operation(summary = "updateInsensitive", description = "user update")
+    public ResponseEntity<UserDtoResponse> updateInsensitive(HttpServletRequest servletRequest,
+                                                             @PathVariable("userId") Long userId,
+                                                             @Valid @RequestBody UserDtoUpdateInsensitiveData dto) {
+        log.debug("PATCH updateInsensitive() with userId {}, dto {}", userId, dto);
+        UserDtoResponse body = userService.updateInsensitive(servletRequest, userId, dto);
         return ResponseEntity.ok(body);
     }
 

@@ -1,5 +1,6 @@
 package com.pavbatol.talentium.auth.role.model;
 
+import com.pavbatol.talentium.shared.auth.model.RoleName;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.Accessors;

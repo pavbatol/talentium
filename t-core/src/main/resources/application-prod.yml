@@ -40,4 +40,8 @@ app:
     name: t-core
     user: postgres
     password: 12345
-
+  auth-service:
+    url: http://localhost:8078
+    path:
+      private-user: /private/user
+      admin-user: /admin/user

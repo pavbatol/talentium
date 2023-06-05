@@ -2,7 +2,7 @@ package com.pavbatol.talentium.role.storage;
 
 
 import com.pavbatol.talentium.role.model.Role;
-import com.pavbatol.talentium.role.model.RoleName;
+import com.pavbatol.talentium.shared.auth.model.RoleName;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Collection;

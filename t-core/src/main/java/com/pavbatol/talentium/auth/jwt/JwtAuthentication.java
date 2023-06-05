@@ -1,6 +1,6 @@
 package com.pavbatol.talentium.auth.jwt;
 
-import com.pavbatol.talentium.auth.role.model.RoleName;
+import com.pavbatol.talentium.shared.auth.model.RoleName;
 import io.jsonwebtoken.Claims;
 import lombok.*;
 import org.springframework.security.core.Authentication;

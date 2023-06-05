@@ -1,7 +1,7 @@
 package com.pavbatol.talentium.role.service;
 
 
-import com.pavbatol.talentium.role.dto.RoleDto;
+import com.pavbatol.talentium.shared.auth.dto.RoleDto;
 
 import java.util.List;
 

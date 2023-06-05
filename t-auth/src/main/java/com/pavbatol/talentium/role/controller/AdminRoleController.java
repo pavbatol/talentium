@@ -1,7 +1,7 @@
 package com.pavbatol.talentium.role.controller;
 
-import com.pavbatol.talentium.role.dto.RoleDto;
 import com.pavbatol.talentium.role.service.RoleService;
+import com.pavbatol.talentium.shared.auth.dto.RoleDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
