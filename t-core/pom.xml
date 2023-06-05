@@ -29,6 +29,8 @@
 
         <springdoc-openapi-starter-webmvc-ui.version>2.1.0</springdoc-openapi-starter-webmvc-ui.version>
 
+        <httpclient.version>4.5.14</httpclient.version>
+
         <version.querydsl>5.0.0</version.querydsl>
     </properties>
 
@@ -98,9 +100,10 @@
             <version>${springdoc-openapi-starter-webmvc-ui.version}</version>
         </dependency>
 
-        <dependency>
+        <dependency><!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
+            <version>${httpclient.version}</version>
         </dependency>
         <dependency><!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-webflux <version>3.0.1</version>-->
             <groupId>org.springframework.boot</groupId>
@@ -143,6 +146,19 @@
             <version>${querydsl.version}</version>
             <classifier>jakarta</classifier>
         </dependency>
+
+        <dependency>
+            <groupId>com.pavbatol.talentium.t-shared</groupId>
+            <artifactId>auth</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency><!-- https://mvnrepository.com/artifact/com.google.code.findbugs/jsr305 -->
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+            <version>3.0.2</version>
+        </dependency>
+
     </dependencies>
 
     <build>

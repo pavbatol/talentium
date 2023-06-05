@@ -1,6 +1,6 @@
 ![team.png](public%2Fteam%2Fteam.png)
 
-# Talent Pulls (back-service as talentium)
+# Talent Pulse (back-service as talentium)
 
 ###### by Sergey Pavlik, tg: @pavbatol
 
@@ -66,9 +66,9 @@
     - t-core: host:8080/docs
   - specification
     - t-auth: [talentium-t-auth-openapi.yaml](public%2Fopen-api-specification%2Ftalentium-t-auth-openapi.yaml)
-    - t-auth: [Посмотреть в PDF](public%2Fopen-api-specification%2FSwagger%20U_t-auth.pdf) 
+    - t-auth: [Посмотреть в PDF](public%2Fopen-api-specification%2FSwagger%20UI_auth.pdf) 
     - t-core: [talentium-t-core-openapi.yaml](public%2Fopen-api-specification%2Ftalentium-t-core-openapi.yaml)
-    - t-core: [Посмотреть в PDF](public%2Fopen-api-specification%2FSwagger%20U_t-core.pdf)
+    - t-core: [Посмотреть в PDF](public%2Fopen-api-specification%2FSwagger%20UI_core.pdf)
 
 ### Запуск
 - Собрать проект командой: mvn clean package

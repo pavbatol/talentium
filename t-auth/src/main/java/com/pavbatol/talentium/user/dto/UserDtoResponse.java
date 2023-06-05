@@ -1,6 +1,6 @@
 package com.pavbatol.talentium.user.dto;
 
-import com.pavbatol.talentium.role.dto.RoleDto;
+import com.pavbatol.talentium.shared.auth.dto.RoleDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Value;
 

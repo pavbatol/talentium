@@ -1,12 +1,13 @@
 package com.pavbatol.talentium.hh.service;
 
+import com.pavbatol.talentium.app.client.AuthUserClient;
 import com.pavbatol.talentium.app.exception.NotEnoughRightsException;
+import com.pavbatol.talentium.app.exception.NotFoundException;
 import com.pavbatol.talentium.app.exception.ValidationException;
 import com.pavbatol.talentium.app.util.Checker;
 import com.pavbatol.talentium.app.util.ServiceUtils;
 import com.pavbatol.talentium.auth.jwt.JwtProvider;
 import com.pavbatol.talentium.auth.jwt.JwtUtils;
-import com.pavbatol.talentium.auth.role.model.RoleName;
 import com.pavbatol.talentium.hh.dto.HhDtoRequest;
 import com.pavbatol.talentium.hh.dto.HhDtoResponse;
 import com.pavbatol.talentium.hh.dto.HhDtoUpdate;
@@ -16,6 +17,8 @@ import com.pavbatol.talentium.hh.model.HhFilter;
 import com.pavbatol.talentium.hh.model.HhSort;
 import com.pavbatol.talentium.hh.model.QHh;
 import com.pavbatol.talentium.hh.repository.HHRepository;
+import com.pavbatol.talentium.shared.auth.dto.UserDtoUpdateInsensitiveData;
+import com.pavbatol.talentium.shared.auth.model.RoleName;
 import com.querydsl.core.BooleanBuilder;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.NonNull;
@@ -24,8 +27,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -43,6 +47,7 @@ public class HhServiceImpl implements HhService {
     private final JwtProvider jwtProvider;
     private final HhMapper hhMapper;
     private final HHRepository hhRepository;
+    private final AuthUserClient authUserClient;
 
     @Override
     public HhDtoResponse add(HttpServletRequest servletRequest, HhDtoRequest dto) {
@@ -62,12 +67,24 @@ public class HhServiceImpl implements HhService {
         return hhMapper.toResponseDto(saved);
     }
 
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public HhDtoResponse update(HttpServletRequest servletRequest, Long hhId, HhDtoUpdate dto) {
         Long userId = getUserId(servletRequest);
         Hh entity = Checker.getNonNullObject(hhRepository, hhId);
         checkIdsEqualOrAdminRole(servletRequest, userId, entity);
+
+        boolean emailChanged = Objects.nonNull(dto.getEmail()) && !entity.getEmail().equals(dto.getEmail());
+        boolean firstNameChanged = Objects.nonNull(dto.getFirstName()) && !entity.getFirstName().equals(dto.getFirstName());
+        boolean secondNameChanged = Objects.nonNull(dto.getSecondName()) && !entity.getSecondName().equals(dto.getSecondName());
+        String token = jwtProvider.resolveToken(servletRequest).orElseThrow(() -> new NotFoundException("Token not found"));
+        if (emailChanged || firstNameChanged || secondNameChanged) {
+            ResponseEntity<String> responseEntity = authUserClient.updateInsensitive(entity.getUserId(), token,
+                    new UserDtoUpdateInsensitiveData(dto.getEmail(), dto.getFirstName(), dto.getSecondName())).block();
+            if (Objects.isNull(responseEntity) || !responseEntity.getStatusCode().is2xxSuccessful()) {
+                throw new RuntimeException("Failed to update User in Auth service");
+            }
+        }
         Hh updated = hhMapper.updateEntity(dto, entity);
         updated = hhRepository.save(updated);
         log.debug("Updated {}: {}", ENTITY_SIMPLE_NAME, updated);

@@ -1,5 +1,5 @@
 **********************************************************************************************
-* Talent Pulls (back-service as talentium)
+* Talent Pulse (back-service as talentium)
 *
 * by Sergey Pavlik
 * github: https://github.com/pavbatol/talentium

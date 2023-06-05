@@ -1,6 +1,6 @@
 package com.pavbatol.talentium.user.dto;
 
-import com.pavbatol.talentium.role.dto.RoleDto;
+import com.pavbatol.talentium.shared.auth.dto.RoleDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
@@ -17,9 +17,6 @@ public class UserDtoUpdate {
 
     @Pattern(regexp = ".*\\S{5}.*")
     String username;
-
-    @Pattern(regexp = ".*\\S{6}.*")
-    String password;
 
     @Schema(description = "Enabled or not for security access", example = "true")
     Boolean enabled;

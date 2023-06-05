@@ -1,4 +1,4 @@
-package com.pavbatol.talentium.auth.role.model;
+package com.pavbatol.talentium.shared.auth.model;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;

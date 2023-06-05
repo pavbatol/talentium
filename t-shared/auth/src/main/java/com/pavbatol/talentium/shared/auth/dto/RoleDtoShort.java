@@ -1,16 +1,15 @@
-package com.pavbatol.talentium.role.dto;
+package com.pavbatol.talentium.shared.auth.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Value;
 
 @Value
-public class RoleDto {
+public class RoleDtoShort {
 
-    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
+    @NotNull
     Long id;
 
-    @NotBlank
     @Schema(description = "Name of role according Enum in server", example = "ADMIN")
     String name;
 }

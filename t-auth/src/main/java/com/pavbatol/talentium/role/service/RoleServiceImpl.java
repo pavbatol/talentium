@@ -1,10 +1,11 @@
 package com.pavbatol.talentium.role.service;
 
-import com.pavbatol.talentium.role.dto.RoleDto;
+import com.pavbatol.talentium.app.exception.BadRequestException;
 import com.pavbatol.talentium.role.mapper.RoleMapper;
 import com.pavbatol.talentium.role.model.Role;
-import com.pavbatol.talentium.role.model.RoleName;
 import com.pavbatol.talentium.role.storage.RoleRepository;
+import com.pavbatol.talentium.shared.auth.dto.RoleDto;
+import com.pavbatol.talentium.shared.auth.model.RoleName;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -43,6 +44,11 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public void remove(Long role_id) {
+        Role role = getNonNullObject(roleRepository, role_id);
+        if (role.getRoleName() == RoleName.ADMIN || role.getRoleName() == RoleName.USER) {
+            throw new BadRequestException(
+                    String.format("You cannot delete the %s or %s roles",RoleName.ADMIN, RoleName.USER));
+        }
         roleRepository.deleteById(role_id);
         log.debug("Removed {} by id #{}", ENTITY_SIMPLE_NAME, role_id);
     }
