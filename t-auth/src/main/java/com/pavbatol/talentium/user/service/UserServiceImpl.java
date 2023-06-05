@@ -93,15 +93,15 @@ public class UserServiceImpl implements UserService {
         }
 
         boolean origHasOnlyCandidate = origUser.getRoles().stream()
-                .map(Role::getRoleName).noneMatch(roleName -> roleName != com.pavbatol.talentium.shared.auth.model.RoleName.CANDIDATE);
+                .map(Role::getRoleName).noneMatch(roleName -> roleName != RoleName.CANDIDATE);
         boolean dtoHasOnlyIntern = dto.getRoles().stream()
-                .map(RoleDto::getName).allMatch(s -> com.pavbatol.talentium.shared.auth.model.RoleName.INTERN.name().equals(s));
+                .map(RoleDto::getName).allMatch(s -> RoleName.INTERN.name().equals(s));
 
-        Set<com.pavbatol.talentium.shared.auth.model.RoleName> requesterRoleNames = requester.getRoles().stream()
+        Set<RoleName> requesterRoleNames = requester.getRoles().stream()
                 .map(Role::getRoleName).collect(Collectors.toSet());
 
-        if (requesterRoleNames.contains(com.pavbatol.talentium.shared.auth.model.RoleName.ADMIN)
-                || (requesterRoleNames.contains(com.pavbatol.talentium.shared.auth.model.RoleName.MENTOR) && (origHasOnlyCandidate && dtoHasOnlyIntern))
+        if (requesterRoleNames.contains(RoleName.ADMIN)
+                || (requesterRoleNames.contains(RoleName.MENTOR) && (origHasOnlyCandidate && dtoHasOnlyIntern))
         ) {
             User updated = userMapper.updateEntity(dto, origUser);
             updated = userRepository.save(updated);
@@ -117,7 +117,12 @@ public class UserServiceImpl implements UserService {
         User origUser = getNonNullObject(userRepository, userId);
         Long requesterId = jwtProvider.geUserId(servletRequest);
         if (!Objects.equals(requesterId, origUser.getId())) {
-            throw new BadRequestException("You can only edit your own data");
+            User requester = getNonNullObject(userRepository, requesterId);
+            Set<RoleName> requesterRoleNames = requester.getRoles().stream()
+                    .map(Role::getRoleName).collect(Collectors.toSet());
+            if (!requesterRoleNames.contains(RoleName.ADMIN)) {
+                throw new BadRequestException("You can only edit your own data");
+            }
         }
         User updated = userMapper.updateEntity(dto, origUser);
         updated = userRepository.save(updated);

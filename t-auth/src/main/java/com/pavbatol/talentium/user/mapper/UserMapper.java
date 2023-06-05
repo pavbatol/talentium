@@ -12,6 +12,8 @@ import org.mapstruct.*;
 import java.util.List;
 import java.util.Set;
 
+// TODO: 05.06.2023 Remove inheritance from BaseMapper
+
 @Mapper(componentModel = "spring", uses = RoleMapper.class)
 public interface UserMapper extends BaseMapper<User, UserDtoRequest> {
     @Override

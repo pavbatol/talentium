@@ -152,6 +152,13 @@
             <artifactId>auth</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+
+        <dependency><!-- https://mvnrepository.com/artifact/com.google.code.findbugs/jsr305 -->
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+            <version>3.0.2</version>
+        </dependency>
+
     </dependencies>
 
     <build>

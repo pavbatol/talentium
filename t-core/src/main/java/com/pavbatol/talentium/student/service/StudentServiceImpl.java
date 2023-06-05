@@ -4,7 +4,7 @@ import com.pavbatol.talentium.app.exception.ValidationException;
 import com.pavbatol.talentium.app.util.Checker;
 import com.pavbatol.talentium.app.util.ServiceUtils;
 import com.pavbatol.talentium.auth.jwt.JwtProvider;
-import com.pavbatol.talentium.auth.role.model.RoleName;
+import com.pavbatol.talentium.shared.auth.model.RoleName;
 import com.pavbatol.talentium.student.dto.StudentDtoRequest;
 import com.pavbatol.talentium.student.dto.StudentDtoResponse;
 import com.pavbatol.talentium.student.dto.StudentDtoUpdate;

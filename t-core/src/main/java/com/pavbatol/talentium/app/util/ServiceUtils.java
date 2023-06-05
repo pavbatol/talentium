@@ -3,7 +3,7 @@ package com.pavbatol.talentium.app.util;
 import com.pavbatol.talentium.app.exception.NotEnoughRightsException;
 import com.pavbatol.talentium.auth.jwt.JwtProvider;
 import com.pavbatol.talentium.auth.jwt.JwtUtils;
-import com.pavbatol.talentium.auth.role.model.RoleName;
+import com.pavbatol.talentium.shared.auth.model.RoleName;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

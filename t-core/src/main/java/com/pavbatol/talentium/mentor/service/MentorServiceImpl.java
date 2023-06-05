@@ -4,13 +4,13 @@ import com.pavbatol.talentium.app.exception.ValidationException;
 import com.pavbatol.talentium.app.util.Checker;
 import com.pavbatol.talentium.app.util.ServiceUtils;
 import com.pavbatol.talentium.auth.jwt.JwtProvider;
-import com.pavbatol.talentium.auth.role.model.RoleName;
 import com.pavbatol.talentium.mentor.dto.MentorDtoRequest;
 import com.pavbatol.talentium.mentor.dto.MentorDtoResponse;
 import com.pavbatol.talentium.mentor.dto.MentorDtoUpdate;
 import com.pavbatol.talentium.mentor.mapper.MentorMapper;
 import com.pavbatol.talentium.mentor.model.Mentor;
 import com.pavbatol.talentium.mentor.repository.MentorRepository;
+import com.pavbatol.talentium.shared.auth.model.RoleName;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
-
 
 @Slf4j
 @Service
