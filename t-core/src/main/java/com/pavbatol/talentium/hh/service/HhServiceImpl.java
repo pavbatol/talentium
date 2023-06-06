@@ -112,23 +112,7 @@ public class HhServiceImpl implements HhService {
     @Transactional(readOnly = true)
     @Override
     public List<HhDtoResponse> findAll(HttpServletRequest servletRequest, HhFilter hhFilter, HhSort hhSort, Integer from, Integer size) {
-        Sort sort;
-        switch (hhSort) {
-            case AUTHORITY:
-                sort = Sort.by("authority").ascending();
-                break;
-            case MANAGEMENT:
-                sort = Sort.by("management").ascending();
-                break;
-            case ADDRESS:
-                sort = Sort.by("address").ascending();
-                break;
-            case CONTACTS:
-                sort = Sort.by("contacts").ascending();
-                break;
-            default:
-                sort = Sort.by("rate").descending();
-        }
+        Sort sort = hhSort.sort;
         BooleanBuilder booleanBuilder = makeBooleanBuilder(hhFilter);
         PageRequest pageable = PageRequest.of(from, size, sort);
         Page<Hh> page = hhRepository.findAll(booleanBuilder, pageable);

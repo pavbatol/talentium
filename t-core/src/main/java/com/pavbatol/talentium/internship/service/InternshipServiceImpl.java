@@ -107,7 +107,7 @@ public class InternshipServiceImpl implements InternshipService {
                                                Integer from,
                                                Integer size,
                                                InternshipSort internshipSort) {
-        Sort sort = getSort(internshipSort);
+        Sort sort = internshipSort.sort;
         BooleanBuilder booleanBuilder = InternshipFilterHelper.getInternshipPublicBooleanBuilder(filter);
         PageRequest pageable = PageRequest.of(from, size, sort);
         Page<Internship> page = internshipRepository.findAll(booleanBuilder, pageable);
@@ -122,34 +122,13 @@ public class InternshipServiceImpl implements InternshipService {
                                                     Integer from,
                                                     Integer size,
                                                     InternshipSort internshipSort) {
-        Sort sort = getSort(internshipSort);
+        Sort sort = internshipSort.sort;
         BooleanBuilder booleanBuilder = InternshipFilterHelper.getInternshipAdminBooleanBuilder(filter);
         PageRequest pageable = PageRequest.of(from, size, sort);
         Page<Internship> page = internshipRepository.findAll(booleanBuilder, pageable);
         log.debug("Found {}-count: {}, totalPages: {}, from: {}, size: {}, sort: {}", ENTITY_SIMPLE_NAME,
                 page.getTotalElements(), page.getTotalPages(), pageable.getOffset(), page.getSize(), page.getSort());
         return internshipMapper.toDtos(page.getContent());
-    }
-
-    private static Sort getSort(InternshipSort internshipSort) {
-        Sort sort;
-        switch (internshipSort) {
-            case START_DATE:
-                sort = Sort.by("startDate").descending();
-                break;
-            case TITLE:
-                sort = Sort.by("title").ascending();
-                break;
-            case AGE_FROM:
-                sort = Sort.by("ageFrom").ascending();
-                break;
-            case PUBLISHED_ON:
-                sort = Sort.by("publishedOn").ascending();
-                break;
-            default:
-                sort = Sort.by("createdOn").descending();
-        }
-        return sort;
     }
 
     private Long getIdByAuthUserIdForHh(HttpServletRequest servletRequest) {
