@@ -1,5 +1,7 @@
 package com.pavbatol.talentium.hh.model;
 
+import com.pavbatol.talentium.app.util.BasePerson;
+import com.pavbatol.talentium.app.util.BasePersonDto;
 import com.pavbatol.talentium.hh.feedback.model.HhFeedback;
 import com.pavbatol.talentium.management.model.Management;
 import jakarta.persistence.*;
@@ -20,7 +22,7 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "hhs")
-public class Hh {
+public class Hh implements BasePerson<Hh> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "hh_id", nullable = false)

@@ -98,7 +98,7 @@ public class HhController {
                 .setManagement(address)
                 .setContacts(contacts);
 
-        HhSort hhSort = sort != null ? HhSort.of(sort) : HhSort.AUTHORITY;
+        HhSort hhSort = sort != null ? HhSort.by(sort) : HhSort.RATE_DES;
         List<HhDtoResponse> body = hhService.findAll(servletRequest, hhFilter, hhSort, from, size);
         return ResponseEntity.ok(body);
     }

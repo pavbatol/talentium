@@ -12,7 +12,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
-public class BaseRestClient {
+public abstract class BaseRestClient {
     public static final String X_USER_ID = "X-User-Id";
     protected final RestTemplate rest;
 

@@ -1,5 +1,6 @@
 package com.pavbatol.talentium.mentor.model;
 
+import com.pavbatol.talentium.app.util.BasePerson;
 import com.pavbatol.talentium.hh.model.Hh;
 import com.pavbatol.talentium.management.model.Management;
 import com.pavbatol.talentium.mentor.feedback.model.MentorFeedback;
@@ -21,7 +22,7 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "mentors")
-public class Mentor {
+public class Mentor implements BasePerson<Mentor> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "mentor_id", nullable = false)

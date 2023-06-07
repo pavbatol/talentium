@@ -19,7 +19,7 @@ import java.util.Objects;
 import java.util.function.Predicate;
 
 @Slf4j
-public class BaseWebClient {
+public abstract class BaseWebClient {
 
     public static final String X_USER_ID = "X-User-Id";
     protected final WebClient client;

@@ -9,7 +9,7 @@ import io.swagger.v3.oas.annotations.security.SecurityScheme;
 @OpenAPIDefinition(
         info = @Info(
                 title = "Talent Pulse (back-service as talentium) Api",
-                description = "talentium", version = "1.0.0",
+                description = "talentium, t-core service", version = "1.0.0",
                 contact = @Contact(
                         name = "Pavlik Sergey",
                         email = "pavbatol@yandex.ru"

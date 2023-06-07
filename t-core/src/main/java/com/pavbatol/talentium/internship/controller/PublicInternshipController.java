@@ -40,7 +40,7 @@ public class PublicInternshipController {
             @RequestParam(value = "size", defaultValue = "10") Integer size,
             @RequestParam(value = "sort", required = false) String sort) {
         log.debug("GET findAll() with from: {}, size: {}, sort:{}", from, size, sort);
-        InternshipSort internshipSort = sort == null ? InternshipSort.START_DATE : InternshipSort.by(sort);
+        InternshipSort internshipSort = sort == null ? InternshipSort.START_DATE_DES : InternshipSort.by(sort);
         List<InternshipDtoResponse> body = internshipService.findAll(filter, from, size, internshipSort);
         return ResponseEntity.ok(body);
     }
