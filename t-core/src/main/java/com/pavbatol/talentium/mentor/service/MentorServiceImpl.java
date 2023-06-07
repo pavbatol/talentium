@@ -57,7 +57,7 @@ public class MentorServiceImpl implements MentorService {
     public MentorDtoResponse update(HttpServletRequest servletRequest, Long mentorId, MentorDtoUpdate dto) {
         Long userId = ServiceUtils.getUserId(servletRequest, jwtProvider);
         Mentor entity = Checker.getNonNullObject(mentorRepository, mentorId);
-        ServiceUtils.checkIdsEqualOrAdminRole(servletRequest, userId, entity.getUserId(), jwtProvider);
+        ServiceUtils.checkIdsEqualOrAdminRole(userId, entity.getUserId(), servletRequest, jwtProvider);
         Mentor updated = mentorMapper.updateEntity(dto, entity);
         updated = mentorRepository.save(updated);
         log.debug("Updated {}: {}", ENTITY_SIMPLE_NAME, updated);
@@ -69,7 +69,7 @@ public class MentorServiceImpl implements MentorService {
     public void remove(HttpServletRequest servletRequest, Long mentorId) {
         Long userId = ServiceUtils.getUserId(servletRequest, jwtProvider);
         Mentor entity = Checker.getNonNullObject(mentorRepository, mentorId);
-        ServiceUtils.checkIdsEqualOrAdminRole(servletRequest, userId, entity.getUserId(), jwtProvider);
+        ServiceUtils.checkIdsEqualOrAdminRole(userId, entity.getUserId(), servletRequest, jwtProvider);
         entity.setDeleted(true);
         mentorRepository.save(entity);
         log.debug("Marked as removed {} by id #{}", ENTITY_SIMPLE_NAME, mentorId);

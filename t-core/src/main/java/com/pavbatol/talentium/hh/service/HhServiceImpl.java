@@ -1,13 +1,10 @@
 package com.pavbatol.talentium.hh.service;
 
 import com.pavbatol.talentium.app.client.AuthUserClient;
-import com.pavbatol.talentium.app.exception.NotEnoughRightsException;
-import com.pavbatol.talentium.app.exception.NotFoundException;
 import com.pavbatol.talentium.app.exception.ValidationException;
 import com.pavbatol.talentium.app.util.Checker;
 import com.pavbatol.talentium.app.util.ServiceUtils;
 import com.pavbatol.talentium.auth.jwt.JwtProvider;
-import com.pavbatol.talentium.auth.jwt.JwtUtils;
 import com.pavbatol.talentium.hh.dto.HhDtoRequest;
 import com.pavbatol.talentium.hh.dto.HhDtoResponse;
 import com.pavbatol.talentium.hh.dto.HhDtoUpdate;
@@ -17,7 +14,6 @@ import com.pavbatol.talentium.hh.model.HhFilter;
 import com.pavbatol.talentium.hh.model.HhSort;
 import com.pavbatol.talentium.hh.model.QHh;
 import com.pavbatol.talentium.hh.repository.HHRepository;
-import com.pavbatol.talentium.shared.auth.dto.UserDtoUpdateInsensitiveData;
 import com.pavbatol.talentium.shared.auth.model.RoleName;
 import com.querydsl.core.BooleanBuilder;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,7 +23,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -72,19 +67,8 @@ public class HhServiceImpl implements HhService {
     public HhDtoResponse update(HttpServletRequest servletRequest, Long hhId, HhDtoUpdate dto) {
         Long userId = getUserId(servletRequest);
         Hh entity = Checker.getNonNullObject(hhRepository, hhId);
-        checkIdsEqualOrAdminRole(servletRequest, userId, entity);
-
-        boolean emailChanged = Objects.nonNull(dto.getEmail()) && !entity.getEmail().equals(dto.getEmail());
-        boolean firstNameChanged = Objects.nonNull(dto.getFirstName()) && !entity.getFirstName().equals(dto.getFirstName());
-        boolean secondNameChanged = Objects.nonNull(dto.getSecondName()) && !entity.getSecondName().equals(dto.getSecondName());
-        String token = jwtProvider.resolveToken(servletRequest).orElseThrow(() -> new NotFoundException("Token not found"));
-        if (emailChanged || firstNameChanged || secondNameChanged) {
-            ResponseEntity<String> responseEntity = authUserClient.updateInsensitive(entity.getUserId(), token,
-                    new UserDtoUpdateInsensitiveData(dto.getEmail(), dto.getFirstName(), dto.getSecondName())).block();
-            if (Objects.isNull(responseEntity) || !responseEntity.getStatusCode().is2xxSuccessful()) {
-                throw new RuntimeException("Failed to update User in Auth service");
-            }
-        }
+        ServiceUtils.checkIdsEqualOrAdminRole(userId, entity.getUserId(), servletRequest, jwtProvider);
+        ServiceUtils.updateUserInsensitiveInAuthService(dto, entity, servletRequest, jwtProvider, authUserClient);
         Hh updated = hhMapper.updateEntity(dto, entity);
         updated = hhRepository.save(updated);
         log.debug("Updated {}: {}", ENTITY_SIMPLE_NAME, updated);
@@ -95,7 +79,7 @@ public class HhServiceImpl implements HhService {
     public void remove(HttpServletRequest servletRequest, Long hhId) {
         Long userId = getUserId(servletRequest);
         Hh entity = Checker.getNonNullObject(hhRepository, hhId);
-        checkIdsEqualOrAdminRole(servletRequest, userId, entity);
+        ServiceUtils.checkIdsEqualOrAdminRole(userId, entity.getUserId(), servletRequest, jwtProvider);
         entity.setDeleted(true);
         hhRepository.save(entity);
         log.debug("Marked as removed {} by id #{}", ENTITY_SIMPLE_NAME, hhId);
@@ -123,16 +107,6 @@ public class HhServiceImpl implements HhService {
 
     private Long getUserId(HttpServletRequest servletRequest) {
         return jwtProvider.geUserId(servletRequest);
-    }
-
-    private boolean hasRole(HttpServletRequest servletRequest, RoleName roleName) {
-        return JwtUtils.hasRole(servletRequest, roleName.name(), jwtProvider);
-    }
-
-    private void checkIdsEqualOrAdminRole(HttpServletRequest servletRequest, Long userId, Hh entity) {
-        if (!Objects.equals(entity.getUserId(), userId) && !hasRole(servletRequest, RoleName.ADMIN)) {
-            throw new NotEnoughRightsException("Other person's data can only be changed by the Administrator");
-        }
     }
 
     private BooleanBuilder makeBooleanBuilder(@NonNull HhFilter filter) {

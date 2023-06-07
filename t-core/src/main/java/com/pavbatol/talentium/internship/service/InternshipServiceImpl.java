@@ -62,7 +62,7 @@ public class InternshipServiceImpl implements InternshipService {
     public InternshipDtoResponse update(HttpServletRequest servletRequest, Long internshipId, InternshipDtoUpdate dto) {
         Long userId = ServiceUtils.getUserId(servletRequest, jwtProvider);
         Internship entity = Checker.getNonNullObject(internshipRepository, internshipId);
-        ServiceUtils.checkIdsEqualOrAdminRole(servletRequest, userId, entity.getInitiator().getUserId(), jwtProvider);
+        ServiceUtils.checkIdsEqualOrAdminRole(userId, entity.getInitiator().getUserId(), servletRequest, jwtProvider);
         Internship updated = internshipMapper.updateEntity(dto, entity);
         updated = internshipRepository.save(updated);
         log.debug("Updated {}: {}", ENTITY_SIMPLE_NAME, updated);

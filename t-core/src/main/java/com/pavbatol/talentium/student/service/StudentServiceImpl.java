@@ -56,7 +56,7 @@ public class StudentServiceImpl implements StudentService {
     public StudentDtoResponse update(HttpServletRequest servletRequest, Long sStudentId, StudentDtoUpdate dto) {
         Long userId = ServiceUtils.getUserId(servletRequest, jwtProvider);
         Student entity = Checker.getNonNullObject(studentRepository, sStudentId);
-        ServiceUtils.checkIdsEqualOrAdminRole(servletRequest, userId, entity.getUserId(), jwtProvider);
+        ServiceUtils.checkIdsEqualOrAdminRole(userId, entity.getUserId(), servletRequest, jwtProvider);
         Student updated = studentMapper.updateEntity(dto, entity);
         updated = studentRepository.save(updated);
         log.debug("Updated {}: {}", ENTITY_SIMPLE_NAME, updated);
@@ -67,7 +67,7 @@ public class StudentServiceImpl implements StudentService {
     public void remove(HttpServletRequest servletRequest, Long sStudentId) {
         Long userId = ServiceUtils.getUserId(servletRequest, jwtProvider);
         Student entity = Checker.getNonNullObject(studentRepository, sStudentId);
-        ServiceUtils.checkIdsEqualOrAdminRole(servletRequest, userId, entity.getUserId(), jwtProvider);
+        ServiceUtils.checkIdsEqualOrAdminRole(userId, entity.getUserId(), servletRequest, jwtProvider);
         entity.setDeleted(true);
         studentRepository.save(entity);
         log.debug("Marked as removed {} by id #{}", ENTITY_SIMPLE_NAME, sStudentId);
