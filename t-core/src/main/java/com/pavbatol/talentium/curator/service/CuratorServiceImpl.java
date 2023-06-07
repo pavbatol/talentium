@@ -1,5 +1,6 @@
 package com.pavbatol.talentium.curator.service;
 
+import com.pavbatol.talentium.app.client.AuthUserClient;
 import com.pavbatol.talentium.app.exception.ValidationException;
 import com.pavbatol.talentium.app.util.Checker;
 import com.pavbatol.talentium.app.util.ServiceUtils;
@@ -32,6 +33,7 @@ public class CuratorServiceImpl implements CuratorService {
     private final JwtProvider jwtProvider;
     private final CuratorMapper curatorMapper;
     private final CuratorRepository curatorRepository;
+    private final AuthUserClient authUserClient;
 
     @Override
     public CuratorDtoResponse add(HttpServletRequest servletRequest, CuratorDtoRequest dto) {
@@ -56,7 +58,8 @@ public class CuratorServiceImpl implements CuratorService {
     public CuratorDtoResponse update(HttpServletRequest servletRequest, Long curatorId, CuratorDtoUpdate dto) {
         Long userId = ServiceUtils.getUserId(servletRequest, jwtProvider);
         Curator entity = Checker.getNonNullObject(curatorRepository, curatorId);
-        ServiceUtils.checkIdsEqualOrAdminRole(servletRequest, userId, entity.getUserId(), jwtProvider);
+        ServiceUtils.checkIdsEqualOrAdminRole(userId, entity.getUserId(), servletRequest, jwtProvider);
+        ServiceUtils.updateUserInsensitiveInAuthService(dto, entity, servletRequest, jwtProvider, authUserClient);
         Curator updated = curatorMapper.updateEntity(dto, entity);
         updated = curatorRepository.save(updated);
         log.debug("Updated {}: {}", ENTITY_SIMPLE_NAME, updated);
@@ -67,7 +70,7 @@ public class CuratorServiceImpl implements CuratorService {
     public void remove(HttpServletRequest servletRequest, Long curatorId) {
         Long userId = ServiceUtils.getUserId(servletRequest, jwtProvider);
         Curator entity = Checker.getNonNullObject(curatorRepository, curatorId);
-        ServiceUtils.checkIdsEqualOrAdminRole(servletRequest, userId, entity.getUserId(), jwtProvider);
+        ServiceUtils.checkIdsEqualOrAdminRole(userId, entity.getUserId(), servletRequest, jwtProvider);
         entity.setDeleted(true);
         curatorRepository.save(entity);
         log.debug("Marked as removed {} by id #{}", ENTITY_SIMPLE_NAME, curatorId);

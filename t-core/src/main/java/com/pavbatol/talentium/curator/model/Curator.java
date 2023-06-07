@@ -1,5 +1,6 @@
 package com.pavbatol.talentium.curator.model;
 
+import com.pavbatol.talentium.app.util.BasePerson;
 import com.pavbatol.talentium.hh.model.Hh;
 import jakarta.persistence.*;
 import lombok.*;
@@ -16,7 +17,7 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "curators")
-public class Curator {
+public class Curator implements BasePerson<Curator> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "curator_id", nullable = false)

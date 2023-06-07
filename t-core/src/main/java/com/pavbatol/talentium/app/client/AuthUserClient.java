@@ -49,10 +49,6 @@ public class AuthUserClient extends BaseWebClient {
         );
     }
 
-//    public Mono<ResponseEntity<String>> updateShort(long userId, String token, UserDtoUpdateShort dto) {
-//        return patch("/" + userId, userId, token, dto);
-//    }
-
     public Mono<ResponseEntity<String>> updateInsensitive(long userId, String token, UserDtoUpdateInsensitiveData dto) {
         return patch("/" + userId + "/insensitive", userId, token, dto);
     }
