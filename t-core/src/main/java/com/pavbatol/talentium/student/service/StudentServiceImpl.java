@@ -1,5 +1,6 @@
 package com.pavbatol.talentium.student.service;
 
+import com.pavbatol.talentium.app.client.AuthUserClient;
 import com.pavbatol.talentium.app.exception.ValidationException;
 import com.pavbatol.talentium.app.util.Checker;
 import com.pavbatol.talentium.app.util.ServiceUtils;
@@ -32,6 +33,7 @@ public class StudentServiceImpl implements StudentService {
     private final JwtProvider jwtProvider;
     private final StudentMapper studentMapper;
     private final StudentRepository studentRepository;
+    private final AuthUserClient authUserClient;
 
     @Override
     public StudentDtoResponse add(HttpServletRequest servletRequest, StudentDtoRequest dto) {
@@ -57,6 +59,7 @@ public class StudentServiceImpl implements StudentService {
         Long userId = ServiceUtils.getUserId(servletRequest, jwtProvider);
         Student entity = Checker.getNonNullObject(studentRepository, sStudentId);
         ServiceUtils.checkIdsEqualOrAdminRole(userId, entity.getUserId(), servletRequest, jwtProvider);
+        ServiceUtils.updateUserInsensitiveInAuthService(dto, entity, servletRequest, jwtProvider, authUserClient);
         Student updated = studentMapper.updateEntity(dto, entity);
         updated = studentRepository.save(updated);
         log.debug("Updated {}: {}", ENTITY_SIMPLE_NAME, updated);

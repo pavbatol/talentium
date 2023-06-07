@@ -1,5 +1,6 @@
 package com.pavbatol.talentium.mentor.service;
 
+import com.pavbatol.talentium.app.client.AuthUserClient;
 import com.pavbatol.talentium.app.exception.ValidationException;
 import com.pavbatol.talentium.app.util.Checker;
 import com.pavbatol.talentium.app.util.ServiceUtils;
@@ -32,6 +33,7 @@ public class MentorServiceImpl implements MentorService {
     private final JwtProvider jwtProvider;
     private final MentorMapper mentorMapper;
     private final MentorRepository mentorRepository;
+    private final AuthUserClient authUserClient;
 
     @Override
     public MentorDtoResponse add(HttpServletRequest servletRequest, MentorDtoRequest dto) {
@@ -58,6 +60,7 @@ public class MentorServiceImpl implements MentorService {
         Long userId = ServiceUtils.getUserId(servletRequest, jwtProvider);
         Mentor entity = Checker.getNonNullObject(mentorRepository, mentorId);
         ServiceUtils.checkIdsEqualOrAdminRole(userId, entity.getUserId(), servletRequest, jwtProvider);
+        ServiceUtils.updateUserInsensitiveInAuthService(dto, entity, servletRequest, jwtProvider, authUserClient);
         Mentor updated = mentorMapper.updateEntity(dto, entity);
         updated = mentorRepository.save(updated);
         log.debug("Updated {}: {}", ENTITY_SIMPLE_NAME, updated);
