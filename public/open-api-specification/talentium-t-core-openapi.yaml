@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
-  title: Talent Pulls (back-service as talentium) Api
-  description: talentium
+  title: Talent Pulse (back-service as talentium) Api
+  description: talentium, t-core service
   contact:
     name: Pavlik Sergey
     email: pavbatol@yandex.ru
