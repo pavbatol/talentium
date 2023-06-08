@@ -120,4 +120,13 @@ create table if not exists internships
     constraint fk_internships_on_management foreign key (management_id) references managements (management_id)
 );
 
+create sequence if not exists seq_countries minvalue 0 start with 0 increment 1;
+create table if not exists countries (
+    country_id  bigint default nextval('seq_countries') primary key,
+    code        varchar(2),
+    name_en     varchar(70),
+    name_ru     varchar(70),
+    constraint uc_countries_code unique (code)
+);
+
 

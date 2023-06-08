@@ -102,4 +102,31 @@ select
            'HALF', 'PENDING'
 where not exists (select 1 from internships where internship_id = 2);
 
+--countries
+-- DO
+-- $$
+--     BEGIN
+--         IF NOT EXISTS(SELECT 1 FROM countries) THEN
+--             COPY countries (code, name_en, name_ru) FROM 'src/main/resources/sql/country-codes_short.csv' DELIMITER ',' CSV HEADER;
+--         END IF;
+--     END
+-- $$;
+insert into countries (code, name_en, name_ru)
+select *
+from (values ('AM', 'Armenia', 'Армения'),
+             ('AZ', 'Azerbaijan', 'Азербайджан'),
+             ('BY', 'Belarus', 'Беларусь'),
+             ('CN', 'China', 'Китай'),
+             ('IN', 'India', 'Индия'),
+             ('MD', 'Republic of Moldova', 'Республика Молдова'),
+             ('RO', 'Romania', 'Румыния'),
+             ('RU', 'Russian Federation', 'Российская Федерация'),
+             ('ZA', 'South Africa', 'Южная Африка'),
+             ('TJ', 'Tajikistan', 'Таджикистан'),
+             ('TR', 'Turkey', 'Турция'),
+             ('TM', 'Turkmenistan', 'Туркменистан'),
+             ('UZ', 'Uzbekistan', 'Узбекистан')) as v (code, name_en, name_ru)
+where not exists(select 1 from countries where code = v.code)
+
+
 
