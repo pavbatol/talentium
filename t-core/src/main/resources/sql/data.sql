@@ -111,22 +111,145 @@ where not exists (select 1 from internships where internship_id = 2);
 --         END IF;
 --     END
 -- $$;
-insert into countries (code, name_en, name_ru)
-select *
-from (values ('AM', 'Armenia', 'Армения'),
-             ('AZ', 'Azerbaijan', 'Азербайджан'),
-             ('BY', 'Belarus', 'Беларусь'),
-             ('CN', 'China', 'Китай'),
-             ('IN', 'India', 'Индия'),
-             ('MD', 'Republic of Moldova', 'Республика Молдова'),
-             ('RO', 'Romania', 'Румыния'),
-             ('RU', 'Russian Federation', 'Российская Федерация'),
-             ('ZA', 'South Africa', 'Южная Африка'),
-             ('TJ', 'Tajikistan', 'Таджикистан'),
-             ('TR', 'Turkey', 'Турция'),
-             ('TM', 'Turkmenistan', 'Туркменистан'),
-             ('UZ', 'Uzbekistan', 'Узбекистан')) as v (code, name_en, name_ru)
-where not exists(select 1 from countries where code = v.code)
+-- insert into countries (code, name_en, name_ru)
+-- select *
+-- from (values ('AM', 'Armenia', 'Армения'),
+--              ('AZ', 'Azerbaijan', 'Азербайджан'),
+--              ('BY', 'Belarus', 'Беларусь'),
+--              ('CN', 'China', 'Китай'),
+--              ('IN', 'India', 'Индия'),
+--              ('MD', 'Republic of Moldova', 'Республика Молдова'),
+--              ('RO', 'Romania', 'Румыния'),
+--              ('RU', 'Russian Federation', 'Российская Федерация'),
+--              ('ZA', 'South Africa', 'Южная Африка'),
+--              ('TJ', 'Tajikistan', 'Таджикистан'),
+--              ('TR', 'Turkey', 'Турция'),
+--              ('TM', 'Turkmenistan', 'Туркменистан'),
+--              ('UZ', 'Uzbekistan', 'Узбекистан')) as v (code, name_en, name_ru)
+-- where not exists(select 1 from countries where code = v.code);
 
-
-
+--------------------------------------
+-- create or replace function csv_import(filename text)
+--     returns table (code text, name_en text, name_ru text) as $$
+-- begin
+-- return query execute format('
+--          select *
+--          from pg_catalog.pg_read_csv_file(%l,
+--             ''code'' text,
+--             ''name_en'' text,
+--             ''name_ru'' text
+--          ) as csv', filename);
+-- end;
+-- $$
+-- language plpgsql;
+--
+-- create or replace function csv_import(filename text)
+--     returns table (code text, name_en text, name_ru text) as $$
+-- begin
+-- return query execute format('
+--     select *
+--     from pg_catalog.pg_read_csv_file(%L,
+--     ''code'' text,
+--     ''name_en'' text,
+--     ''name_ru'' text
+--     ) as csv', filename);
+-- end;
+-- $$
+-- language plpgsql;
+--
+-- create or replace function csv_import(filename text)
+--     returns table (code varchar, name_en varchar, name_ru varchar) as $$
+-- begin
+--     return query execute format('
+--     select *
+--     from pg_catalog.pg_read_csv_file(%L,
+--     ''code'' varchar,
+--     ''name_en'' varchar,
+--     ''name_ru'' varchar
+--     ) as csv', filename);
+-- end;
+-- $$
+-- language plpgsql;
+--
+-- create or replace function csv_import(filename text)
+--     returns table (code varchar, name_en varchar, name_ru varchar) as $$
+-- begin
+--     return query execute format('
+--     select *
+--     from pg_catalog.pg_read_csv_file(%L,
+--     ''code'' varchar,
+--     ''name_en'' varchar,
+--     ''name_ru'' varchar
+--     ) as csv(code varchar, name_en varchar, name_ru varchar)', filename);
+-- end;
+-- $$
+-- language plpgsql;
+--
+-- create or replace function csv_import(filename text)
+--     returns table (code varchar, name_en varchar, name_ru varchar) as $$
+-- begin
+--     return query execute format('
+--     select *
+--     from pg_catalog.pg_read_csv_file(%L,
+--     ''code'',
+--     ''name_en'',
+--     ''name_ru''
+--     ) as csv(code , name_en , name_ru )', filename);
+-- end;
+-- $$
+-- language plpgsql;
+--
+--
+-- -- create or replace function csv_import(filename text)
+-- --     returns setof record as $$
+-- -- begin
+-- --     return query execute format('
+-- --     select *
+-- --     from pg_catalog.pg_read_csv_file(%L,
+-- --     ''code'' varchar(2),
+-- --     ''name_en'' varchar(70),
+-- --     ''name_ru'' varchar(70)
+-- --     ) as csv', filename);
+-- -- end;
+-- -- $$
+-- -- language plpgsql;
+--
+-- CREATE TEMPORARY TABLE temp_countries (
+--                                           code varchar(2),
+--                                           name_en varchar(70),
+--                                           name_ru varchar(70)
+-- );
+--
+-- INSERT INTO temp_countries (code, name_en, name_ru)
+-- SELECT code, name_en, name_ru FROM csv_import('country-codes_short.csv');
+--
+-- INSERT INTO countries (country_id, code, name_en, name_ru)
+-- SELECT nextval('seq_countries'), code, name_en, name_ru FROM temp_countries;
+--
+--
+--
+--
+-- INSERT INTO countries (code, name_en, name_ru)
+--     SELECT code, name_en, name_ru
+--     FROM csv_import('classpath:sql/country-codes_short.csv');
+--
+--
+-- create or replace function csv_import(filename text)
+--     returns table (code text, name_en text, name_ru text) as $$
+-- begin
+--     return query execute format('
+--     select *
+--     from pg_catalog.pg_read_csv_file(%L,
+--     ''code'' text,
+--     ''name_en'' text,
+--     ''name_ru'' text
+--     ) as csv(code, name_en, name_ru)', filename);
+-- end;
+-- $$
+--     language plpgsql;
+-- INSERT INTO countries (code, name_en, name_ru)
+-- SELECT *
+-- FROM csv_import('/home/sergey/HDD/1_Study_Sergey/Projects_java/talentium/t-core/src/main/resources/sql/country-codes_short.csv') AS csv;
+--
+-- drop function if exists csv_import;
+----------------------------

@@ -123,9 +123,9 @@ create table if not exists internships
 create sequence if not exists seq_countries minvalue 0 start with 0 increment 1;
 create table if not exists countries (
     country_id  bigint default nextval('seq_countries') primary key,
-    code        varchar(2),
-    name_en     varchar(70),
-    name_ru     varchar(70),
+    code        varchar(2)                                 not null,
+    name_en     varchar(70)                                not null,
+    name_ru     varchar(70)                                not null,
     constraint uc_countries_code unique (code)
 );
 

@@ -47,4 +47,9 @@ app:
     path:
       private-user: /private/user
       admin-user: /admin/user
-
+  data:
+    import:
+      file:
+        path:
+          countries: src/main/resources/sql/country-codes_short.csv
+          higher-eds: src/main/resources/sql/education-institutions.csv
