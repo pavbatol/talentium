@@ -1,14 +1,251 @@
-code,name_en,name_ru
+iso3166_1_alpha_2,official_name_en,official_name_ru
+TW,,
+AF,Afghanistan,Афганистан
+AL,Albania,Албания
+DZ,Algeria,Алжир
+AS,American Samoa,Американское Самоа
+AD,Andorra,Андорра
+AO,Angola,Ангола
+AI,Anguilla,Ангилья
+AQ,Antarctica,Антарктике
+AG,Antigua and Barbuda,Антигуа и Барбуда
+AR,Argentina,Аргентина
 AM,Armenia,Армения
+AW,Aruba,Аруба
+AU,Australia,Австралия
+AT,Austria,Австрия
 AZ,Azerbaijan,Азербайджан
+BS,Bahamas,Багамские Острова
+BH,Bahrain,Бахрейн
+BD,Bangladesh,Бангладеш
+BB,Barbados,Барбадос
 BY,Belarus,Беларусь
+BE,Belgium,Бельгия
+BZ,Belize,Белиз
+BJ,Benin,Бенин
+BM,Bermuda,Бермудские острова
+BT,Bhutan,Бутан
+BO,Bolivia (Plurinational State of),Боливия (Многонациональное Государство)
+BQ,"Bonaire, Sint Eustatius and Saba","Бонайре, Саба и Синт-Эстатиус"
+BA,Bosnia and Herzegovina,Босния и Герцеговина
+BW,Botswana,Ботсвана
+BV,Bouvet Island,Остров Буве
+BR,Brazil,Бразилия
+IO,British Indian Ocean Territory,Британская территория в Индийском океане
+VG,British Virgin Islands,Британские Виргинские острова
+BN,Brunei Darussalam,Бруней-Даруссалам
+BG,Bulgaria,Болгария
+BF,Burkina Faso,Буркина-Фасо
+BI,Burundi,Бурунди
+CV,Cabo Verde,Кабо-Верде
+KH,Cambodia,Камбоджа
+CM,Cameroon,Камерун
+CA,Canada,Канада
+KY,Cayman Islands,Кайман острова
+CF,Central African Republic,Центральноафриканская Республика
+TD,Chad,Чад
+CL,Chile,Чили
 CN,China,Китай
+HK,"China, Hong Kong Special Administrative Region","Китай, Специальный административный район Гонконг"
+MO,"China, Macao Special Administrative Region","Китай, Специальный административный район Макао"
+CX,Christmas Island,остров Рождества
+CC,Cocos (Keeling) Islands,Кокосовых (Килинг) островов
+CO,Colombia,Колумбия
+KM,Comoros,Коморские Острова
+CG,Congo,Конго
+CK,Cook Islands,Острова Кука
+CR,Costa Rica,Коста-Рика
+HR,Croatia,Хорватия
+CU,Cuba,Куба
+CW,Curaçao,Кюрасао
+CY,Cyprus,Кипр
+CZ,Czechia,Чехия
+CI,Côte d'Ivoire,Кот-д'Ивуар
+KP,Democratic People's Republic of Korea,Корейская Народно-Демократическая Республика
+CD,Democratic Republic of the Congo,Демократическая Республика Конго
+DK,Denmark,Дания
+DJ,Djibouti,Джибути
+DM,Dominica,Доминика
+DO,Dominican Republic,Доминиканская Республика
+EC,Ecuador,Эквадор
+EG,Egypt,Египет
+SV,El Salvador,Сальвадор
+GQ,Equatorial Guinea,Экваториальная Гвинея
+ER,Eritrea,Эритрея
+EE,Estonia,Эстония
+SZ,Eswatini,Эсватини
+ET,Ethiopia,Эфиопия
+FK,Falkland Islands (Malvinas),Фолклендские (Мальвинские) острова
+FO,Faroe Islands,Фарерские острова
+FJ,Fiji,Фиджи
+FI,Finland,Финляндия
+FR,France,Франция
+GF,French Guiana,Французская Гвиана
+PF,French Polynesia,Французская Полинезия
+TF,French Southern Territories,Южные земли (французская заморская территория)
+GA,Gabon,Габон
+GM,Gambia,Гамбия
+GE,Georgia,Грузия
+DE,Germany,Германия
+GH,Ghana,Гана
+GI,Gibraltar,Гибралтар
+GR,Greece,Греция
+GL,Greenland,Гренландия
+GD,Grenada,Гренада
+GP,Guadeloupe,Гваделупа
+GU,Guam,Гуам
+GT,Guatemala,Гватемала
+GG,Guernsey,Гернси
+GN,Guinea,Гвинея
+GW,Guinea-Bissau,Гвинея-Бисау
+GY,Guyana,Гайана
+HT,Haiti,Гаити
+HM,Heard Island and McDonald Islands,Остров Херд и острова Макдональд
+VA,Holy See,Святой Престол
+HN,Honduras,Гондурас
+HU,Hungary,Венгрия
+IS,Iceland,Исландия
 IN,India,Индия
+ID,Indonesia,Индонезия
+IR,Iran (Islamic Republic of),Иран (Исламская Республика)
+IQ,Iraq,Ирак
+IE,Ireland,Ирландия
+IM,Isle of Man,Остров Мэн
+IL,Israel,Израиль
+IT,Italy,Италия
+JM,Jamaica,Ямайка
+JP,Japan,Япония
+JE,Jersey,Джерси
+JO,Jordan,Иордания
+KZ,Kazakhstan,Казахстан
+KE,Kenya,Кения
+KI,Kiribati,Кирибати
+KW,Kuwait,Кувейт
+KG,Kyrgyzstan,Кыргызстан
+LA,Lao People's Democratic Republic,Лаосская Народно-Демократическая Республика
+LV,Latvia,Латвия
+LB,Lebanon,Ливан
+LS,Lesotho,Лесото
+LR,Liberia,Либерия
+LY,Libya,Ливия
+LI,Liechtenstein,Лихтенштейн
+LT,Lithuania,Литва
+LU,Luxembourg,Люксембург
+MG,Madagascar,Мадагаскар
+MW,Malawi,Малави
+MY,Malaysia,Малайзия
+MV,Maldives,Мальдивские Острова
+ML,Mali,Мали
+MT,Malta,Мальта
+MH,Marshall Islands,Маршалловы Острова
+MQ,Martinique,Мартиника
+MR,Mauritania,Мавритания
+MU,Mauritius,Маврикий
+YT,Mayotte,Острове Майотта
+MX,Mexico,Мексика
+FM,Micronesia (Federated States of),Микронезия (Федеративные Штаты)
+MC,Monaco,Монако
+MN,Mongolia,Монголия
+ME,Montenegro,Черногория
+MS,Montserrat,Монтсеррат
+MA,Morocco,Марокко
+MZ,Mozambique,Мозамбик
+MM,Myanmar,Мьянма
+NA,Namibia,Намибия
+NR,Nauru,Науру
+NP,Nepal,Непал
+NL,Netherlands,Нидерланды
+NC,New Caledonia,Новая Каледония
+NZ,New Zealand,Новая Зеландия
+NI,Nicaragua,Никарагуа
+NE,Niger,Нигер
+NG,Nigeria,Нигерия
+NU,Niue,Ниуэ
+NF,Norfolk Island,Остров Норфолк
+MP,Northern Mariana Islands,Северные Марианские острова
+NO,Norway,Норвегия
+OM,Oman,Оман
+PK,Pakistan,Пакистан
+PW,Palau,Палау
+PA,Panama,Панама
+PG,Papua New Guinea,Папуа-Новая Гвинея
+PY,Paraguay,Парагвай
+PE,Peru,Перу
+PH,Philippines,Филиппины
+PN,Pitcairn,Питкэрн
+PL,Poland,Польша
+PT,Portugal,Португалия
+PR,Puerto Rico,Пуэрто-Рико
+QA,Qatar,Катар
+KR,Republic of Korea,Республика Корея
 MD,Republic of Moldova,Республика Молдова
 RO,Romania,Румыния
 RU,Russian Federation,Российская Федерация
+RW,Rwanda,Руанда
+RE,Réunion,Реюньон
+BL,Saint Barthélemy,Святой Варфоломей
+SH,Saint Helena,Остров Святой Елены
+KN,Saint Kitts and Nevis,Сент-Китс и Невис
+LC,Saint Lucia,Сент-Люсия
+MF,Saint Martin (French Part),Сен-Мартен
+PM,Saint Pierre and Miquelon,Сен-Пьер и Микелон
+VC,Saint Vincent and the Grenadines,Сент-Винсент и Гренадины
+WS,Samoa,Самоа
+SM,San Marino,Сан-Марино
+ST,Sao Tome and Principe,Сан-Томе и Принсипи
+,Sark,Сарк
+SA,Saudi Arabia,Саудовская Аравия
+SN,Senegal,Сенегал
+RS,Serbia,Сербия
+SC,Seychelles,Сейшельские Острова
+SL,Sierra Leone,Сьерра-Леоне
+SG,Singapore,Сингапур
+SX,Sint Maarten (Dutch part),Синт-Мартен
+SK,Slovakia,Словакия
+SI,Slovenia,Словения
+SB,Solomon Islands,Соломоновы Острова
+SO,Somalia,Сомали
 ZA,South Africa,Южная Африка
+GS,South Georgia and the South Sandwich Islands,Южная Джорджия и Южные Сандвичевы острова
+SS,South Sudan,Южный Судан
+ES,Spain,Испания
+LK,Sri Lanka,Шри-Ланка
+PS,State of Palestine,Государство Палестина
+SD,Sudan,Судан
+SR,Suriname,Суринам
+SJ,Svalbard and Jan Mayen Islands,Острова Свальбард и Ян-Майен
+SE,Sweden,Швеция
+CH,Switzerland,Швейцария
+SY,Syrian Arab Republic,Сирийская Арабская Республика
 TJ,Tajikistan,Таджикистан
+TH,Thailand,Таиланд
+MK,The former Yugoslav Republic of Macedonia,бывшая югославская Республика Македония
+TL,Timor-Leste,Тимор-Лешти
+TG,Togo,Того
+TK,Tokelau,Токелау
+TO,Tonga,Тонга
+TT,Trinidad and Tobago,Тринидад и Тобаго
+TN,Tunisia,Тунис
 TR,Turkey,Турция
 TM,Turkmenistan,Туркменистан
+TC,Turks and Caicos Islands,Острова Тёркс и Кайкос
+TV,Tuvalu,Тувалу
+UG,Uganda,Уганда
+UA,Ukraine,Украина
+AE,United Arab Emirates,Объединенные Арабские Эмираты
+GB,United Kingdom of Great Britain and Northern Ireland,Соединенное Королевство Великобритании и Северной Ирландии
+TZ,United Republic of Tanzania,Объединенная Республика Танзания
+UM,United States Minor Outlying Islands,Внешние малые острова Coeдинeнныx Штaтoв
+VI,United States Virgin Islands,Виргинские oстрова Coeдинeнныx Штaтoв
+US,United States of America,Соединенные Штаты Америки
+UY,Uruguay,Уругвай
 UZ,Uzbekistan,Узбекистан
+VU,Vanuatu,Вануату
+VE,Venezuela (Bolivarian Republic of),Венесуэла (Боливарианская Республика)
+VN,Viet Nam,Вьетнам
+WF,Wallis and Futuna Islands,Острова Уоллис и Футуна
+EH,Western Sahara,Западная Сахара
+YE,Yemen,Йемен
+ZM,Zambia,Замбия
+ZW,Zimbabwe,Зимбабве
+AX,Åland Islands,Аландские острова

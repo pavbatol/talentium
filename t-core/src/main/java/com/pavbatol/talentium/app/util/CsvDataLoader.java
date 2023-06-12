@@ -48,8 +48,8 @@ public class CsvDataLoader {
                     if (!countryRepository.existsByCode(code)) {
                         Country country = new Country()
                                 .setCode(code)
-                                .setNameEn(parts[1] == null || parts[1].trim().isEmpty() ? parts[0].trim() : parts[1].trim())
-                                .setNameRu(parts[2] == null || parts[2].trim().isEmpty() ? parts[0].trim() : parts[2].trim());
+                                .setNameEn(parts.length < 2 || parts[1].trim().isEmpty() ? parts[0].trim() : parts[1].trim())
+                                .setNameRu(parts.length < 3 || parts[2].trim().isEmpty() ? parts[0].trim() : parts[2].trim());
                         countries.add(country);
                     }
                 }
