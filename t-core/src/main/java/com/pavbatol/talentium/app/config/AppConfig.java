@@ -1,6 +1,6 @@
 package com.pavbatol.talentium.app.config;
 
-import com.pavbatol.talentium.app.util.CsvDataLoader;
+import com.pavbatol.talentium.app.util.FileDataLoader;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 public class AppConfig {
 
     @Bean
-    public CommandLineRunner dataLoader(CsvDataLoader loader) {
+    public CommandLineRunner dataLoader(FileDataLoader loader) {
         return args -> loader.run();
     }
 }

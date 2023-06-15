@@ -49,3 +49,9 @@ app:
     file-path:
       countries: src/main/resources/file/country-codes_short.csv
       high-schools: src/main/resources/file/high_schools_edu-ru.xlsx
+      cities: src/main/resources/file/openstreetmap/export_city_russia.geojson,
+        src/main/resources/file/openstreetmap/export_town_russia.geojson, 
+        src/main/resources/file/openstreetmap/export_city_usa_and_part_europe.geojson, 
+        src/main/resources/file/openstreetmap/export_city_all_without_usa.geojson
+
+
