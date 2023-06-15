@@ -231,7 +231,7 @@ public class FileDataLoader {
                                         }
                                     }
                                 }
-                                log.debug("-Loaded city number: {} from file: {}", count, path);
+                                log.debug("-Loaded cities number: {} from file: {}", count, path);
                             }
                         }
 
